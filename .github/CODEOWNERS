@@ -1,0 +1,22 @@
+# Default reviewers for Lens Frontier blog changes.
+
+/README.md @Lens-Frontier/blog-maintainers
+/CONTRIBUTING.md @Lens-Frontier/blog-maintainers
+/templates/ @Lens-Frontier/blog-maintainers
+
+/src/content/ @Lens-Frontier/blog-maintainers
+/src/assets/posts/ @Lens-Frontier/blog-maintainers
+/src/data/authors.ts @Lens-Frontier/blog-maintainers
+/public/assets/authors/ @Lens-Frontier/blog-maintainers
+
+/src/pages/ @Lens-Frontier/blog-maintainers
+/src/components/ @Lens-Frontier/blog-maintainers
+/src/layouts/ @Lens-Frontier/blog-maintainers
+/src/styles/ @Lens-Frontier/blog-maintainers
+/src/lib/ @Lens-Frontier/blog-maintainers
+/astro.config.mjs @Lens-Frontier/blog-maintainers
+/package.json @Lens-Frontier/blog-maintainers
+/pnpm-lock.yaml @Lens-Frontier/blog-maintainers
+
+/.github/ @Lens-Frontier/blog-maintainers
+/scripts/ @Lens-Frontier/blog-maintainers

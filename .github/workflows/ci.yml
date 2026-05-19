@@ -56,7 +56,7 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Check assets and build
+      - name: Run quality checks and build
         run: pnpm check
 
       - name: Write preview metadata
