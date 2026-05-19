@@ -1,7 +1,7 @@
 ---
 title: "Paper Title"
 date: 2026-05-19
-summary: "一句话说明这篇论文笔记的重点。"
+summary: "一句话说明这篇论文分享的重点。"
 authors:
   - name: "Your Name"
     github: "your-github-id"

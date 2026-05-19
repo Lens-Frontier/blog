@@ -1,6 +1,6 @@
 # Lens Frontier Blog 投稿规范
 
-Lens Frontier Blog 默认通过 Pull Request 投稿。维护者可以为紧急修复直接提交，但论文阅读分享、benchmark 档案和观点文章都建议走 PR，这样方便讨论、预览和留下修改记录。
+Lens Frontier Blog 默认通过 Pull Request 投稿。维护者可以为紧急修复直接提交，但论文阅读分享、benchmark 观察和观点文章都建议走 PR，这样方便讨论、预览和留下修改记录。
 
 ## 投稿流程
 
@@ -50,13 +50,13 @@ src/assets/posts/papers/swe-bench-verified/
 
 所有文章都需要包含 `title`、`date`、`summary`、`authors`、`tags`。`authors` 是本站作者，不是论文原作者。
 
-论文阅读笔记示例：
+论文阅读分享示例：
 
 ```md
 ---
 title: "SWE-bench Verified"
 date: 2026-05-19
-summary: "一句话说明这篇笔记的重点。"
+summary: "一句话说明这篇分享的重点。"
 authors:
   - name: "Your Name"
     github: "your-github-id"
@@ -72,7 +72,7 @@ status: "read"
 ---
 ```
 
-Benchmark 档案示例：
+Benchmark 观察示例：
 
 ```md
 ---
