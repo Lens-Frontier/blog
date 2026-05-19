@@ -642,15 +642,30 @@ a:hover {
 }
 
 .site-footer {
-	display: flex;
-	justify-content: space-between;
-	gap: 20px;
+	display: grid;
+	justify-items: start;
+	gap: 10px;
 	padding: 26px 0 38px;
 	border-top: 1px solid var(--line);
 	color: var(--muted);
 	font-family: var(--font-mono);
 	font-size: 0.72rem;
 	text-transform: uppercase;
+}
+
+.site-footer div,
+.footer-links {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px 16px;
+}
+
+.footer-links {
+	justify-content: start;
+}
+
+.footer-links a {
+	text-decoration: none;
 }
 
 @media (max-width: 820px) {
