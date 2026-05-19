@@ -31,7 +31,7 @@ src/content/opinions     # 围绕 benchmark 的观点文章
 
 仓库使用 `.github/CODEOWNERS` 自动请求 `@Lens-Frontier/blog-maintainers` review 文章、站点、CI 和发布流程改动。
 
-站点导航里，`Timeline` 会按时间汇总全部内容，`Tags` 用来按主题索引，`RSS` 输出订阅源。
+站点导航里，`Timeline` 会按时间汇总全部内容，`Tags` 用来按主题索引，`About` 说明站点定位，`RSS` 输出订阅源。
 
 ## 部署到 GitHub Pages
 
