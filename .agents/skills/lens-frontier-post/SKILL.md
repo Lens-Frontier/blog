@@ -23,7 +23,7 @@ Use this skill inside the `Lens-Frontier/blog` repository when helping someone c
 5. Copy the relevant template structure manually into the new Markdown file and complete frontmatter.
 6. Keep `authors` as site authors, not paper authors. For recurring authors, prefer `id` from `src/data/authors.ts`. If the author is not in the registry, either add them there or include at least `name` or `github` inline. Do not add `avatar` by default because the site automatically uses `https://github.com/<github>.png?size=96` when `github` exists. Add `avatar` only when a custom image is needed.
 7. Put post images under `src/assets/posts/<collection>/<slug>/`. Put author avatars under `public/assets/authors/`.
-8. Run `pnpm check` before proposing or opening a PR.
+8. Run `pnpm check` before proposing or opening a PR. It includes content rules, asset checks, image recommendations, Astro type checks, and production build.
 9. If the user asks to open the PR and credentials are available, push the branch and use `gh pr create`.
 
 ## Required Article Standards

@@ -211,8 +211,10 @@ pnpm check
 
 `pnpm check` 会执行：
 
+- 内容规范检查
 - 资产大小检查
 - 图片推荐大小、宽度和格式提示
+- Astro 类型和模板检查
 - 文章文件名 kebab-case 检查
 - Markdown 图片 alt text 检查
 - Astro 生产构建
