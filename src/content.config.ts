@@ -1,12 +1,12 @@
 import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
-import { hasAuthorId } from './data/authors';
+import { authorIdPattern, hasAuthorId } from './data/authors';
 
 const author = z.object({
-	id: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/).optional(),
-	name: z.string().optional(),
-	github: z.string().optional(),
-	avatar: z.string().optional(),
+	id: z.string().regex(authorIdPattern).optional(),
+	name: z.string().min(1).optional(),
+	github: z.string().min(1).optional(),
+	avatar: z.string().min(1).optional(),
 	url: z.string().url().optional(),
 }).refine((value) => value.id || value.name || value.github, {
 	message: 'Author needs id, name, or github.',
