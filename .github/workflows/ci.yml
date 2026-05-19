@@ -56,7 +56,7 @@ jobs:
       - name: Write preview metadata
         if: github.event_name == 'pull_request'
         run: |
-          cat > dist/.preview-meta.json <<EOF
+          cat > dist/preview-meta.json <<EOF
           {
             "pr_number": "${PREVIEW_PR_NUMBER}",
             "head_sha": "${PREVIEW_HEAD_SHA}",
