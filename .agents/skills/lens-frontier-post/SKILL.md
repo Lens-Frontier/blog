@@ -23,7 +23,7 @@ Use this skill inside the `Lens-Frontier/blog` repository when helping someone c
 5. Copy the relevant template structure manually into the new Markdown file and complete frontmatter.
 6. Keep `authors` as site authors, not paper authors. For recurring authors, prefer `id` from `src/data/authors.ts`. If the author is not in the registry, either add them there or include at least `name` or `github` inline. Do not add `avatar` by default because the site automatically uses `https://github.com/<github>.png?size=96` when `github` exists. Add `avatar` only when a custom image is needed.
 7. Put post images under `src/assets/posts/<collection>/<slug>/`. Put author avatars under `public/assets/authors/`.
-8. Run `pnpm check` before proposing or opening a PR. It includes Markdown lint, content rules, asset checks, image recommendations, Astro type checks, production build, and built-page link checks.
+8. Run `pnpm check` before proposing or opening a PR. It includes Markdown lint, content rules, asset hard-limit checks, image recommendation warnings, Astro type checks, production build, and built-page link checks.
 9. If the user asks to open the PR and credentials are available, push the branch and use `gh pr create`.
 
 ## Required Article Standards
@@ -49,7 +49,7 @@ Use this skill inside the `Lens-Frontier/blog` repository when helping someone c
 - Author avatar max: `512 KB`.
 - Prefer WebP or AVIF for post images; WebP for avatars.
 - Keep screenshots at or below `1600 px` wide when possible.
-- Run `pnpm images:check` to surface image recommendations. Run `pnpm images:optimize` before PR when images are large or wider than `1600 px`.
+- Run `pnpm images:check` to surface image recommendations. Recommendation warnings do not block CI; hard limits from `check:assets` do. Run `pnpm images:optimize` before PR when images are large or wider than `1600 px`.
 - Every Markdown image needs meaningful alt text.
 - Avoid committing large videos, animated images, or datasets. Mention the need in the PR instead.
 
