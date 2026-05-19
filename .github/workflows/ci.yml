@@ -10,12 +10,33 @@ on:
 permissions:
   contents: read
 
+env:
+  SITE_URL: https://lens-frontier.github.io
+
 jobs:
   check:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v6
+
+      - name: Resolve build target
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          if [ "$EVENT_NAME" = "pull_request" ]; then
+            short_sha="${PR_HEAD_SHA:0:7}"
+            echo "SITE_BASE=/blog/pr-preview/pr-${PR_NUMBER}/${short_sha}/" >> "$GITHUB_ENV"
+            echo "PREVIEW_PR_NUMBER=${PR_NUMBER}" >> "$GITHUB_ENV"
+            echo "PREVIEW_HEAD_SHA=${PR_HEAD_SHA}" >> "$GITHUB_ENV"
+            echo "PREVIEW_SHORT_SHA=${short_sha}" >> "$GITHUB_ENV"
+            echo "PREVIEW_DESTINATION=pr-preview/pr-${PR_NUMBER}/${short_sha}" >> "$GITHUB_ENV"
+            echo "PREVIEW_URL=https://lens-frontier.github.io/blog/pr-preview/pr-${PR_NUMBER}/${short_sha}/" >> "$GITHUB_ENV"
+          else
+            echo "SITE_BASE=/blog/" >> "$GITHUB_ENV"
+          fi
 
       - name: Install pnpm
         uses: pnpm/action-setup@v6
@@ -31,3 +52,25 @@ jobs:
 
       - name: Check assets and build
         run: pnpm check
+
+      - name: Write preview metadata
+        if: github.event_name == 'pull_request'
+        run: |
+          cat > dist/.preview-meta.json <<EOF
+          {
+            "pr_number": "${PREVIEW_PR_NUMBER}",
+            "head_sha": "${PREVIEW_HEAD_SHA}",
+            "short_sha": "${PREVIEW_SHORT_SHA}",
+            "destination_dir": "${PREVIEW_DESTINATION}",
+            "preview_url": "${PREVIEW_URL}"
+          }
+          EOF
+
+      - name: Upload PR preview artifact
+        if: github.event_name == 'pull_request'
+        uses: actions/upload-artifact@v4
+        with:
+          name: preview-dist
+          path: dist
+          if-no-files-found: error
+          retention-days: 7

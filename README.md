@@ -1,6 +1,6 @@
 # Lens Frontier Blog
 
-一个简洁克制的 benchmark / paper blog，用来记录论文阅读、评测方法和自己的判断。
+一个简洁克制的 research / opinion blog，用来记录论文阅读、技术观点、评测观察和自己的判断。
 
 ## 本地开发
 
@@ -13,7 +13,7 @@ pnpm dev
 
 默认通过 Pull Request 投稿。完整规范见 [CONTRIBUTING.md](./CONTRIBUTING.md)，文章模板在 [templates](./templates)。
 
-PR 会自动运行 CI，检查资产大小和生产构建是否通过。
+PR 会自动运行 CI，检查资产大小和生产构建是否通过。CI 成功后，机器人会在 PR comment 里输出带 commit hash 的预览链接。
 
 ## 内容目录
 
