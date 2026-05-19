@@ -15,6 +15,8 @@ pnpm dev
 
 PR 会自动运行 CI，检查资产大小和生产构建是否通过。CI 成功后，机器人会在 PR comment 里输出带 commit hash 的预览链接。
 
+如果使用 Codex 或 Claude Code 辅助投稿，可以让它读取仓库内的 `.agents/skills/lens-frontier-post` skill，按统一流程创建文章、检查资产、运行 CI 前校验并准备 PR。
+
 ## 内容目录
 
 ```txt

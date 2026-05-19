@@ -1,0 +1,4 @@
+interface:
+  display_name: "Lens Frontier Post"
+  short_description: "Draft and submit Lens Frontier blog posts."
+  default_prompt: "Use this skill to draft a Lens Frontier blog post, validate it, and prepare a pull request."

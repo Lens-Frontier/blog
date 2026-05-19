@@ -12,8 +12,8 @@ const shared = z.object({
 	title: z.string(),
 	date: z.coerce.date(),
 	summary: z.string(),
-	authors: z.array(author).default([]),
-	tags: z.array(z.string()).default([]),
+	authors: z.array(author).min(1),
+	tags: z.array(z.string()).min(1),
 	draft: z.boolean().default(false),
 });
 

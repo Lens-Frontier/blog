@@ -1,10 +1,11 @@
-import { readdir, stat } from 'node:fs/promises';
+import { readFile, readdir, stat } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import { extname, join } from 'node:path';
 
 const root = process.cwd();
 const collections = ['papers', 'benchmarks', 'opinions'];
 const allowedImageExts = new Set(['.avif', '.gif', '.jpeg', '.jpg', '.png', '.svg', '.webp']);
+const contentFilePattern = /^[a-z0-9]+(?:-[a-z0-9]+)*\.(md|mdx)$/;
 const maxPostImageBytes = 1 * 1024 * 1024;
 const maxPostFolderBytes = 5 * 1024 * 1024;
 const maxAuthorAvatarBytes = 512 * 1024;
@@ -41,6 +42,23 @@ async function contentSlugs(collection) {
 }
 
 const errors = [];
+
+for (const collection of collections) {
+	const dir = join(root, 'src', 'content', collection);
+	if (!existsSync(dir)) continue;
+	const entries = await readdir(dir, { withFileTypes: true });
+	for (const entry of entries) {
+		if (!entry.isFile() || !/\.(md|mdx)$/.test(entry.name)) continue;
+		const file = join(dir, entry.name);
+		if (!contentFilePattern.test(entry.name)) {
+			errors.push(`Article filename must use lowercase kebab-case: ${file}`);
+		}
+		const text = await readFile(file, 'utf8');
+		if (/!\[\s*\]\s*\(/.test(text)) {
+			errors.push(`Markdown images must include alt text: ${file}`);
+		}
+	}
+}
 
 for (const file of await walk(join(root, 'public', 'assets', 'authors'))) {
 	const ext = extname(file).toLowerCase();
