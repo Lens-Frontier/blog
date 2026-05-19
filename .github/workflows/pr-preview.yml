@@ -35,7 +35,7 @@ jobs:
         run: |
           node <<'NODE' >> "$GITHUB_OUTPUT"
           const fs = require('node:fs');
-          const meta = JSON.parse(fs.readFileSync('dist/.preview-meta.json', 'utf8'));
+          const meta = JSON.parse(fs.readFileSync('dist/preview-meta.json', 'utf8'));
           for (const [key, value] of Object.entries(meta)) {
             console.log(`${key}=${value}`);
           }
