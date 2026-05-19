@@ -359,6 +359,12 @@ a:hover {
 	list-style: none;
 }
 
+.article-header > .authors {
+	border-top: 1px solid var(--line);
+	border-bottom: 1px solid var(--line);
+	padding: 14px 0;
+}
+
 .authors li {
 	display: inline-flex;
 	align-items: center;
@@ -388,10 +394,23 @@ a:hover {
 }
 
 .authors a {
+	text-decoration: none;
+}
+
+.authors .author-name {
+	color: inherit;
+	font-family: inherit;
+	font-size: inherit;
+}
+
+.authors .author-name:hover {
+	color: var(--blue);
+}
+
+.authors a:not(.author-name) {
 	color: var(--muted);
 	font-family: var(--font-mono);
 	font-size: 0.68rem;
-	text-decoration: none;
 }
 
 .authors--compact {
@@ -408,7 +427,7 @@ a:hover {
 	font-size: 0.76rem;
 }
 
-.authors--compact a {
+.authors--compact a:not(.author-name) {
 	font-size: 0.62rem;
 }
 

@@ -8,9 +8,10 @@
   },
   "scripts": {
     "dev": "astro dev",
+    "clean:astro": "rm -rf .astro node_modules/.astro dist",
     "build": "astro build",
     "check:assets": "node scripts/check-assets.mjs",
-    "check": "pnpm check:assets && pnpm build",
+    "check": "pnpm check:assets && pnpm clean:astro && pnpm build",
     "preview": "astro preview",
     "astro": "astro"
   },

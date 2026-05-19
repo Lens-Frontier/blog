@@ -2,10 +2,12 @@ import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
 
 const author = z.object({
-	name: z.string(),
+	name: z.string().optional(),
 	github: z.string().optional(),
 	avatar: z.string().optional(),
 	url: z.string().url().optional(),
+}).refine((value) => value.name || value.github, {
+	message: 'Author needs either name or github.',
 });
 
 const shared = z.object({

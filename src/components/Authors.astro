@@ -2,7 +2,7 @@
 import { path } from '../lib/site';
 
 interface Author {
-	name: string;
+	name?: string;
 	github?: string;
 	avatar?: string;
 	url?: string;
@@ -25,6 +25,10 @@ function avatarUrl(author: Author) {
 function authorUrl(author: Author) {
 	return author.url ?? (author.github ? `https://github.com/${author.github}` : undefined);
 }
+
+function authorName(author: Author) {
+	return author.name ?? (author.github ? `@${author.github}` : 'Unknown author');
+}
 ---
 
 {authors.length ? (
@@ -32,14 +36,21 @@ function authorUrl(author: Author) {
 		{authors.map((author) => {
 			const href = authorUrl(author);
 			const avatar = avatarUrl(author);
+			const name = authorName(author);
 			return (
 				<li>
-					{avatar ? <img src={avatar} alt={`${author.name} avatar`} loading="lazy" /> : null}
+					{avatar ? <img src={avatar} alt={`${name} avatar`} loading="lazy" /> : null}
 					<span>
-						<strong>{author.name}</strong>
-						{author.github ? (
+						{href ? (
+							<a class="author-name" href={href} target="_blank" rel="noreferrer">
+								<strong>{name}</strong>
+							</a>
+						) : (
+							<strong>{name}</strong>
+						)}
+						{author.name && author.github ? (
 							<a href={href} target="_blank" rel="noreferrer">@{author.github}</a>
-						) : href ? (
+						) : href && !author.github ? (
 							<a href={href} target="_blank" rel="noreferrer">profile</a>
 						) : null}
 					</span>

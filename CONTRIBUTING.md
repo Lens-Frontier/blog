@@ -56,7 +56,7 @@ src/assets/posts/papers/swe-bench-verified/
 
 ## Markdown Frontmatter
 
-所有文章都需要包含 `title`、`date`、`summary`、`authors`、`tags`。`authors` 是本站作者，不是论文原作者。
+所有文章都需要包含 `title`、`date`、`summary`、`authors`、`tags`。`authors` 是本站作者，不是论文原作者；每个作者至少填写 `name` 或 `github` 之一。
 
 论文阅读分享示例：
 
@@ -118,11 +118,12 @@ tags: ["benchmark-design", "evaluation"]
 列表页和文章页都会展示本站作者信息：
 
 - `name` 会作为作者显示名。
-- `github` 会显示为 `@github-id`，并链接到 GitHub profile。
+- 如果只填写 `github`，站点会用 `@github-id` 作为显示名，并链接到 GitHub profile。
+- 如果同时填写 `name` 和 `github`，站点会显示 `name`，并在下方显示 `@github-id`。
 - `avatar` 可选。填写后优先使用上传头像；不填写但有 `github` 时，站点会自动使用 GitHub 头像：`https://github.com/<github>.png?size=96`。
 - 多作者文章按 frontmatter 中的 `authors` 顺序展示。
 
-建议默认只填写 `github`。只有需要统一风格、不想使用 GitHub 头像，或者作者没有 GitHub ID 时，再上传自定义头像。
+头像不是强制项。只写名字可以，只写 GitHub ID 也可以；需要统一风格、不想使用 GitHub 头像，或者作者没有 GitHub ID 时，再上传自定义头像。
 
 ## 头像规范
 
