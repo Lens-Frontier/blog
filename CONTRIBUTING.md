@@ -211,6 +211,7 @@ pnpm check
 
 `pnpm check` 会执行：
 
+- Markdown 格式检查
 - 内容规范检查
 - 资产大小检查
 - 图片推荐大小、宽度和格式提示
@@ -218,6 +219,9 @@ pnpm check
 - 文章文件名 kebab-case 检查
 - Markdown 图片 alt text 检查
 - Astro 生产构建
+- 构建产物页面标题、描述、内部链接和 RSS 检查
+
+GitHub Actions 还会额外运行 workflow lint，用来检查 `.github/workflows/` 里的语法和表达式问题。
 
 ## 内容质量检查
 

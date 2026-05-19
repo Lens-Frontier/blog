@@ -46,9 +46,11 @@ src/content/opinions     # 围绕 benchmark 的观点文章
 
 ```sh
 pnpm dev              # 本地开发
-pnpm check            # 内容规范 + 资产检查 + 类型检查 + 生产构建
+pnpm check            # Markdown + 内容规范 + 资产 + 类型 + 构建产物检查
+pnpm check:markdown   # Markdown 格式检查
 pnpm check:content    # 文章结构、tag、图片引用检查
 pnpm check:types      # Astro 类型和模板检查
+pnpm check:dist       # 构建后页面元信息和内部链接检查
 pnpm images:check     # 图片大小、宽度、格式提示
 pnpm images:optimize  # 压缩文章图片并生成 WebP
 pnpm build            # 生产构建
