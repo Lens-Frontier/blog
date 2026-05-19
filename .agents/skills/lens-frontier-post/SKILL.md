@@ -21,7 +21,7 @@ Use this skill inside the `Lens-Frontier/blog` repository when helping someone c
    - `src/content/opinions/<slug>.md` for benchmark-facing opinions.
 4. Use lowercase kebab-case slugs. Prefer `post/<slug>` for the branch name.
 5. Copy the relevant template structure manually into the new Markdown file and complete frontmatter.
-6. Keep `authors` as site authors, not paper authors. For each author, include at least `name` or `github`. Do not add `avatar` by default because the site automatically uses `https://github.com/<github>.png?size=96` when `github` exists. Add `avatar` only when a custom image is needed.
+6. Keep `authors` as site authors, not paper authors. For recurring authors, prefer `id` from `src/data/authors.ts`. If the author is not in the registry, either add them there or include at least `name` or `github` inline. Do not add `avatar` by default because the site automatically uses `https://github.com/<github>.png?size=96` when `github` exists. Add `avatar` only when a custom image is needed.
 7. Put post images under `src/assets/posts/<collection>/<slug>/`. Put author avatars under `public/assets/authors/`.
 8. Run `pnpm check` before proposing or opening a PR.
 9. If the user asks to open the PR and credentials are available, push the branch and use `gh pr create`.
@@ -33,6 +33,13 @@ Use this skill inside the `Lens-Frontier/blog` repository when helping someone c
 - For paper posts, distinguish paper authors from site authors.
 - For benchmark posts, include task, metric, version or status, risks, and known misreadings when available.
 - For opinion posts, separate facts, inferences, uncertainty, and personal judgment.
+
+## Author Registry
+
+- Recurring authors live in `src/data/authors.ts`.
+- A post can use `authors: [{ id: "author-id" }]` when the author is registered.
+- Inline author fields can still be used for one-off contributors or temporary overrides.
+- Unknown author ids fail CI; add the author to the registry or use inline `name` / `github`.
 
 ## Assets
 

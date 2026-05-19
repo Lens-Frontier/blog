@@ -1,13 +1,17 @@
 import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
+import { hasAuthorId } from './data/authors';
 
 const author = z.object({
+	id: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/).optional(),
 	name: z.string().optional(),
 	github: z.string().optional(),
 	avatar: z.string().optional(),
 	url: z.string().url().optional(),
-}).refine((value) => value.name || value.github, {
-	message: 'Author needs either name or github.',
+}).refine((value) => value.id || value.name || value.github, {
+	message: 'Author needs id, name, or github.',
+}).refine((value) => !value.id || hasAuthorId(value.id), {
+	message: 'Unknown author id. Add it to src/data/authors.ts or use inline name/github.',
 });
 
 const shared = z.object({

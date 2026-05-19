@@ -1,32 +1,27 @@
 ---
+import { resolveAuthors, type AuthorInput } from '../data/authors';
 import { path } from '../lib/site';
 
-interface Author {
-	name?: string;
-	github?: string;
-	avatar?: string;
-	url?: string;
-}
-
 interface Props {
-	authors?: Author[];
+	authors?: AuthorInput[];
 	compact?: boolean;
 }
 
-const { authors = [], compact = false } = Astro.props;
+const { authors: authorInputs = [], compact = false } = Astro.props;
+const authors = resolveAuthors(authorInputs);
 
-function avatarUrl(author: Author) {
+function avatarUrl(author: AuthorInput) {
 	if (author.avatar?.startsWith('http')) return author.avatar;
 	if (author.avatar) return path(author.avatar);
 	if (author.github) return `https://github.com/${author.github}.png?size=96`;
 	return undefined;
 }
 
-function authorUrl(author: Author) {
+function authorUrl(author: AuthorInput) {
 	return author.url ?? (author.github ? `https://github.com/${author.github}` : undefined);
 }
 
-function authorName(author: Author) {
+function authorName(author: AuthorInput) {
 	return author.name ?? (author.github ? `@${author.github}` : 'Unknown author');
 }
 ---

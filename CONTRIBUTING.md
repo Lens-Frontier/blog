@@ -56,7 +56,7 @@ src/assets/posts/papers/swe-bench-verified/
 
 ## Markdown Frontmatter
 
-所有文章都需要包含 `title`、`date`、`summary`、`authors`、`tags`。`authors` 是本站作者，不是论文原作者；每个作者至少填写 `name` 或 `github` 之一。
+所有文章都需要包含 `title`、`date`、`summary`、`authors`、`tags`。`authors` 是本站作者，不是论文原作者；每个作者至少填写 `id`、`name` 或 `github` 之一。
 
 论文阅读分享示例：
 
@@ -117,6 +117,9 @@ tags: ["benchmark-design", "evaluation"]
 
 列表页和文章页都会展示本站作者信息：
 
+- 如果作者已经在 `src/data/authors.ts` 里登记，可以只写 `id`。
+- `id` 必须使用小写 kebab-case；写错或未登记会导致 CI 构建失败。
+- `id` 引用的作者资料可以被当前文章里的 `name`、`github`、`avatar`、`url` 覆盖。
 - `name` 会作为作者显示名。
 - 如果只填写 `github`，站点会用 `@github-id` 作为显示名，并链接到 GitHub profile。
 - 如果同时填写 `name` 和 `github`，站点会显示 `name`，并在下方显示 `@github-id`。
@@ -124,6 +127,27 @@ tags: ["benchmark-design", "evaluation"]
 - 多作者文章按 frontmatter 中的 `authors` 顺序展示。
 
 头像不是强制项。只写名字可以，只写 GitHub ID 也可以；需要统一风格、不想使用 GitHub 头像，或者作者没有 GitHub ID 时，再上传自定义头像。
+
+常写作者可以先加入作者 registry：
+
+```ts
+// src/data/authors.ts
+export const authorRegistry = {
+  alice: {
+    name: "Alice",
+    github: "alice",
+  },
+};
+```
+
+之后文章里只需要引用：
+
+```md
+authors:
+  - id: "alice"
+```
+
+一次性投稿或临时共同作者不必加入 registry，直接在文章 frontmatter 里写 `name` / `github` 更轻。
 
 ## 头像规范
 

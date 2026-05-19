@@ -27,6 +27,8 @@ src/content/opinions     # 围绕 benchmark 的观点文章
 
 每篇文章使用 Markdown frontmatter 管理元数据。字段 schema 在 `src/content.config.ts`。
 
+常写作者可以登记在 `src/data/authors.ts`，文章里用 `authors: [{ id: "author-id" }]` 复用作者资料；一次性投稿也可以继续在文章 frontmatter 里直接写 `name` / `github`。
+
 站点导航里，`Timeline` 会按时间汇总全部内容，`Tags` 用来按主题索引，`RSS` 输出订阅源。
 
 ## 部署到 GitHub Pages
