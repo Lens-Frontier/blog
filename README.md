@@ -13,6 +13,8 @@ pnpm dev
 
 默认通过 Pull Request 投稿。完整规范见 [CONTRIBUTING.md](./CONTRIBUTING.md)，文章模板在 [templates](./templates)。
 
+PR 会自动运行 CI，检查资产大小和生产构建是否通过。
+
 ## 内容目录
 
 ```txt
