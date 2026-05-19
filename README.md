@@ -1,6 +1,6 @@
 # Lens Frontier Blog
 
-一个简洁克制的 research / opinion blog，用来记录论文阅读、技术观点、评测观察和自己的判断。
+一个简洁克制的 research / opinion blog，用来沉淀大家平时阅读分享的论文，并输出一些围绕 benchmark 的浅薄观点。
 
 ## 本地开发
 
@@ -27,7 +27,7 @@ src/content/opinions     # 观点文章
 
 ## 部署到 GitHub Pages
 
-项目已经包含 `.github/workflows/deploy.yml`。推到 GitHub 后，在仓库设置里把 Pages source 设为 `GitHub Actions`。
+项目已经包含 `.github/workflows/deploy.yml`。推到 GitHub 后，在仓库设置里把 Pages source 设为 `Deploy from a branch`，分支选择 `gh-pages` / root。
 
 如果仓库名不是 `<username>.github.io`，配置会在 GitHub Actions 中自动把 `base` 设置为 `/<repo-name>`。
 

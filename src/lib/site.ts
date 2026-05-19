@@ -1,6 +1,6 @@
 export const site = {
 	title: 'Lens Frontier',
-	description: '论文阅读、技术观点、评测观察与论点分享。',
+	description: '沉淀平时阅读分享的论文，输出一些围绕 benchmark 的浅薄观点。',
 };
 
 export function path(input = '/') {

@@ -25,7 +25,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? 'https://example.com
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 		<link
-			href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,500;6..72,650&display=swap"
+			href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=Noto+Serif+SC:wght@500;700&display=swap"
 			rel="stylesheet"
 		/>
 	</head>
@@ -36,13 +36,14 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? 'https://example.com
 					<span class="brand-mark">LF</span>
 					<span>
 						<strong>Lens Frontier</strong>
-						<small>research opinion log</small>
+						<small>papers benchmarks opinions</small>
 					</span>
 				</a>
 				<nav class="nav" aria-label="Primary navigation">
 					<a href={path('/papers/')}>Papers</a>
 					<a href={path('/benchmarks/')}>Benchmarks</a>
 					<a href={path('/opinions/')}>Opinions</a>
+					<a href={path('/timeline/')}>Timeline</a>
 					<a href={path('/tags/')}>Tags</a>
 					<a href={path('/rss.xml')}>RSS</a>
 				</nav>
@@ -52,7 +53,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? 'https://example.com
 			</main>
 			<footer class="site-footer">
 				<span>Lens Frontier</span>
-				<span>Built for careful reading and situated claims.</span>
+				<span>Reading notes and modest benchmark arguments.</span>
 			</footer>
 		</div>
 	</body>

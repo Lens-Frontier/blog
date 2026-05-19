@@ -14,6 +14,9 @@ const base =
 export default defineConfig({
 	site: process.env.SITE_URL ?? 'https://example.com',
 	base,
+	devToolbar: {
+		enabled: false,
+	},
 	integrations: [sitemap()],
 	markdown: {
 		shikiConfig: {

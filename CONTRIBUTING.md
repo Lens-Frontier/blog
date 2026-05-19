@@ -1,6 +1,6 @@
 # Lens Frontier Blog 投稿规范
 
-Lens Frontier Blog 默认通过 Pull Request 投稿。维护者可以为紧急修复直接提交，但论文阅读、benchmark 档案和观点文章都建议走 PR，这样方便讨论、预览和留下修改记录。
+Lens Frontier Blog 默认通过 Pull Request 投稿。维护者可以为紧急修复直接提交，但论文阅读分享、benchmark 档案和观点文章都建议走 PR，这样方便讨论、预览和留下修改记录。
 
 ## 投稿流程
 
@@ -173,13 +173,13 @@ pnpm check
 - 论文类文章区分了论文作者和本站作者。
 - benchmark 文章说明了 task、metric、version、known issues。
 - 图片有来源或是自己绘制/截图，且没有版权风险。
-- 文章不是简单搬运摘要，包含自己的判断、疑问或复盘。
+- 文章不是简单搬运摘要，包含个人判断、疑问或复盘。
 
 ## Review 规则
 
 PR 至少需要一位维护者 review 后合并。维护者主要看：
 
-- 内容是否符合 Lens Frontier 的主题。
+- 内容是否符合 Lens Frontier 的主题：论文阅读分享、benchmark 相关观察，以及围绕这些问题的一些浅薄观点。
 - 事实、引用和链接是否可靠。
 - 图片和资产是否合规。
 - Markdown frontmatter 是否能通过构建。

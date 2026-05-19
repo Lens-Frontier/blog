@@ -11,13 +11,13 @@ const collections = await Promise.all([
 const tags = [...new Set(collections.flat().flatMap((entry) => entry.data.tags ?? []))].sort();
 ---
 
-<BaseLayout title="Tags" description="所有标签。">
+<BaseLayout title="Tags" description="主题标签索引。">
 	<header class="page-title">
 		<div>
 			<p class="eyebrow">index terms</p>
 			<h1>Tags</h1>
 		</div>
-		<p>用标签把论文、benchmark 和观点串起来。</p>
+		<p>用标签把论文分享、观点文章和 benchmark 观察串起来。</p>
 	</header>
 	{tags.length ? (
 		<nav class="tag-cloud" aria-label="All tags">

@@ -7,13 +7,13 @@ import { byDateDesc } from '../../lib/site';
 const papers = (await getCollection('papers')).filter((entry) => !entry.data.draft).sort(byDateDesc);
 ---
 
-<BaseLayout title="Papers" description="论文阅读笔记。">
+<BaseLayout title="Papers" description="论文阅读分享与复盘。">
 	<header class="page-title">
 		<div>
-			<p class="eyebrow">paper notes</p>
+			<p class="eyebrow">paper sharing</p>
 			<h1>Papers</h1>
 		</div>
-		<p>每篇笔记都围绕论文声称、评测设置、benchmark 适用边界和个人判断展开。</p>
+		<p>把大家平时阅读分享的论文沉淀下来。重点不是复述摘要，而是把问题、证据、限制和个人判断说清楚。</p>
 	</header>
 	<section class="listing">
 		<div class="entry-list">
@@ -22,7 +22,7 @@ const papers = (await getCollection('papers')).filter((entry) => !entry.data.dra
 			) : (
 				<div class="empty-state">
 					<p>No paper notes yet.</p>
-					<span>在 `src/content/papers` 添加 Markdown 后会自动生成列表。</span>
+					<span>第一篇论文分享会出现在这里。</span>
 				</div>
 			)}
 		</div>
