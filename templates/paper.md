@@ -5,7 +5,6 @@ summary: "一句话说明这篇论文分享的重点。"
 authors:
   - name: "Your Name"
     github: "your-github-id"
-    avatar: "/assets/authors/your-github-id.webp"
 paperAuthors: ["Author A", "Author B"]
 venue: "Conference or Journal"
 paperUrl: "https://arxiv.org/abs/xxxx.xxxxx"

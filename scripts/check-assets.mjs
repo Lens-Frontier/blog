@@ -6,8 +6,8 @@ const root = process.cwd();
 const collections = ['papers', 'benchmarks', 'opinions'];
 const allowedImageExts = new Set(['.avif', '.gif', '.jpeg', '.jpg', '.png', '.svg', '.webp']);
 const contentFilePattern = /^[a-z0-9]+(?:-[a-z0-9]+)*\.(md|mdx)$/;
-const maxPostImageBytes = 1 * 1024 * 1024;
-const maxPostFolderBytes = 5 * 1024 * 1024;
+const maxPostImageBytes = 2 * 1024 * 1024;
+const maxPostFolderBytes = 10 * 1024 * 1024;
 const maxAuthorAvatarBytes = 512 * 1024;
 
 async function walk(dir) {
@@ -91,14 +91,14 @@ for (const collection of collections) {
 				errors.push(`Post asset must be an image: ${file}`);
 			}
 			if (size > maxPostImageBytes) {
-				errors.push(`Post image is too large: ${file} (${displayBytes(size)} > 1.00 MB)`);
+				errors.push(`Post image is too large: ${file} (${displayBytes(size)} > 2.00 MB)`);
 			}
 		}
 		if (total > maxPostFolderBytes) {
 			errors.push(
 				`Post asset folder is too large: src/assets/posts/${collection}/${dir.name} (${displayBytes(
 					total,
-				)} > 5.00 MB)`,
+				)} > 10.00 MB)`,
 			);
 		}
 	}

@@ -21,7 +21,7 @@ Use this skill inside the `Lens-Frontier/blog` repository when helping someone c
    - `src/content/opinions/<slug>.md` for benchmark-facing opinions.
 4. Use lowercase kebab-case slugs. Prefer `post/<slug>` for the branch name.
 5. Copy the relevant template structure manually into the new Markdown file and complete frontmatter.
-6. Keep `authors` as site authors, not paper authors. Include `name`; include `github` when available. Add `avatar` only when a custom image is needed.
+6. Keep `authors` as site authors, not paper authors. Include `name`; include `github` when available. Do not add `avatar` by default because the site automatically uses `https://github.com/<github>.png?size=96`. Add `avatar` only when a custom image is needed.
 7. Put post images under `src/assets/posts/<collection>/<slug>/`. Put author avatars under `public/assets/authors/`.
 8. Run `pnpm check` before proposing or opening a PR.
 9. If the user asks to open the PR and credentials are available, push the branch and use `gh pr create`.
@@ -36,8 +36,8 @@ Use this skill inside the `Lens-Frontier/blog` repository when helping someone c
 
 ## Assets
 
-- Post image max: `1 MB` each.
-- Total post asset folder max: `5 MB`.
+- Post image max: `2 MB` each.
+- Total post asset folder max: `10 MB`.
 - Author avatar max: `512 KB`.
 - Prefer WebP or AVIF for post images; WebP for avatars.
 - Every Markdown image needs meaningful alt text.
