@@ -642,9 +642,10 @@ a:hover {
 }
 
 .site-footer {
-	display: grid;
-	justify-items: start;
-	gap: 10px;
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-start;
+	gap: 28px;
 	padding: 26px 0 38px;
 	border-top: 1px solid var(--line);
 	color: var(--muted);
@@ -661,7 +662,7 @@ a:hover {
 }
 
 .footer-links {
-	justify-content: start;
+	justify-content: flex-end;
 }
 
 .footer-links a {
@@ -683,6 +684,15 @@ a:hover {
 	}
 
 	.nav {
+		justify-content: start;
+	}
+
+	.site-footer {
+		display: grid;
+		grid-template-columns: 1fr;
+	}
+
+	.footer-links {
 		justify-content: start;
 	}
 
