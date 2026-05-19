@@ -1,0 +1,59 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import SpecTable from '../components/SpecTable.astro';
+import { formatDate, tagPath } from '../lib/site';
+
+interface Props {
+	entry: any;
+	type: 'paper' | 'benchmark' | 'opinion';
+}
+
+const { entry, type } = Astro.props;
+const data = entry.data;
+const spec =
+	type === 'paper'
+		? [
+				['Date', formatDate(data.date)],
+				['Authors', data.authors],
+				['Venue', data.venue],
+				['Benchmarks', data.benchmarks],
+				['Tasks', data.tasks],
+				['Status', data.status],
+			]
+		: type === 'benchmark'
+			? [
+					['Date', formatDate(data.date)],
+					['Area', data.area],
+					['Metric', data.metric],
+					['Version', data.version],
+					['Risk', data.risk],
+					['Status', data.status],
+				]
+			: [
+					['Date', formatDate(data.date)],
+					['Stance', data.stance],
+				];
+---
+
+<BaseLayout title={data.title} description={data.summary}>
+	<article class="article">
+		<header class="article-header">
+			<p class="eyebrow">{type}</p>
+			<h1>{data.title}</h1>
+			<p class="dek">{data.summary}</p>
+			<SpecTable items={spec} />
+			<div class="article-actions">
+				{data.paperUrl ? <a href={data.paperUrl}>Paper</a> : null}
+				{data.codeUrl ? <a href={data.codeUrl}>Code</a> : null}
+			</div>
+			{data.tags?.length ? (
+				<div class="tag-list">
+					{data.tags.map((tag: string) => <a href={tagPath(tag)}>{tag}</a>)}
+				</div>
+			) : null}
+		</header>
+		<div class="article-body">
+			<slot />
+		</div>
+	</article>
+</BaseLayout>

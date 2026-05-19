@@ -1,0 +1,80 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import EntryRow from '../components/EntryRow.astro';
+import { byDateDesc, path } from '../lib/site';
+
+const papers = (await getCollection('papers')).filter((entry) => !entry.data.draft).sort(byDateDesc);
+const benchmarks = (await getCollection('benchmarks')).filter((entry) => !entry.data.draft).sort(byDateDesc);
+const opinions = (await getCollection('opinions')).filter((entry) => !entry.data.draft).sort(byDateDesc);
+const latest = [...papers, ...benchmarks, ...opinions]
+	.sort(byDateDesc)
+	.slice(0, 5)
+	.map((entry) => ({
+		entry,
+		collection:
+			papers.includes(entry as any)
+				? 'papers'
+				: benchmarks.includes(entry as any)
+					? 'benchmarks'
+					: 'opinions',
+	}));
+---
+
+<BaseLayout>
+	<section class="hero">
+		<div>
+			<p class="eyebrow">benchmark research desk</p>
+			<h1>记录评测如何被建立、使用和误读。</h1>
+			<p>
+				这里放论文阅读、benchmark 档案和自己的判断。重点不是追榜，而是理解任务、数据、指标和结论之间到底隔了几层。
+			</p>
+		</div>
+		<aside class="signal-panel" aria-label="Site statistics">
+			<h2>Index</h2>
+			<div class="signal-grid">
+				<div>
+					<strong>{papers.length}</strong>
+					<span>papers</span>
+				</div>
+				<div>
+					<strong>{benchmarks.length}</strong>
+					<span>benchmarks</span>
+				</div>
+				<div>
+					<strong>{opinions.length}</strong>
+					<span>opinions</span>
+				</div>
+			</div>
+		</aside>
+	</section>
+
+	<section class="section-grid">
+		<div>
+			<div class="section-head">
+				<h2>Latest Notes</h2>
+				<a href={path('/papers/')}>all papers</a>
+			</div>
+			<div class="entry-list">
+				{latest.length ? (
+					latest.map(({ entry, collection }) => <EntryRow entry={entry} collection={collection as any} />)
+				) : (
+					<div class="empty-state">
+						<p>No notes yet.</p>
+						<span>第一篇论文阅读或 benchmark 档案会出现在这里。</span>
+					</div>
+				)}
+			</div>
+		</div>
+		<aside class="side-rail">
+			<div class="note-box">
+				<h2>Watchlist</h2>
+				<p>准备追踪的 benchmark、论文线索和评测争议会放在这里。</p>
+			</div>
+			<div class="note-box">
+				<h2>Writing Rule</h2>
+				<p>每篇笔记至少回答三个问题：它测什么，怎么测，结论能不能外推。</p>
+			</div>
+		</aside>
+	</section>
+</BaseLayout>

@@ -1,0 +1,22 @@
+---
+interface Props {
+	items: Array<[string, string | string[] | undefined]>;
+}
+
+const { items } = Astro.props;
+const visible = items.filter(([, value]) => {
+	if (Array.isArray(value)) return value.length > 0;
+	return Boolean(value);
+});
+---
+
+{visible.length ? (
+	<dl class="spec-table">
+		{visible.map(([label, value]) => (
+			<div>
+				<dt>{label}</dt>
+				<dd>{Array.isArray(value) ? value.join(', ') : value}</dd>
+			</div>
+		))}
+	</dl>
+) : null}

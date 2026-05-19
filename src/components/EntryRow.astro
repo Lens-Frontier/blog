@@ -1,0 +1,40 @@
+---
+import { formatDate, path, tagPath } from '../lib/site';
+
+interface Props {
+	entry: any;
+	collection: 'papers' | 'benchmarks' | 'opinions';
+	label?: string;
+}
+
+const { entry, collection, label } = Astro.props;
+const data = entry.data;
+const href = path(`/${collection}/${entry.id}/`);
+const meta = [
+	formatDate(data.date),
+	data.venue,
+	data.area,
+	data.metric,
+	data.status,
+].filter(Boolean);
+---
+
+<article class="entry-row">
+	<div class="entry-row__rail">
+		<span>{label ?? collection}</span>
+	</div>
+	<div class="entry-row__body">
+		<a class="entry-title" href={href}>{data.title}</a>
+		<p>{data.summary}</p>
+		<div class="entry-meta">
+			{meta.map((item) => <span>{item}</span>)}
+		</div>
+		{data.tags?.length ? (
+			<div class="tag-list" aria-label="Tags">
+				{data.tags.slice(0, 5).map((tag: string) => (
+					<a href={tagPath(tag)}>{tag}</a>
+				))}
+			</div>
+		) : null}
+	</div>
+</article>

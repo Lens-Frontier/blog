@@ -1,0 +1,32 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import EntryRow from '../../components/EntryRow.astro';
+import { byDateDesc } from '../../lib/site';
+
+const benchmarks = (await getCollection('benchmarks')).filter((entry) => !entry.data.draft).sort(byDateDesc);
+---
+
+<BaseLayout title="Benchmarks" description="Benchmark 档案。">
+	<header class="page-title">
+		<div>
+			<p class="eyebrow">benchmark files</p>
+			<h1>Benchmarks</h1>
+		</div>
+		<p>把 benchmark 当作测量工具来记录：任务、指标、版本、风险和已知误读。</p>
+	</header>
+	<section class="listing">
+		<div class="entry-list">
+			{benchmarks.length ? (
+				benchmarks.map((entry) => (
+					<EntryRow entry={entry} collection="benchmarks" label="benchmark" />
+				))
+			) : (
+				<div class="empty-state">
+					<p>No benchmark files yet.</p>
+					<span>在 `src/content/benchmarks` 添加 Markdown 后会自动生成列表。</span>
+				</div>
+			)}
+		</div>
+	</section>
+</BaseLayout>

@@ -1,0 +1,30 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import EntryRow from '../../components/EntryRow.astro';
+import { byDateDesc } from '../../lib/site';
+
+const opinions = (await getCollection('opinions')).filter((entry) => !entry.data.draft).sort(byDateDesc);
+---
+
+<BaseLayout title="Opinions" description="关于评测和模型能力的观点。">
+	<header class="page-title">
+		<div>
+			<p class="eyebrow">working opinions</p>
+			<h1>Opinions</h1>
+		</div>
+		<p>这些文章保留判断、怀疑和未完成的问题，不把观点伪装成结论。</p>
+	</header>
+	<section class="listing">
+		<div class="entry-list">
+			{opinions.length ? (
+				opinions.map((entry) => <EntryRow entry={entry} collection="opinions" label="opinion" />)
+			) : (
+				<div class="empty-state">
+					<p>No opinions yet.</p>
+					<span>在 `src/content/opinions` 添加 Markdown 后会自动生成列表。</span>
+				</div>
+			)}
+		</div>
+	</section>
+</BaseLayout>

@@ -1,0 +1,30 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import EntryRow from '../../components/EntryRow.astro';
+import { byDateDesc } from '../../lib/site';
+
+const papers = (await getCollection('papers')).filter((entry) => !entry.data.draft).sort(byDateDesc);
+---
+
+<BaseLayout title="Papers" description="论文阅读笔记。">
+	<header class="page-title">
+		<div>
+			<p class="eyebrow">paper notes</p>
+			<h1>Papers</h1>
+		</div>
+		<p>每篇笔记都围绕论文声称、评测设置、benchmark 适用边界和个人判断展开。</p>
+	</header>
+	<section class="listing">
+		<div class="entry-list">
+			{papers.length ? (
+				papers.map((entry) => <EntryRow entry={entry} collection="papers" label="paper" />)
+			) : (
+				<div class="empty-state">
+					<p>No paper notes yet.</p>
+					<span>在 `src/content/papers` 添加 Markdown 后会自动生成列表。</span>
+				</div>
+			)}
+		</div>
+	</section>
+</BaseLayout>
