@@ -11,7 +11,8 @@ interface Props {
 
 const { entry, type } = Astro.props;
 const data = entry.data;
-const spec =
+type SpecItem = [string, string | string[] | undefined];
+const spec: SpecItem[] =
 	type === 'paper'
 		? [
 				['Date', formatDate(data.date)],

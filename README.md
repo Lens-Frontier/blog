@@ -13,9 +13,9 @@ pnpm dev
 
 默认通过 Pull Request 投稿。完整规范见 [CONTRIBUTING.md](./CONTRIBUTING.md)，文章模板在 [templates](./templates)。
 
-PR 会自动运行 CI，检查资产大小和生产构建是否通过。CI 成功后，机器人会在 PR comment 里输出带 commit hash 的预览链接。
+PR 会自动运行 CI，覆盖 Markdown、内容规范、资产硬限制、图片建议提示、Astro 类型、生产构建和构建产物检查。CI 成功后，机器人会在 PR comment 里输出带 commit hash 的预览链接。
 
-如果使用 Codex 或 Claude Code 辅助投稿，可以让它读取仓库内的 `.agents/skills/lens-frontier-post` skill，按统一流程创建文章、检查资产、运行 CI 前校验并准备 PR。
+如果使用 Codex 或 Claude Code 辅助投稿，可以让它读取仓库内的 `.agents/skills/lens-frontier-post` skill，按统一流程创建文章、检查内容和资产、运行 CI 前校验并准备 PR。
 
 ## 内容目录
 
@@ -27,7 +27,11 @@ src/content/opinions     # 围绕 benchmark 的观点文章
 
 每篇文章使用 Markdown frontmatter 管理元数据。字段 schema 在 `src/content.config.ts`。
 
-站点导航里，`Timeline` 会按时间汇总全部内容，`Tags` 用来按主题索引，`RSS` 输出订阅源。
+常写作者可以登记在 `src/data/authors.ts`，文章里用 `authors: [{ id: "author-id" }]` 复用作者资料；一次性投稿也可以继续在文章 frontmatter 里直接写 `name` / `github`。
+
+仓库使用 `.github/CODEOWNERS` 自动请求 `@Lens-Frontier/blog-maintainers` review 文章、站点、CI 和发布流程改动。
+
+顶部导航保留主要阅读入口：`Papers`、`Benchmarks`、`Opinions` 和 `Tags`。`Timeline`、`About` 和 `RSS` 放在页脚，避免顶部导航过重。
 
 ## 部署到 GitHub Pages
 
@@ -43,8 +47,14 @@ src/content/opinions     # 围绕 benchmark 的观点文章
 ## 命令
 
 ```sh
-pnpm dev      # 本地开发
-pnpm check    # 资产检查 + 生产构建
-pnpm build    # 生产构建
-pnpm preview  # 预览 dist
+pnpm dev              # 本地开发
+pnpm check            # Markdown + 内容规范 + 资产 + 图片建议 + 类型 + 构建产物检查
+pnpm check:markdown   # Markdown 格式检查
+pnpm check:content    # 文章结构、tag、图片引用检查
+pnpm check:types      # Astro 类型和模板检查
+pnpm check:dist       # 构建后页面元信息和内部链接检查
+pnpm images:check     # 图片大小、宽度、格式提示
+pnpm images:optimize  # 压缩文章图片并生成 WebP
+pnpm build            # 生产构建
+pnpm preview          # 预览 dist
 ```

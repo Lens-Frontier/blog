@@ -1,13 +1,18 @@
-import { defineCollection, z } from 'astro:content';
+import { defineCollection } from 'astro:content';
 import { glob } from 'astro/loaders';
+import { z } from 'astro/zod';
+import { authorIdPattern, hasAuthorId } from './data/authors';
 
 const author = z.object({
-	name: z.string().optional(),
-	github: z.string().optional(),
-	avatar: z.string().optional(),
-	url: z.string().url().optional(),
-}).refine((value) => value.name || value.github, {
-	message: 'Author needs either name or github.',
+	id: z.string().regex(authorIdPattern).optional(),
+	name: z.string().min(1).optional(),
+	github: z.string().min(1).optional(),
+	avatar: z.string().min(1).optional(),
+	url: z.url().optional(),
+}).refine((value) => value.id || value.name || value.github, {
+	message: 'Author needs id, name, or github.',
+}).refine((value) => !value.id || hasAuthorId(value.id), {
+	message: 'Unknown author id. Add it to src/data/authors.ts or use inline name/github.',
 });
 
 const shared = z.object({
@@ -24,8 +29,8 @@ const papers = defineCollection({
 	schema: shared.extend({
 		paperAuthors: z.array(z.string()).default([]),
 		venue: z.string().optional(),
-		paperUrl: z.string().url().optional(),
-		codeUrl: z.string().url().optional(),
+		paperUrl: z.url().optional(),
+		codeUrl: z.url().optional(),
 		benchmarks: z.array(z.string()).default([]),
 		tasks: z.array(z.string()).default([]),
 		status: z.enum(['queued', 'reading', 'read', 'revisit']).default('read'),

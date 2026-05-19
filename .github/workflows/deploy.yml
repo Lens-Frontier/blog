@@ -15,6 +15,7 @@ concurrency:
 env:
   SITE_URL: https://lens-frontier.github.io
   SITE_BASE: /blog/
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
   build-and-deploy:
@@ -35,11 +36,11 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Check assets and build
+      - name: Run quality checks and build
         run: pnpm check
 
       - name: Deploy production site
-        uses: peaceiris/actions-gh-pages@v4
+        uses: peaceiris/actions-gh-pages@v4.1.0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: gh-pages
