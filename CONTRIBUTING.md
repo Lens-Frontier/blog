@@ -155,14 +155,22 @@ src/assets/posts/papers/eval-is-not-a-number/figure-1.webp
 
 图片限制：
 
-- 单张文章图片不超过 `2 MB`
+- 单张文章图片推荐不超过 `1 MB`，CI 硬限制为 `2 MB`
 - 单篇文章图片总量不超过 `10 MB`
 - 推荐格式：WebP 或 AVIF
 - 截图宽度建议不超过 `1600 px`
 - 必须写有意义的 alt text，不使用 `![](...)`
 - 大型视频、动图、数据文件不要直接提交，先在 PR 中说明需求
 
-这些限制会被 `pnpm check:assets` 自动检查。
+硬限制会被 `pnpm check:assets` 自动检查；`pnpm images:check` 会提示超过推荐大小、宽度或格式的图片。
+
+可以在提交前运行图片优化：
+
+```sh
+pnpm images:optimize
+```
+
+这个命令会把 `src/assets/posts/` 下的 PNG/JPG/WebP 转成 WebP，并把宽度超过 `1600 px` 的图片缩小。PNG/JPG 会生成同名 `.webp` 文件，记得同步更新 Markdown 里的图片路径。
 
 ## 本地开发
 
@@ -180,6 +188,7 @@ pnpm check
 `pnpm check` 会执行：
 
 - 资产大小检查
+- 图片推荐大小、宽度和格式提示
 - 文章文件名 kebab-case 检查
 - Markdown 图片 alt text 检查
 - Astro 生产构建
@@ -206,4 +215,4 @@ PR 至少需要一位维护者 review 后合并。维护者主要看：
 - Markdown frontmatter 是否能通过构建。
 - 观点是否清楚地区分事实、推断和个人判断。
 
-如果仓库开启了 main 分支保护，建议把 `CI / check` 设为 required status check。
+main 分支已经开启保护：需要至少一位 review、需要所有 conversation resolved，并且 `CI / check` 通过后才能合并。

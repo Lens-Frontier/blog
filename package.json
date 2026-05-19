@@ -11,7 +11,9 @@
     "clean:astro": "rm -rf .astro node_modules/.astro dist",
     "build": "astro build",
     "check:assets": "node scripts/check-assets.mjs",
-    "check": "pnpm check:assets && pnpm clean:astro && pnpm build",
+    "images:check": "node scripts/optimize-images.mjs --check",
+    "images:optimize": "node scripts/optimize-images.mjs --write",
+    "check": "pnpm check:assets && pnpm images:check && pnpm clean:astro && pnpm build",
     "preview": "astro preview",
     "astro": "astro"
   },
@@ -19,5 +21,8 @@
     "@astrojs/rss": "^4.0.18",
     "@astrojs/sitemap": "^3.7.2",
     "astro": "^6.3.3"
+  },
+  "devDependencies": {
+    "sharp": "^0.34.5"
   }
 }

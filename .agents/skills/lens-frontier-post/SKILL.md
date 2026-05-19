@@ -36,10 +36,13 @@ Use this skill inside the `Lens-Frontier/blog` repository when helping someone c
 
 ## Assets
 
-- Post image max: `2 MB` each.
-- Total post asset folder max: `10 MB`.
+- Post image recommended target: `1 MB` each.
+- Post image hard max: `2 MB` each.
+- Total post asset folder hard max: `10 MB`.
 - Author avatar max: `512 KB`.
 - Prefer WebP or AVIF for post images; WebP for avatars.
+- Keep screenshots at or below `1600 px` wide when possible.
+- Run `pnpm images:check` to surface image recommendations. Run `pnpm images:optimize` before PR when images are large or wider than `1600 px`.
 - Every Markdown image needs meaningful alt text.
 - Avoid committing large videos, animated images, or datasets. Mention the need in the PR instead.
 

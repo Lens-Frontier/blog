@@ -43,8 +43,10 @@ src/content/opinions     # 围绕 benchmark 的观点文章
 ## 命令
 
 ```sh
-pnpm dev      # 本地开发
-pnpm check    # 资产检查 + 生产构建
-pnpm build    # 生产构建
-pnpm preview  # 预览 dist
+pnpm dev              # 本地开发
+pnpm check            # 资产检查 + 图片提示 + 生产构建
+pnpm images:check     # 图片大小、宽度、格式提示
+pnpm images:optimize  # 压缩文章图片并生成 WebP
+pnpm build            # 生产构建
+pnpm preview          # 预览 dist
 ```
