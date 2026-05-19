@@ -9,6 +9,10 @@ pnpm install
 pnpm dev
 ```
 
+## 投稿
+
+默认通过 Pull Request 投稿。完整规范见 [CONTRIBUTING.md](./CONTRIBUTING.md)，文章模板在 [templates](./templates)。
+
 ## 内容目录
 
 ```txt
@@ -34,6 +38,7 @@ src/content/opinions     # 观点文章
 
 ```sh
 pnpm dev      # 本地开发
+pnpm check    # 资产检查 + 生产构建
 pnpm build    # 生产构建
 pnpm preview  # 预览 dist
 ```

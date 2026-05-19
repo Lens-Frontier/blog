@@ -1,10 +1,18 @@
 import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
 
+const author = z.object({
+	name: z.string(),
+	github: z.string().optional(),
+	avatar: z.string().optional(),
+	url: z.string().url().optional(),
+});
+
 const shared = z.object({
 	title: z.string(),
 	date: z.coerce.date(),
 	summary: z.string(),
+	authors: z.array(author).default([]),
 	tags: z.array(z.string()).default([]),
 	draft: z.boolean().default(false),
 });
@@ -12,7 +20,7 @@ const shared = z.object({
 const papers = defineCollection({
 	loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/papers' }),
 	schema: shared.extend({
-		authors: z.array(z.string()).default([]),
+		paperAuthors: z.array(z.string()).default([]),
 		venue: z.string().optional(),
 		paperUrl: z.string().url().optional(),
 		codeUrl: z.string().url().optional(),

@@ -29,6 +29,7 @@ jobs:
         with:
           node-version: 24
           package-manager: pnpm@10.12.3
+          build-cmd: pnpm check
 
   deploy:
     needs: build

@@ -1,0 +1,50 @@
+---
+import { path } from '../lib/site';
+
+interface Author {
+	name: string;
+	github?: string;
+	avatar?: string;
+	url?: string;
+}
+
+interface Props {
+	authors?: Author[];
+	compact?: boolean;
+}
+
+const { authors = [], compact = false } = Astro.props;
+
+function avatarUrl(author: Author) {
+	if (author.avatar?.startsWith('http')) return author.avatar;
+	if (author.avatar) return path(author.avatar);
+	if (author.github) return `https://github.com/${author.github}.png?size=96`;
+	return undefined;
+}
+
+function authorUrl(author: Author) {
+	return author.url ?? (author.github ? `https://github.com/${author.github}` : undefined);
+}
+---
+
+{authors.length ? (
+	<ul class:list={['authors', compact && 'authors--compact']} aria-label="Authors">
+		{authors.map((author) => {
+			const href = authorUrl(author);
+			const avatar = avatarUrl(author);
+			return (
+				<li>
+					{avatar ? <img src={avatar} alt={`${author.name} avatar`} loading="lazy" /> : null}
+					<span>
+						<strong>{author.name}</strong>
+						{author.github ? (
+							<a href={href} target="_blank" rel="noreferrer">@{author.github}</a>
+						) : href ? (
+							<a href={href} target="_blank" rel="noreferrer">profile</a>
+						) : null}
+					</span>
+				</li>
+			);
+		})}
+	</ul>
+) : null}

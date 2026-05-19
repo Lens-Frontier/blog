@@ -8,6 +8,8 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
+    "check:assets": "node scripts/check-assets.mjs",
+    "check": "pnpm check:assets && pnpm build",
     "preview": "astro preview",
     "astro": "astro"
   },

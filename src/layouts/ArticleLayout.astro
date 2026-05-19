@@ -1,5 +1,6 @@
 ---
 import BaseLayout from './BaseLayout.astro';
+import Authors from '../components/Authors.astro';
 import SpecTable from '../components/SpecTable.astro';
 import { formatDate, tagPath } from '../lib/site';
 
@@ -14,7 +15,7 @@ const spec =
 	type === 'paper'
 		? [
 				['Date', formatDate(data.date)],
-				['Authors', data.authors],
+				['Paper Authors', data.paperAuthors],
 				['Venue', data.venue],
 				['Benchmarks', data.benchmarks],
 				['Tasks', data.tasks],
@@ -41,6 +42,7 @@ const spec =
 			<p class="eyebrow">{type}</p>
 			<h1>{data.title}</h1>
 			<p class="dek">{data.summary}</p>
+			<Authors authors={data.authors} />
 			<SpecTable items={spec} />
 			<div class="article-actions">
 				{data.paperUrl ? <a href={data.paperUrl}>Paper</a> : null}
