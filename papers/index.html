@@ -1,19 +1,16 @@
-<!DOCTYPE html><html lang="zh-CN"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>Papers - Lens Frontier</title><meta name="description" content="沉淀平时阅读分享的论文，输出一些围绕 benchmark 的浅薄观点。"><script>(function(){const containerId = "GTM-KQ8R2LJ7";
-const dataLayerName = "dataLayer";
+<!DOCTYPE html><html lang="zh-CN"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>Papers - Lens Frontier</title><meta name="description" content="沉淀平时阅读分享的论文，输出一些围绕 benchmark 的浅薄观点。"><script async src="https://www.googletagmanager.com/gtag/js?id=G-ZK42116ZXB"></script><script>(function(){const measurementId = "G-ZK42116ZXB";
 
-			(() => {
-				const doNotTrack = navigator.doNotTrack === '1' || window.doNotTrack === '1';
-				if (doNotTrack) return;
-
-				(function (w, d, s, l, i) {
-					w[l] = w[l] || [];
-					w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
-					const firstScript = d.getElementsByTagName(s)[0];
-					const tag = d.createElement(s);
-					const dataLayerQuery = l !== 'dataLayer' ? `&l=${encodeURIComponent(l)}` : '';
-					tag.async = true;
-					tag.src = `https://www.googletagmanager.com/gtm.js?id=${encodeURIComponent(i)}${dataLayerQuery}`;
-					firstScript.parentNode.insertBefore(tag, firstScript);
-				})(window, document, 'script', dataLayerName, containerId);
-			})();
-		})();</script><meta http-equiv="refresh" content="0; url=/blog/zh/papers/"><link rel="canonical" href="https://lens-frontier.github.io/blog/zh/papers/"></head> <body> <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KQ8R2LJ7" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript> <a href="/blog/zh/papers/">Continue to Lens Frontier</a> </body></html>
+				(() => {
+					const doNotTrack = navigator.doNotTrack === '1' || window.doNotTrack === '1';
+					window.dataLayer = window.dataLayer || [];
+					window.gtag =
+						window.gtag ||
+						function gtag() {
+							window.dataLayer.push(arguments);
+						};
+					window.gtag('js', new Date());
+					if (!doNotTrack) {
+						window.gtag('config', measurementId);
+					}
+				})();
+			})();</script><meta http-equiv="refresh" content="0; url=/blog/zh/papers/"><link rel="canonical" href="https://lens-frontier.github.io/blog/zh/papers/"></head> <body> <a href="/blog/zh/papers/">Continue to Lens Frontier</a> </body></html>
