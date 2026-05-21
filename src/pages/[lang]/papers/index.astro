@@ -1,0 +1,36 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import EntryRow from '../../../components/EntryRow.astro';
+import { languages, languageFrom, ui } from '../../../lib/site';
+import { publishedCollection } from '../../../lib/content';
+
+export function getStaticPaths() {
+	return languages.map((lang) => ({ params: { lang }, props: { lang } }));
+}
+
+const lang = languageFrom(Astro.props.lang);
+const labels = ui[lang].pages.papers;
+const papers = await publishedCollection('papers', lang);
+---
+
+<BaseLayout lang={lang} title={labels.title} description={labels.description} alternatePath="/papers/">
+	<header class="page-title">
+		<div>
+			<p class="eyebrow">{labels.eyebrow}</p>
+			<h1>{labels.title}</h1>
+		</div>
+		<p>{labels.body}</p>
+	</header>
+	<section class="listing">
+		<div class="entry-list">
+			{papers.length ? (
+				papers.map((entry) => <EntryRow entry={entry} collection="papers" label="paper" lang={lang} />)
+			) : (
+				<div class="empty-state">
+					<p>{labels.emptyTitle}</p>
+					<span>{labels.emptyBody}</span>
+				</div>
+			)}
+		</div>
+	</section>
+</BaseLayout>

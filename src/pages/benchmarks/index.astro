@@ -1,32 +1,5 @@
 ---
-import { getCollection } from 'astro:content';
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import EntryRow from '../../components/EntryRow.astro';
-import { byDateDesc } from '../../lib/site';
-
-const benchmarks = (await getCollection('benchmarks')).filter((entry) => !entry.data.draft).sort(byDateDesc);
+import RedirectLayout from '../../layouts/RedirectLayout.astro';
 ---
 
-<BaseLayout title="Benchmarks" description="Benchmark 相关评测协议、数据集和榜单语境观察。">
-	<header class="page-title">
-		<div>
-			<p class="eyebrow">evaluation context</p>
-			<h1>Benchmarks</h1>
-		</div>
-		<p>把 benchmark 当作测量工具来记录：任务、指标、版本、风险、已知误读，以及它和真实问题之间的距离。</p>
-	</header>
-	<section class="listing">
-		<div class="entry-list">
-			{benchmarks.length ? (
-				benchmarks.map((entry) => (
-					<EntryRow entry={entry} collection="benchmarks" label="benchmark" />
-				))
-			) : (
-				<div class="empty-state">
-					<p>No benchmark notes yet.</p>
-					<span>第一篇 benchmark 观察会出现在这里。</span>
-				</div>
-			)}
-		</div>
-	</section>
-</BaseLayout>
+<RedirectLayout to="/zh/benchmarks/" title="Benchmarks" />

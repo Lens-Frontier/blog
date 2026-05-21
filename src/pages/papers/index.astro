@@ -1,30 +1,5 @@
 ---
-import { getCollection } from 'astro:content';
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import EntryRow from '../../components/EntryRow.astro';
-import { byDateDesc } from '../../lib/site';
-
-const papers = (await getCollection('papers')).filter((entry) => !entry.data.draft).sort(byDateDesc);
+import RedirectLayout from '../../layouts/RedirectLayout.astro';
 ---
 
-<BaseLayout title="Papers" description="论文阅读分享与复盘。">
-	<header class="page-title">
-		<div>
-			<p class="eyebrow">paper sharing</p>
-			<h1>Papers</h1>
-		</div>
-		<p>把大家平时阅读分享的论文沉淀下来。重点不是复述摘要，而是把问题、证据、限制和个人判断说清楚。</p>
-	</header>
-	<section class="listing">
-		<div class="entry-list">
-			{papers.length ? (
-				papers.map((entry) => <EntryRow entry={entry} collection="papers" label="paper" />)
-			) : (
-				<div class="empty-state">
-					<p>No paper notes yet.</p>
-					<span>第一篇论文分享会出现在这里。</span>
-				</div>
-			)}
-		</div>
-	</section>
-</BaseLayout>
+<RedirectLayout to="/zh/papers/" title="Papers" />
