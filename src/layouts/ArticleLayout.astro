@@ -2,7 +2,7 @@
 import BaseLayout from './BaseLayout.astro';
 import Authors from '../components/Authors.astro';
 import SpecTable from '../components/SpecTable.astro';
-import { formatDate, tagPath } from '../lib/site';
+import { formatDate, languageFrom, tagPath, ui } from '../lib/site';
 
 interface Props {
 	entry: any;
@@ -11,33 +11,36 @@ interface Props {
 
 const { entry, type } = Astro.props;
 const data = entry.data;
+const lang = languageFrom(data.lang);
+const labels = ui[lang];
+const collection = type === 'paper' ? 'papers' : type === 'benchmark' ? 'benchmarks' : 'opinions';
 type SpecItem = [string, string | string[] | undefined];
 const spec: SpecItem[] =
 	type === 'paper'
 		? [
-				['Date', formatDate(data.date)],
-				['Paper Authors', data.paperAuthors],
-				['Venue', data.venue],
-				['Benchmarks', data.benchmarks],
-				['Tasks', data.tasks],
-				['Status', data.status],
+				[labels.article.spec.date, formatDate(data.date, lang)],
+				[labels.article.spec.paperAuthors, data.paperAuthors],
+				[labels.article.spec.venue, data.venue],
+				[labels.article.spec.benchmarks, data.benchmarks],
+				[labels.article.spec.tasks, data.tasks],
+				[labels.article.spec.status, data.status],
 			]
 		: type === 'benchmark'
 			? [
-					['Date', formatDate(data.date)],
-					['Area', data.area],
-					['Metric', data.metric],
-					['Version', data.version],
-					['Risk', data.risk],
-					['Status', data.status],
+					[labels.article.spec.date, formatDate(data.date, lang)],
+					[labels.article.spec.area, data.area],
+					[labels.article.spec.metric, data.metric],
+					[labels.article.spec.version, data.version],
+					[labels.article.spec.risk, data.risk],
+					[labels.article.spec.status, data.status],
 				]
 			: [
-					['Date', formatDate(data.date)],
-					['Stance', data.stance],
+					[labels.article.spec.date, formatDate(data.date, lang)],
+					[labels.article.spec.stance, data.stance],
 				];
 ---
 
-<BaseLayout title={data.title} description={data.summary}>
+<BaseLayout title={data.title} description={data.summary} lang={lang} alternatePath={`/${collection}/`}>
 	<article class="article">
 		<header class="article-header">
 			<p class="eyebrow">{type}</p>
@@ -46,12 +49,12 @@ const spec: SpecItem[] =
 			<Authors authors={data.authors} />
 			<SpecTable items={spec} />
 			<div class="article-actions">
-				{data.paperUrl ? <a href={data.paperUrl}>Paper</a> : null}
-				{data.codeUrl ? <a href={data.codeUrl}>Code</a> : null}
+				{data.paperUrl ? <a href={data.paperUrl}>{labels.article.paper}</a> : null}
+				{data.codeUrl ? <a href={data.codeUrl}>{labels.article.code}</a> : null}
 			</div>
 			{data.tags?.length ? (
 				<div class="tag-list">
-					{data.tags.map((tag: string) => <a href={tagPath(tag)}>{tag}</a>)}
+					{data.tags.map((tag: string) => <a href={tagPath(tag, lang)}>{tag}</a>)}
 				</div>
 			) : null}
 		</header>

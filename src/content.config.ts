@@ -17,6 +17,8 @@ const author = z.object({
 
 const shared = z.object({
 	title: z.string(),
+	lang: z.enum(['zh', 'en']).default('zh'),
+	translationKey: z.string().optional(),
 	date: z.coerce.date(),
 	summary: z.string(),
 	authors: z.array(author).min(1),
