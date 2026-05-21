@@ -58,7 +58,7 @@ The evaluation set is the foundation of the entire system — prompt design dire
 
 I built a **comprehensive hierarchical taxonomy** based on real-world T2I use cases:
 
-```
+```text
 Taxonomy Example:
 L1 (Object Type)              L2 (Category)          L3 (Subcategory)
 ───────────────              ──────────           ─────────────
@@ -84,19 +84,19 @@ Style Diversity........... Traditional Media      Watercolor/ink/oil/sketch...
 
 The taxonomy is just the skeleton — what matters more is how the prompts are written. Here are a few design tricks:
 
-**(a) Every prompt is tagged with its "core test point"**
+#### (a) Every prompt is tagged with its "core test point"
 
 We don't just throw in prompts randomly. Each prompt is explicitly tagged at ingestion with what it's actually testing — text rendering precision, spatial relationship understanding, or world knowledge. This way, when a model fails on a specific prompt, we can immediately pinpoint the exact capability gap rather than vaguely saying "this one didn't pass."
 
-**(b) Deliberately designed "mixed-requirement" prompts**
+#### (b) Deliberately designed "mixed-requirement" prompts
 
 Real user prompts often span multiple dimensions simultaneously — "Draw a girl wearing Zhuang ethnic costume, front and back three-view, with clothing names labeled beside." This single prompt tests: world knowledge (what Zhuang costume looks like), multi-view (front and back), text rendering (labels), and instruction following (overall composition). These cross-cutting prompts are the sharpest tools for catching model "blind spots."
 
-**(c) "Negative prompts" are essential**
+#### (c) "Negative prompts" are essential
 
 Beyond testing what models can do, we also test whether they can correctly handle negation — "Draw a minimalist logo without any text," "Generate a portrait without glasses." Many models still struggle with "don't include X," and these prompts effectively expose deep instruction-following deficiencies.
 
-**(d) Extra emphasis on text rendering**
+#### (d) Extra emphasis on text rendering
 
 English text rendering is already decent for many models, but languages like Chinese — with complex strokes and many visually similar characters — have significantly higher error rates. So we deliberately overweight Chinese text prompts and specifically designed test cases with easily confused characters, rare characters, and vertical layouts.
 
