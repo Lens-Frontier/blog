@@ -13,7 +13,7 @@ pnpm dev
 
 默认通过 Pull Request 投稿。完整规范见 [CONTRIBUTING.md](./CONTRIBUTING.md)，文章模板在 [templates](./templates)。
 
-PR 会自动运行 CI，覆盖 Markdown、内容规范、资产硬限制、图片建议提示、Astro 类型、生产构建和构建产物检查。CI 成功后，机器人会在 PR comment 里输出带 commit hash 的预览链接。
+PR 会自动运行 CI，分成 `syntax` 和 `check` 两个 job：`syntax` 覆盖 workflow / Astro / TypeScript / Worker 语法，`check` 覆盖 Markdown、内容规范、资产硬限制、图片建议提示、analytics smoke、生产构建和构建产物检查。CI 成功后，机器人会在 PR comment 里输出带 commit hash 的预览链接。
 
 如果使用 Codex 或 Claude Code 辅助投稿，可以让它读取仓库内的 `.agents/skills/lens-frontier-post` skill，按统一流程创建文章、检查内容和资产、运行 CI 前校验并准备 PR。
 
@@ -72,10 +72,14 @@ PUBLIC_GTM_CONTAINER_ID=GTM-KQ8R2LJ7
 
 ```sh
 pnpm dev              # 本地开发
-pnpm check            # Markdown + 内容规范 + 资产 + 图片建议 + 类型 + 构建产物检查
+pnpm check            # Markdown + 内容规范 + 资产 + 图片建议 + 语法 + analytics smoke + 构建产物检查
 pnpm check:markdown   # Markdown 格式检查
 pnpm check:content    # 文章结构、tag、图片引用检查
+pnpm check:syntax     # Astro/TypeScript 模板 + Worker 语法检查
+pnpm check:quality    # 内容、资产、图片建议、analytics smoke、构建和 dist 检查
+pnpm check:analytics  # 临时文章验证 GTM 和阅读量脚本注入
 pnpm check:types      # Astro 类型和模板检查
+pnpm check:worker     # 阅读量 Worker 语法检查
 pnpm check:dist       # 构建后页面元信息和站内链接检查
 pnpm images:check     # 图片大小、宽度、格式提示
 pnpm images:optimize  # 压缩文章图片并生成 WebP
