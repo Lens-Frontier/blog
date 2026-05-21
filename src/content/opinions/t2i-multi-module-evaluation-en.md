@@ -1,5 +1,5 @@
 ---
-title: "How to Build a Multi-Module Collaborative Evaluation Framework for Text-to-Image Models"
+title: "Building a Multi-Module Collaborative Evaluation Framework for T2I"
 lang: "en"
 translationKey: "t2i-multi-module-evaluation"
 date: 2026-05-21
