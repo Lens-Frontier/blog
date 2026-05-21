@@ -14,15 +14,14 @@ env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 concurrency:
-  group: pr-preview-${{ github.event.workflow_run.pull_requests[0].number || github.event.workflow_run.id }}
+  group: pr-preview-${{ github.event.workflow_run.id }}
   cancel-in-progress: true
 
 jobs:
   deploy-preview:
     if: >
       github.event.workflow_run.event == 'pull_request' &&
-      github.event.workflow_run.conclusion == 'success' &&
-      github.event.workflow_run.pull_requests[0].number
+      github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     steps:
       - name: Download CI preview artifact
@@ -38,8 +37,52 @@ jobs:
         run: |
           node <<'NODE' >> "$GITHUB_OUTPUT"
           const fs = require('node:fs');
+          const path = require('node:path');
+
           const meta = JSON.parse(fs.readFileSync('dist/preview-meta.json', 'utf8'));
-          for (const [key, value] of Object.entries(meta)) {
+
+          const prNumber = String(meta.pr_number || '');
+          const headSha = String(meta.head_sha || '');
+          const shortSha = String(meta.short_sha || '');
+          const destinationDir = String(meta.destination_dir || '');
+          const previewUrl = String(meta.preview_url || '');
+
+          if (!/^\d+$/.test(prNumber)) {
+            throw new Error(`Invalid preview PR number: ${prNumber}`);
+          }
+
+          if (!/^[0-9a-f]{40}$/.test(headSha)) {
+            throw new Error(`Invalid preview head SHA: ${headSha}`);
+          }
+
+          if (!/^[0-9a-f]{7,12}$/.test(shortSha) || !headSha.startsWith(shortSha)) {
+            throw new Error(`Invalid preview short SHA: ${shortSha}`);
+          }
+
+          const expectedDestination = `pr-preview/pr-${prNumber}/${shortSha}`;
+          const expectedUrl = `https://lens-frontier.github.io/blog/${expectedDestination}/`;
+
+          if (destinationDir !== expectedDestination) {
+            throw new Error(`Invalid preview destination: expected ${expectedDestination}, got ${destinationDir}`);
+          }
+
+          if (previewUrl !== expectedUrl) {
+            throw new Error(`Invalid preview URL: expected ${expectedUrl}, got ${previewUrl}`);
+          }
+
+          if (path.normalize(destinationDir) !== destinationDir || destinationDir.startsWith('..')) {
+            throw new Error(`Unsafe preview destination: ${destinationDir}`);
+          }
+
+          const outputs = {
+            pr_number: prNumber,
+            head_sha: headSha,
+            short_sha: shortSha,
+            destination_dir: destinationDir,
+            preview_url: previewUrl,
+          };
+
+          for (const [key, value] of Object.entries(outputs)) {
             console.log(`${key}=${value}`);
           }
           NODE
