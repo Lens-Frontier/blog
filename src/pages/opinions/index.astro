@@ -1,30 +1,5 @@
 ---
-import { getCollection } from 'astro:content';
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import EntryRow from '../../components/EntryRow.astro';
-import { byDateDesc } from '../../lib/site';
-
-const opinions = (await getCollection('opinions')).filter((entry) => !entry.data.draft).sort(byDateDesc);
+import RedirectLayout from '../../layouts/RedirectLayout.astro';
 ---
 
-<BaseLayout title="Opinions" description="围绕 benchmark 和 evaluation 的浅薄观点、论点和判断。">
-	<header class="page-title">
-		<div>
-			<p class="eyebrow">benchmark-facing arguments</p>
-			<h1>Opinions</h1>
-		</div>
-		<p>围绕 benchmark、evaluation 和真实任务落差的浅薄观点。可以有立场，但需要把事实、推断和不确定性分开。</p>
-	</header>
-	<section class="listing">
-		<div class="entry-list">
-			{opinions.length ? (
-				opinions.map((entry) => <EntryRow entry={entry} collection="opinions" label="opinion" />)
-			) : (
-				<div class="empty-state">
-					<p>No opinions yet.</p>
-					<span>第一篇观点文章会出现在这里。</span>
-				</div>
-			)}
-		</div>
-	</section>
-</BaseLayout>
+<RedirectLayout to="/zh/opinions/" title="Opinions" />

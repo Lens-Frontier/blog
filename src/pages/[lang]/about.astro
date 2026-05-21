@@ -1,0 +1,24 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { languages, languageFrom, ui } from '../../lib/site';
+
+export function getStaticPaths() {
+	return languages.map((lang) => ({ params: { lang }, props: { lang } }));
+}
+
+const lang = languageFrom(Astro.props.lang);
+const labels = ui[lang].pages.about;
+---
+
+<BaseLayout lang={lang} title={labels.title} description={labels.description} alternatePath="/about/">
+	<article class="article">
+		<header class="article-header">
+			<p class="eyebrow">{labels.eyebrow}</p>
+			<h1>{labels.title}</h1>
+			<p class="dek">{labels.dek}</p>
+		</header>
+		<div class="article-body">
+			{labels.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
+		</div>
+	</article>
+</BaseLayout>

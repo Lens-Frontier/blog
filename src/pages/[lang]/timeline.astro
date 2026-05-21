@@ -1,0 +1,39 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import EntryRow from '../../components/EntryRow.astro';
+import { languages, languageFrom, ui } from '../../lib/site';
+import { publishedEntries } from '../../lib/content';
+
+export function getStaticPaths() {
+	return languages.map((lang) => ({ params: { lang }, props: { lang } }));
+}
+
+const lang = languageFrom(Astro.props.lang);
+const labels = ui[lang].pages.timeline;
+const entries = await publishedEntries(lang);
+---
+
+<BaseLayout lang={lang} title={labels.title} description={labels.description} alternatePath="/timeline/">
+	<section class="page-title">
+		<div>
+			<p class="eyebrow">{labels.eyebrow}</p>
+			<h1>{labels.title}</h1>
+		</div>
+		<p>{labels.body}</p>
+	</section>
+
+	<section class="listing">
+		<div class="entry-list">
+			{entries.length ? (
+				entries.map(({ entry, collection }) => (
+					<EntryRow entry={entry} collection={collection} label={collection.slice(0, -1)} lang={lang} />
+				))
+			) : (
+				<div class="empty-state">
+					<p>{labels.emptyTitle}</p>
+					<span>{labels.emptyBody}</span>
+				</div>
+			)}
+		</div>
+	</section>
+</BaseLayout>

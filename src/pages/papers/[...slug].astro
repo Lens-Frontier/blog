@@ -1,6 +1,6 @@
 ---
-import { getCollection, render } from 'astro:content';
-import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import { getCollection } from 'astro:content';
+import RedirectLayout from '../../layouts/RedirectLayout.astro';
 
 export async function getStaticPaths() {
 	const entries = (await getCollection('papers')).filter((entry) => !entry.data.draft);
@@ -8,9 +8,6 @@ export async function getStaticPaths() {
 }
 
 const { entry } = Astro.props;
-const { Content } = await render(entry);
 ---
 
-<ArticleLayout entry={entry} type="paper">
-	<Content />
-</ArticleLayout>
+<RedirectLayout to={`/${entry.data.lang}/papers/${entry.id}/`} title={entry.data.title} description={entry.data.summary} />
