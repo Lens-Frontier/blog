@@ -178,9 +178,13 @@ a:hover {
 }
 
 .hero h1 {
-	max-width: 720px;
-	font-size: 3.8rem;
+	max-width: 660px;
+	font-size: 3.15rem;
 	line-height: 1.12;
+}
+
+html:lang(zh-CN) .hero h1 {
+	max-width: 520px;
 }
 
 .hero p {
@@ -302,7 +306,7 @@ a:hover {
 .page-title h1 {
 	margin: 0;
 	font-family: var(--font-serif);
-	font-size: 2.35rem;
+	font-size: 2.15rem;
 	font-weight: 650;
 }
 
@@ -544,7 +548,9 @@ a:hover {
 }
 
 .article h1 {
-	font-size: 3.35rem;
+	max-width: 760px;
+	margin-inline: auto;
+	font-size: 3rem;
 	line-height: 1.16;
 }
 
@@ -556,27 +562,49 @@ a:hover {
 	line-height: 1.8;
 }
 
-.article-header > .authors {
+.article-byline {
+	display: inline-flex;
+	align-items: center;
 	justify-content: center;
-	border-top: 0;
-	border-bottom: 0;
-	margin: 20px auto 8px;
-	padding: 0;
+	flex-wrap: wrap;
+	gap: 10px 16px;
+	max-width: 100%;
+	margin: 20px auto 0;
+	border-top: 1px solid var(--line);
+	border-bottom: 1px solid var(--line);
+	padding: 10px 14px;
 }
 
-.article-header > .authors li {
-	flex-direction: column;
-	gap: 7px;
-	text-align: center;
+.article-byline > .authors {
+	justify-content: center;
+	margin: 0;
 }
 
-.article-header > .authors img {
-	width: 48px;
-	height: 48px;
+.article-byline > .authors li {
+	gap: 8px;
+	text-align: left;
 }
 
-.article-header > .authors span {
-	justify-items: center;
+.article-byline > .authors img {
+	width: 34px;
+	height: 34px;
+}
+
+.article-views {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	min-height: 34px;
+	border-left: 1px solid var(--line);
+	padding-left: 16px;
+	color: var(--muted);
+	font-family: var(--font-mono);
+	font-size: 0.68rem;
+}
+
+.article-views strong {
+	color: var(--ink);
+	font-weight: 600;
 }
 
 .article-header > .tag-list,
@@ -586,7 +614,7 @@ a:hover {
 
 .spec-table {
 	display: grid;
-	grid-template-columns: repeat(2, minmax(0, 1fr));
+	grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
 	margin: 24px 0;
 	border-top: 1px solid var(--line);
 	border-left: 1px solid var(--line);
@@ -742,7 +770,7 @@ a:hover {
 
 	.hero h1,
 	.article h1 {
-		font-size: 2.35rem;
+		font-size: 2.1rem;
 		line-height: 1.18;
 	}
 
@@ -771,5 +799,18 @@ a:hover {
 
 	.spec-table {
 		grid-template-columns: 1fr;
+	}
+
+	.article-byline {
+		display: flex;
+		width: 100%;
+	}
+
+	.article-views {
+		justify-content: center;
+		width: 100%;
+		border-top: 1px solid var(--line);
+		border-left: 0;
+		padding: 9px 0 0;
 	}
 }
