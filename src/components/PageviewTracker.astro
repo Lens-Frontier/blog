@@ -1,0 +1,54 @@
+---
+interface Props {
+	articleId: string;
+}
+
+const { articleId } = Astro.props;
+const endpoint = import.meta.env.PUBLIC_PAGEVIEW_ENDPOINT;
+const siteId = import.meta.env.PUBLIC_PAGEVIEW_SITE_ID ?? 'lens-frontier';
+---
+
+{
+	endpoint ? (
+		<script is:inline define:vars={{ articleId, endpoint, siteId }}>
+			(() => {
+				if (!endpoint) return;
+
+				const doNotTrack = navigator.doNotTrack === '1' || window.doNotTrack === '1';
+				if (doNotTrack) return;
+
+				const dedupeKey = `lens-frontier:pageview:${articleId}`;
+				const dayMs = 24 * 60 * 60 * 1000;
+				const now = Date.now();
+
+				try {
+					const previous = Number(window.localStorage.getItem(dedupeKey));
+					if (previous && now - previous < dayMs) return;
+					window.localStorage.setItem(dedupeKey, String(now));
+				} catch {
+					// Storage can be unavailable in some privacy modes. The backend still deduplicates.
+				}
+
+				const payload = JSON.stringify({
+					siteId,
+					articleId,
+					path: window.location.pathname,
+				});
+
+				if (navigator.sendBeacon) {
+					const body = new Blob([payload], { type: 'application/json' });
+					navigator.sendBeacon(endpoint, body);
+					return;
+				}
+
+				fetch(endpoint, {
+					method: 'POST',
+					body: payload,
+					headers: { 'Content-Type': 'application/json' },
+					keepalive: true,
+					credentials: 'omit',
+				}).catch(() => {});
+			})();
+		</script>
+	) : null
+}

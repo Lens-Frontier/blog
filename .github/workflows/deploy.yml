@@ -20,6 +20,11 @@ env:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    env:
+      PUBLIC_GTM_CONTAINER_ID: GTM-KQ8R2LJ7
+      PUBLIC_PAGEVIEW_ENDPOINT: ${{ secrets.PUBLIC_PAGEVIEW_ENDPOINT }}
+      PUBLIC_PAGEVIEW_COUNT_ENDPOINT: ${{ secrets.PUBLIC_PAGEVIEW_COUNT_ENDPOINT }}
+      PUBLIC_PAGEVIEW_SITE_ID: lens-frontier
     steps:
       - name: Checkout
         uses: actions/checkout@v6

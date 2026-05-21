@@ -1,0 +1,65 @@
+---
+import { languageFrom, ui } from '../lib/site';
+import type { Language } from '../lib/site';
+
+interface Props {
+	articleId: string;
+	lang?: Language;
+}
+
+const { articleId, lang: inputLang } = Astro.props;
+const lang = languageFrom(inputLang);
+const labels = ui[lang].article;
+const pageviewEndpoint = import.meta.env.PUBLIC_PAGEVIEW_ENDPOINT;
+const countEndpoint = import.meta.env.PUBLIC_PAGEVIEW_COUNT_ENDPOINT ?? deriveCountEndpoint(pageviewEndpoint);
+const siteId = import.meta.env.PUBLIC_PAGEVIEW_SITE_ID ?? 'lens-frontier';
+
+function deriveCountEndpoint(endpoint?: string) {
+	if (!endpoint) return undefined;
+
+	try {
+		const url = new URL(endpoint);
+		url.pathname = url.pathname.replace(/\/pageview\/?$/, '/views');
+		return url.toString();
+	} catch {
+		return endpoint.replace(/\/pageview\/?$/, '/views');
+	}
+}
+---
+
+{
+	countEndpoint ? (
+		<span
+			class="article-views"
+			data-article-views
+			data-loading-label={labels.viewsLoading}
+			aria-label={`${labels.views}: ${labels.viewsLoading}`}
+		>
+			<span>{labels.views}</span>
+			<strong data-view-count>--</strong>
+		</span>
+		<script is:inline define:vars={{ articleId, countEndpoint, lang, siteId }}>
+			(() => {
+				const target = document.querySelector('[data-article-views]');
+				const value = target?.querySelector('[data-view-count]');
+				if (!target || !value) return;
+
+				const formatter = new Intl.NumberFormat(lang === 'zh' ? 'zh-CN' : 'en-US');
+				const url = new URL(countEndpoint, window.location.origin);
+				url.searchParams.set('siteId', siteId);
+				url.searchParams.set('articleId', articleId);
+
+				fetch(url.toString(), { credentials: 'omit', cache: 'no-store' })
+					.then((response) => (response.ok ? response.json() : Promise.reject()))
+					.then((data) => {
+						const count = Number(data.viewCount || 0);
+						value.textContent = formatter.format(count);
+						target.setAttribute('aria-label', `${target.firstElementChild?.textContent || 'Views'}: ${count}`);
+					})
+					.catch(() => {
+						target.remove();
+					});
+			})();
+		</script>
+	) : null
+}

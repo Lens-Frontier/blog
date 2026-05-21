@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
-import { languageFrom, languages, localizedPath, path, siteFor, ui } from '../lib/site';
+import GoogleTagManager from '../components/GoogleTagManager.astro';
+import { languageFrom, languages, localizedPath, path, repositoryUrl, siteFor, ui } from '../lib/site';
 import type { Language } from '../lib/site';
 
 interface Props {
@@ -30,6 +31,7 @@ const navItems = [
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width" />
 		<meta name="generator" content={Astro.generator} />
+		<GoogleTagManager placement="head" />
 		<title>{pageTitle}</title>
 		<meta name="description" content={description} />
 		<link rel="canonical" href={canonical} />
@@ -45,6 +47,7 @@ const navItems = [
 		/>
 	</head>
 	<body>
+		<GoogleTagManager placement="body" />
 		<div class="shell">
 			<header class="site-header">
 				<a class="brand" href={localizedPath(lang, '/')}>
@@ -82,6 +85,7 @@ const navItems = [
 					<a href={localizedPath(lang, '/timeline/')}>{labels.footer.timeline}</a>
 					<a href={localizedPath(lang, '/about/')}>{labels.footer.about}</a>
 					<a href={localizedPath(lang, '/rss.xml')}>{labels.footer.rss}</a>
+					<a href={repositoryUrl} target="_blank" rel="noreferrer">{labels.footer.github}</a>
 				</nav>
 			</footer>
 		</div>

@@ -2,6 +2,7 @@ export const languages = ['zh', 'en'] as const;
 export type Language = (typeof languages)[number];
 
 export const defaultLanguage: Language = 'zh';
+export const repositoryUrl = 'https://github.com/Lens-Frontier/blog';
 
 export const sites: Record<Language, { title: string; description: string; htmlLang: string; locale: string }> = {
 	zh: {
@@ -34,6 +35,7 @@ export const ui = {
 			timeline: 'Timeline',
 			about: 'About',
 			rss: 'RSS',
+			github: 'GitHub',
 		},
 		home: {
 			eyebrow: 'papers benchmarks opinions',
@@ -120,6 +122,8 @@ export const ui = {
 			},
 		},
 		article: {
+			views: '阅读',
+			viewsLoading: '读取中',
 			paper: 'Paper',
 			code: 'Code',
 			spec: {
@@ -154,6 +158,7 @@ export const ui = {
 			timeline: 'Timeline',
 			about: 'About',
 			rss: 'RSS',
+			github: 'GitHub',
 		},
 		home: {
 			eyebrow: 'papers benchmarks opinions',
@@ -241,6 +246,8 @@ export const ui = {
 			},
 		},
 		article: {
+			views: 'Views',
+			viewsLoading: 'Loading',
 			paper: 'Paper',
 			code: 'Code',
 			spec: {
