@@ -732,17 +732,28 @@ html:lang(en) .article-body {
 }
 
 .article-body pre {
-	border: 1px solid var(--line);
-	background: color-mix(in srgb, var(--paper-deep) 62%, white);
-	padding: 16px;
+	margin: 1.8em 0 2em;
+	border: 0;
+	border-top: 1px solid color-mix(in srgb, var(--line) 76%, transparent);
+	border-bottom: 1px solid color-mix(in srgb, var(--line) 76%, transparent);
+	border-left: 3px solid color-mix(in srgb, var(--line-strong) 74%, transparent);
+	background: color-mix(in srgb, var(--paper-deep) 34%, var(--paper)) !important;
+	color: color-mix(in srgb, var(--ink) 88%, var(--muted)) !important;
+	padding: 18px 0 18px 18px;
 	overflow-x: auto;
 }
 
+.article-body pre span {
+	color: inherit !important;
+}
+
 .article-body pre code {
+	display: block;
 	border: 0;
 	background: transparent;
-	padding: 0;
+	padding: 0 18px 0 0;
 	font-size: 0.86rem;
+	line-height: 1.75;
 }
 
 .article-body table {
