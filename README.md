@@ -87,3 +87,5 @@ pnpm images:optimize  # 压缩文章图片并生成 WebP
 pnpm build            # 生产构建
 pnpm preview          # 预览 dist
 ```
+
+`pnpm check`、`pnpm check:syntax` 和 `pnpm check:quality` 会尽量跑完同组内可独立执行的检查，并在最后汇总失败项；构建失败时，依赖构建产物的 dist 检查会跳过，避免读取旧产物。
