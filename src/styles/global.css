@@ -10,7 +10,9 @@
 	--red: #b64d3c;
 	--shadow: 0 24px 70px rgba(23, 22, 18, 0.08);
 	--font-sans: "IBM Plex Sans", "PingFang SC", "Hiragino Sans GB", sans-serif;
-	--font-serif: "Noto Serif SC", "Songti SC", "Noto Serif CJK SC", serif;
+	--font-serif-zh: "Noto Serif SC", "Songti SC", "Noto Serif CJK SC", serif;
+	--font-serif-en: "IBM Plex Serif", Georgia, "Times New Roman", serif;
+	--font-serif: var(--font-serif-zh);
 	--font-mono: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
 }
 
@@ -23,6 +25,10 @@ html {
 	color: var(--ink);
 	font-family: var(--font-sans);
 	scroll-behavior: smooth;
+}
+
+html:lang(en) {
+	--font-serif: var(--font-serif-en);
 }
 
 body {
@@ -645,6 +651,11 @@ html:lang(zh-CN) .hero h1 {
 	font-family: var(--font-serif);
 	font-size: 1.13rem;
 	line-height: 1.86;
+}
+
+html:lang(en) .article-body {
+	font-size: 1.08rem;
+	line-height: 1.78;
 }
 
 .article-body h2,
