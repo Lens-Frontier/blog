@@ -1,6 +1,8 @@
 ---
 import BaseLayout from './BaseLayout.astro';
+import ArticleViews from '../components/ArticleViews.astro';
 import Authors from '../components/Authors.astro';
+import PageviewTracker from '../components/PageviewTracker.astro';
 import SpecTable from '../components/SpecTable.astro';
 import { formatDate, languageFrom, tagPath, ui } from '../lib/site';
 
@@ -14,6 +16,7 @@ const data = entry.data;
 const lang = languageFrom(data.lang);
 const labels = ui[lang];
 const collection = type === 'paper' ? 'papers' : type === 'benchmark' ? 'benchmarks' : 'opinions';
+const articleId = `${collection}/${entry.id}`;
 type SpecItem = [string, string | string[] | undefined];
 const spec: SpecItem[] =
 	type === 'paper'
@@ -46,7 +49,10 @@ const spec: SpecItem[] =
 			<p class="eyebrow">{type}</p>
 			<h1>{data.title}</h1>
 			<p class="dek">{data.summary}</p>
-			<Authors authors={data.authors} />
+			<div class="article-byline">
+				<Authors authors={data.authors} />
+				<ArticleViews articleId={articleId} lang={lang} />
+			</div>
 			<SpecTable items={spec} />
 			<div class="article-actions">
 				{data.paperUrl ? <a href={data.paperUrl}>{labels.article.paper}</a> : null}
@@ -61,5 +67,6 @@ const spec: SpecItem[] =
 		<div class="article-body">
 			<slot />
 		</div>
+		<PageviewTracker articleId={articleId} />
 	</article>
 </BaseLayout>

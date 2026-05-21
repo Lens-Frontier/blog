@@ -44,6 +44,30 @@ src/content/opinions     # 围绕 benchmark 的观点文章
 1. 在 `public/CNAME` 写入域名。
 2. 在 GitHub Actions workflow 里把 `SITE_URL` 改成你的域名。
 
+## 阅读量统计
+
+文章页支持 first-party 稳定阅读量展示。默认不启用；生产环境配置后，文章标题下方会显示阅读量。
+
+如需开启，先部署 `workers/pageviews` 里的 Cloudflare Worker + D1，再在生产构建中配置：
+
+```txt
+PUBLIC_PAGEVIEW_ENDPOINT=https://<worker-domain>/pageview
+PUBLIC_PAGEVIEW_COUNT_ENDPOINT=https://<worker-domain>/views
+PUBLIC_PAGEVIEW_SITE_ID=lens-frontier
+```
+
+不要在 PR preview 配置这些变量，避免预览流量进入正式阅读量。`PUBLIC_PAGEVIEW_COUNT_ENDPOINT` 可省略，站点会从 `/pageview` 自动推导 `/views`。
+
+## Google Tag Manager
+
+站点通过 Google Tag Manager 接入统计。当前生产部署 workflow 使用容器：
+
+```txt
+PUBLIC_GTM_CONTAINER_ID=GTM-KQ8R2LJ7
+```
+
+没有配置容器 ID 时不会加载 Google Tag Manager。PR preview 不配置这个变量，避免预览流量进入正式统计。GA4 等统计标签建议在 GTM 容器里统一管理，避免同时直连 GA4 和 GTM 导致重复 pageview。
+
 ## 命令
 
 ```sh
