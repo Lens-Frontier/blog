@@ -15,7 +15,7 @@ env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
-  check:
+  syntax:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -23,6 +23,27 @@ jobs:
 
       - name: Lint GitHub workflows
         uses: rhysd/actionlint@v1.7.12
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v6
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run syntax checks
+        run: pnpm check:syntax
+
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
 
       - name: Resolve build target
         env:
@@ -57,7 +78,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Run quality checks and build
-        run: pnpm check
+        run: pnpm check:quality
 
       - name: Write preview metadata
         if: github.event_name == 'pull_request'

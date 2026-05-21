@@ -6,8 +6,11 @@ import YAML from 'yaml';
 const root = process.cwd();
 const collections = ['papers', 'benchmarks', 'opinions'];
 const tagPattern = /^[a-z0-9]+(?:[-.][a-z0-9]+)*$/;
+const languagePattern = /^(zh|en)$/;
+const translationKeyPattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const imagePattern = /!\[[^\]\n]+\]\(([^)\n]+)\)/g;
 const remotePattern = /^(?:https?:|mailto:|#)/i;
+const seenTranslationKeys = new Map();
 
 async function filesIn(dir) {
 	if (!existsSync(dir)) return [];
@@ -54,6 +57,26 @@ for (const collection of collections) {
 		}
 
 		const { data, body } = parsed;
+		if (!Object.hasOwn(data, 'lang')) {
+			errors.push(`Article must declare lang: "zh" or "en": ${relFile}`);
+		} else if (typeof data.lang !== 'string' || !languagePattern.test(data.lang)) {
+			errors.push(`Article lang must be "zh" or "en": ${relFile}`);
+		}
+		if (
+			Object.hasOwn(data, 'translationKey') &&
+			(typeof data.translationKey !== 'string' || !translationKeyPattern.test(data.translationKey))
+		) {
+			errors.push(`translationKey must use lowercase kebab-case: ${relFile}`);
+		}
+		if (typeof data.translationKey === 'string' && typeof data.lang === 'string') {
+			const key = `${collection}:${data.translationKey}:${data.lang}`;
+			const previous = seenTranslationKeys.get(key);
+			if (previous) {
+				errors.push(`Duplicate translationKey for ${data.lang}: ${relFile} and ${previous}`);
+			} else {
+				seenTranslationKeys.set(key, relFile);
+			}
+		}
 		if (!body) {
 			errors.push(`Article body is empty: ${relFile}`);
 		}
