@@ -1,0 +1,93 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import EntryRow from '../../components/EntryRow.astro';
+import { languages, languageFrom, localizedPath, ui } from '../../lib/site';
+import { publishedCollection, publishedEntries } from '../../lib/content';
+
+export function getStaticPaths() {
+	return languages.map((lang) => ({ params: { lang }, props: { lang } }));
+}
+
+const lang = languageFrom(Astro.props.lang);
+const labels = ui[lang];
+const papers = await publishedCollection('papers', lang);
+const benchmarks = await publishedCollection('benchmarks', lang);
+const opinions = await publishedCollection('opinions', lang);
+const latest = (await publishedEntries(lang)).slice(0, 5);
+
+const channels = [
+	{
+		label: labels.channels.papers.label,
+		count: papers.length,
+		href: localizedPath(lang, '/papers/'),
+		description: labels.channels.papers.description,
+	},
+	{
+		label: labels.channels.opinions.label,
+		count: opinions.length,
+		href: localizedPath(lang, '/opinions/'),
+		description: labels.channels.opinions.description,
+	},
+	{
+		label: labels.channels.benchmarks.label,
+		count: benchmarks.length,
+		href: localizedPath(lang, '/benchmarks/'),
+		description: labels.channels.benchmarks.description,
+	},
+];
+---
+
+<BaseLayout lang={lang} alternatePath="/">
+	<section class="hero">
+		<div>
+			<p class="eyebrow">{labels.home.eyebrow}</p>
+			<h1>{labels.home.title}</h1>
+			<p>{labels.home.description}</p>
+		</div>
+		<aside class="signal-panel" aria-label="Content channels">
+			<h2>{labels.home.channels}</h2>
+			<nav class="channel-list">
+				{channels.map((channel) => (
+					<a class="channel-item" href={channel.href}>
+						<span>
+							<strong>{channel.label}</strong>
+							<small>{channel.description}</small>
+						</span>
+						<em>{channel.count}</em>
+					</a>
+				))}
+			</nav>
+		</aside>
+	</section>
+
+	<section class="section-grid">
+		<div>
+			<div class="section-head">
+				<h2>{labels.home.latest}</h2>
+				<a href={localizedPath(lang, '/timeline/')}>{labels.home.timeline}</a>
+			</div>
+			<div class="entry-list">
+				{latest.length ? (
+					latest.map(({ entry, collection }) => (
+						<EntryRow entry={entry} collection={collection} lang={lang} />
+					))
+				) : (
+					<div class="empty-state">
+						<p>{labels.home.emptyTitle}</p>
+						<span>{labels.home.emptyBody}</span>
+					</div>
+				)}
+			</div>
+		</div>
+		<aside class="side-rail">
+			<div class="note-box">
+				<h2>{labels.home.scopeTitle}</h2>
+				<p>{labels.home.scopeBody}</p>
+			</div>
+			<div class="note-box">
+				<h2>{labels.home.styleTitle}</h2>
+				<p>{labels.home.styleBody}</p>
+			</div>
+		</aside>
+	</section>
+</BaseLayout>

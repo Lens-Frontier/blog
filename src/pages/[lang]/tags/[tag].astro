@@ -1,0 +1,61 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import EntryRow from '../../../components/EntryRow.astro';
+import { languages, languageFrom, ui } from '../../../lib/site';
+import { collectionNames } from '../../../lib/content';
+
+export async function getStaticPaths() {
+	const paths = [];
+	for (const lang of languages) {
+		const allEntries = await Promise.all(collectionNames.map((name) => getCollection(name)));
+		const tags = [
+			...new Set(
+				allEntries
+					.flat()
+					.filter((entry) => !entry.data.draft && entry.data.lang === lang)
+					.flatMap((entry) => entry.data.tags ?? []),
+			),
+		];
+		paths.push(...tags.map((tag) => ({ params: { lang, tag }, props: { lang, tag } })));
+	}
+	return paths;
+}
+
+const lang = languageFrom(Astro.props.lang);
+const { tag } = Astro.props;
+const labels = ui[lang].pages.tags;
+const entriesByCollection = await Promise.all(
+	collectionNames.map(async (collection) => ({
+		collection,
+		entries: (await getCollection(collection)).filter(
+			(entry) => !entry.data.draft && entry.data.lang === lang && entry.data.tags?.includes(tag),
+		),
+	})),
+);
+const entries = entriesByCollection
+	.flatMap(({ collection, entries }) => entries.map((entry) => ({ collection, entry })))
+	.sort((a, b) => b.entry.data.date.getTime() - a.entry.data.date.getTime());
+---
+
+<BaseLayout
+	lang={lang}
+	title={`Tag: ${tag}`}
+	description={labels.tagDescription(tag)}
+	alternatePath="/tags/"
+>
+	<header class="page-title">
+		<div>
+			<p class="eyebrow">tag</p>
+			<h1>{tag}</h1>
+		</div>
+		<p>{labels.relatedCount(entries.length)}</p>
+	</header>
+	<section class="listing">
+		<div class="entry-list">
+			{entries.map(({ entry, collection }) => (
+				<EntryRow entry={entry} collection={collection} label={collection.slice(0, -1)} lang={lang} />
+			))}
+		</div>
+	</section>
+</BaseLayout>

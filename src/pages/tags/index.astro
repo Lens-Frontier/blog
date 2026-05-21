@@ -1,36 +1,5 @@
 ---
-import { getCollection } from 'astro:content';
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import { tagPath } from '../../lib/site';
-
-const collections = await Promise.all([
-	getCollection('papers'),
-	getCollection('benchmarks'),
-	getCollection('opinions'),
-]);
-const tags = [...new Set(collections.flat().flatMap((entry) => entry.data.tags ?? []))].sort();
+import RedirectLayout from '../../layouts/RedirectLayout.astro';
 ---
 
-<BaseLayout title="Tags" description="主题标签索引。">
-	<header class="page-title">
-		<div>
-			<p class="eyebrow">index terms</p>
-			<h1>Tags</h1>
-		</div>
-		<p>用标签把论文分享、观点文章和 benchmark 观察串起来。</p>
-	</header>
-	{tags.length ? (
-		<nav class="tag-cloud" aria-label="All tags">
-			{tags.map((tag) => <a href={tagPath(tag)}>{tag}</a>)}
-		</nav>
-	) : (
-		<section class="listing">
-			<div class="entry-list">
-				<div class="empty-state">
-					<p>No tags yet.</p>
-					<span>发布第一篇内容后，标签索引会自动出现。</span>
-				</div>
-			</div>
-		</section>
-	)}
-</BaseLayout>
+<RedirectLayout to="/zh/tags/" title="Tags" />

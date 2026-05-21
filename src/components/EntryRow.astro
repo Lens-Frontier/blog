@@ -1,18 +1,21 @@
 ---
 import Authors from './Authors.astro';
-import { formatDate, path, tagPath } from '../lib/site';
+import { entryPath, formatDate, languageFrom, tagPath } from '../lib/site';
+import type { Language } from '../lib/site';
 
 interface Props {
 	entry: any;
 	collection: 'papers' | 'benchmarks' | 'opinions';
 	label?: string;
+	lang?: Language;
 }
 
-const { entry, collection, label } = Astro.props;
+const { entry, collection, label, lang: inputLang } = Astro.props;
+const lang = languageFrom(inputLang ?? entry.data.lang);
 const data = entry.data;
-const href = path(`/${collection}/${entry.id}/`);
+const href = entryPath(collection, entry.id, lang);
 const meta = [
-	formatDate(data.date),
+	formatDate(data.date, lang),
 	data.venue,
 	data.area,
 	data.metric,
@@ -34,7 +37,7 @@ const meta = [
 		{data.tags?.length ? (
 			<div class="tag-list" aria-label="Tags">
 				{data.tags.slice(0, 5).map((tag: string) => (
-					<a href={tagPath(tag)}>{tag}</a>
+					<a href={tagPath(tag, lang)}>{tag}</a>
 				))}
 			</div>
 		) : null}

@@ -1,9 +1,13 @@
 import rss from '@astrojs/rss';
-import { localizedPath, siteFor } from '../lib/site';
-import { publishedEntries } from '../lib/content';
+import { languageFrom, languages, localizedPath, siteFor } from '../../lib/site';
+import { publishedEntries } from '../../lib/content';
+
+export function getStaticPaths() {
+	return languages.map((lang) => ({ params: { lang }, props: { lang } }));
+}
 
 export async function GET(context: any) {
-	const lang = 'zh';
+	const lang = languageFrom(context.props.lang);
 	const site = siteFor(lang);
 	const feedSite = new URL(import.meta.env.BASE_URL, context.site).toString();
 	const items = (await publishedEntries(lang)).map(({ collection, entry }) => ({

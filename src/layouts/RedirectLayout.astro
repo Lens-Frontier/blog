@@ -1,0 +1,28 @@
+---
+import { path, site } from '../lib/site';
+
+interface Props {
+	to: string;
+	title?: string;
+	description?: string;
+}
+
+const { to, title = 'Redirecting', description = site.description } = Astro.props;
+const href = path(to);
+const canonical = new URL(href, Astro.site ?? 'https://example.com');
+---
+
+<!doctype html>
+<html lang="zh-CN">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width" />
+		<title>{title} - Lens Frontier</title>
+		<meta name="description" content={description} />
+		<meta http-equiv="refresh" content={`0; url=${href}`} />
+		<link rel="canonical" href={canonical} />
+	</head>
+	<body>
+		<a href={href}>Continue to Lens Frontier</a>
+	</body>
+</html>

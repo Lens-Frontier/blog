@@ -25,7 +25,7 @@ src/content/benchmarks   # benchmark 观察
 src/content/opinions     # 围绕 benchmark 的观点文章
 ```
 
-每篇文章使用 Markdown frontmatter 管理元数据。字段 schema 在 `src/content.config.ts`。
+每篇文章使用 Markdown frontmatter 管理元数据。字段 schema 在 `src/content.config.ts`。站点支持 `/zh/` 和 `/en/` 两套语言路由，文章通过 `lang: "zh"` 或 `lang: "en"` 决定展示在哪个语言下；允许单语发布，不要求同步翻译。
 
 常写作者可以登记在 `src/data/authors.ts`，文章里用 `authors: [{ id: "author-id" }]` 复用作者资料；一次性投稿也可以继续在文章 frontmatter 里直接写 `name` / `github`。
 
@@ -52,7 +52,7 @@ pnpm check            # Markdown + 内容规范 + 资产 + 图片建议 + 类型
 pnpm check:markdown   # Markdown 格式检查
 pnpm check:content    # 文章结构、tag、图片引用检查
 pnpm check:types      # Astro 类型和模板检查
-pnpm check:dist       # 构建后页面元信息和内部链接检查
+pnpm check:dist       # 构建后页面元信息和站内链接检查
 pnpm images:check     # 图片大小、宽度、格式提示
 pnpm images:optimize  # 压缩文章图片并生成 WebP
 pnpm build            # 生产构建
