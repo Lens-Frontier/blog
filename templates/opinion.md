@@ -1,5 +1,6 @@
 ---
 title: "Opinion Title"
+lang: "zh"
 date: 2026-05-19
 summary: "一句话概括观点。"
 authors:

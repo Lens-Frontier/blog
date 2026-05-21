@@ -1,5 +1,6 @@
 ---
 title: "Benchmark Name"
+lang: "zh"
 date: 2026-05-19
 summary: "一句话说明这个 benchmark 测什么，以及主要风险。"
 authors:
