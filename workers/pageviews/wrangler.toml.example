@@ -1,0 +1,11 @@
+name = "lens-frontier-pageviews"
+main = "worker.js"
+compatibility_date = "2026-05-21"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "lens-frontier-pageviews"
+database_id = "replace-with-cloudflare-d1-database-id"
+
+[vars]
+ALLOWED_ORIGIN = "https://lens-frontier.github.io"

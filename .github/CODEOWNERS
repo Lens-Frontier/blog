@@ -14,6 +14,7 @@
 /src/layouts/ @Lens-Frontier/blog-maintainers
 /src/styles/ @Lens-Frontier/blog-maintainers
 /src/lib/ @Lens-Frontier/blog-maintainers
+/workers/ @Lens-Frontier/blog-maintainers
 /astro.config.mjs @Lens-Frontier/blog-maintainers
 /package.json @Lens-Frontier/blog-maintainers
 /pnpm-lock.yaml @Lens-Frontier/blog-maintainers
