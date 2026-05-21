@@ -7,7 +7,7 @@ const root = process.cwd();
 const dist = join(root, 'dist');
 const siteUrl = process.env.SITE_URL;
 const siteBase = normalizeBase(process.env.SITE_BASE ?? '/');
-const gtmContainerId = process.env.PUBLIC_GTM_CONTAINER_ID;
+const gaMeasurementId = process.env.PUBLIC_GA_MEASUREMENT_ID;
 const pageviewEndpoint = process.env.PUBLIC_PAGEVIEW_ENDPOINT;
 const requiredFiles = [
 	'index.html',
@@ -143,14 +143,16 @@ for (const file of htmlFiles) {
 			errors.push(`Localized page should expose zh/en alternate links: ${rel}`);
 		}
 	}
-	if (gtmContainerId) {
-		const hasGtmScript = html.includes('googletagmanager.com/gtm.js') && html.includes(gtmContainerId);
-		const hasGtmNoscript = html.includes('googletagmanager.com/ns.html') && html.includes(gtmContainerId);
-		if (!hasGtmScript || !hasGtmNoscript) {
-			errors.push(`Missing Google Tag Manager container ${gtmContainerId}: ${rel}`);
+	if (html.includes('googletagmanager.com/gtm.js') || html.includes('googletagmanager.com/ns.html')) {
+		errors.push(`Legacy Google Tag Manager should not be emitted: ${rel}`);
+	}
+	if (gaMeasurementId) {
+		const hasGaScript = html.includes('googletagmanager.com/gtag/js') && html.includes(gaMeasurementId);
+		if (!hasGaScript || !html.includes("gtag('config'")) {
+			errors.push(`Missing Google Analytics measurement ${gaMeasurementId}: ${rel}`);
 		}
-	} else if (html.includes('googletagmanager.com/gtm.js') || html.includes('googletagmanager.com/ns.html')) {
-		errors.push(`Google Tag Manager should not be emitted without PUBLIC_GTM_CONTAINER_ID: ${rel}`);
+	} else if (html.includes('googletagmanager.com/gtag/js') || html.includes("gtag('config'")) {
+		errors.push(`Google Analytics should not be emitted without PUBLIC_GA_MEASUREMENT_ID: ${rel}`);
 	}
 	if (!pageviewEndpoint && (html.includes('lens-frontier:pageview') || html.includes('data-article-views'))) {
 		errors.push(`Pageview tracking should not be emitted without PUBLIC_PAGEVIEW_ENDPOINT: ${rel}`);

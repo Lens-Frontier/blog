@@ -8,7 +8,7 @@ const smokeSlug = 'analytics-smoke';
 const smokeFile = join(root, 'src', 'content', 'opinions', `${smokeSlug}.md`);
 const smokeOutput = join(root, 'dist', 'zh', 'opinions', smokeSlug, 'index.html');
 const analyticsEnv = {
-	PUBLIC_GTM_CONTAINER_ID: 'GTM-KQ8R2LJ7',
+	PUBLIC_GA_MEASUREMENT_ID: 'G-ZK42116ZXB',
 	PUBLIC_PAGEVIEW_ENDPOINT: 'https://example.test/pageview',
 	PUBLIC_PAGEVIEW_COUNT_ENDPOINT: 'https://example.test/views',
 	PUBLIC_PAGEVIEW_SITE_ID: 'lens-frontier',
@@ -60,15 +60,15 @@ try {
 	run('pnpm', ['build'], analyticsEnv);
 
 	const html = await readFile(smokeOutput, 'utf8');
-	assertIncludes(html, 'googletagmanager.com/gtm.js', 'GTM script');
-	assertIncludes(html, 'googletagmanager.com/ns.html', 'GTM noscript fallback');
-	assertIncludes(html, 'GTM-KQ8R2LJ7', 'GTM container id');
+	assertIncludes(html, 'googletagmanager.com/gtag/js', 'Google Analytics script');
+	assertIncludes(html, 'G-ZK42116ZXB', 'Google Analytics measurement id');
+	assertIncludes(html, "gtag('config'", 'Google Analytics config call');
 	assertIncludes(html, 'data-article-views', 'article read-count markup');
 	assertIncludes(html, 'data-view-count', 'article read-count value target');
-assertIncludes(html, 'https://example.test/views', 'pageview count endpoint');
-assertIncludes(html, 'https://example.test/pageview', 'pageview event endpoint');
-assertIncludes(html, 'opinions/analytics-smoke', 'article id');
-assertIncludes(html, 'lens-frontier:pageview:', 'client-side pageview dedupe key');
+	assertIncludes(html, 'https://example.test/views', 'pageview count endpoint');
+	assertIncludes(html, 'https://example.test/pageview', 'pageview event endpoint');
+	assertIncludes(html, 'opinions/analytics-smoke', 'article id');
+	assertIncludes(html, 'lens-frontier:pageview:', 'client-side pageview dedupe key');
 
 	run('pnpm', ['check:dist'], analyticsEnv);
 } finally {

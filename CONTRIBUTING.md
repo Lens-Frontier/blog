@@ -257,11 +257,11 @@ pnpm check:syntax
 - 资产大小检查
 - 图片推荐大小、宽度和格式提示，不作为硬性阻断
 - 语法检查：Astro / TypeScript 模板、阅读量 Worker
-- Analytics smoke build：临时文章验证 GTM 和阅读量脚本会在文章页正确注入，随后正式构建不会保留临时文章
+- Analytics smoke build：临时文章验证 GA4 和阅读量脚本会在文章页正确注入，随后正式构建不会保留临时文章
 - 文章文件名 kebab-case 检查
 - Markdown 图片 alt text 检查
 - Astro 生产构建
-- 构建产物页面标题、描述、站内链接、i18n、GTM/pageview 开关和 RSS 检查
+- 构建产物页面标题、描述、站内链接、i18n、GA/pageview 开关和 RSS 检查
 
 GitHub Actions 还会额外运行 workflow lint，用来检查 `.github/workflows/` 里的语法和表达式问题。
 

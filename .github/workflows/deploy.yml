@@ -21,7 +21,7 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     env:
-      PUBLIC_GTM_CONTAINER_ID: GTM-KQ8R2LJ7
+      PUBLIC_GA_MEASUREMENT_ID: G-ZK42116ZXB
       PUBLIC_PAGEVIEW_ENDPOINT: ${{ secrets.PUBLIC_PAGEVIEW_ENDPOINT }}
       PUBLIC_PAGEVIEW_COUNT_ENDPOINT: ${{ secrets.PUBLIC_PAGEVIEW_COUNT_ENDPOINT }}
       PUBLIC_PAGEVIEW_SITE_ID: lens-frontier

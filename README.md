@@ -58,15 +58,15 @@ PUBLIC_PAGEVIEW_SITE_ID=lens-frontier
 
 不要在 PR preview 配置这些变量，避免预览流量进入正式阅读量。`PUBLIC_PAGEVIEW_COUNT_ENDPOINT` 可省略，站点会从 `/pageview` 自动推导 `/views`。
 
-## Google Tag Manager
+## Google Analytics
 
-站点通过 Google Tag Manager 接入统计。当前生产部署 workflow 使用容器：
+站点通过 GA4 的 Google tag 接入站点统计。当前生产部署 workflow 使用：
 
 ```txt
-PUBLIC_GTM_CONTAINER_ID=GTM-KQ8R2LJ7
+PUBLIC_GA_MEASUREMENT_ID=G-ZK42116ZXB
 ```
 
-没有配置容器 ID 时不会加载 Google Tag Manager。PR preview 不配置这个变量，避免预览流量进入正式统计。GA4 等统计标签建议在 GTM 容器里统一管理，避免同时直连 GA4 和 GTM 导致重复 pageview。
+没有配置 Measurement ID 时不会加载 Google Analytics。PR preview 不配置这个变量，避免预览流量进入正式统计。站点只保留这一处 Google tag，不再同时接入 Google Tag Manager，避免重复 pageview。
 
 ## 命令
 
@@ -77,7 +77,7 @@ pnpm check:markdown   # Markdown 格式检查
 pnpm check:content    # 文章结构、tag、图片引用检查
 pnpm check:syntax     # Astro/TypeScript 模板 + Worker 语法检查
 pnpm check:quality    # 内容、资产、图片建议、analytics smoke、构建和 dist 检查
-pnpm check:analytics  # 临时文章验证 GTM 和阅读量脚本注入
+pnpm check:analytics  # 临时文章验证 GA4 和阅读量脚本注入
 pnpm check:types      # Astro 类型和模板检查
 pnpm check:worker     # 阅读量 Worker 语法检查
 pnpm check:dist       # 构建后页面元信息和站内链接检查

@@ -1,5 +1,5 @@
 ---
-import GoogleTagManager from '../components/GoogleTagManager.astro';
+import GoogleAnalytics from '../components/GoogleAnalytics.astro';
 import { path, site } from '../lib/site';
 
 interface Props {
@@ -20,12 +20,11 @@ const canonical = new URL(href, Astro.site ?? 'https://example.com');
 		<meta name="viewport" content="width=device-width" />
 		<title>{title} - Lens Frontier</title>
 		<meta name="description" content={description} />
-		<GoogleTagManager placement="head" />
+		<GoogleAnalytics />
 		<meta http-equiv="refresh" content={`0; url=${href}`} />
 		<link rel="canonical" href={canonical} />
 	</head>
 	<body>
-		<GoogleTagManager placement="body" />
 		<a href={href}>Continue to Lens Frontier</a>
 	</body>
 </html>
