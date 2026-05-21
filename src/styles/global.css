@@ -116,6 +116,39 @@ a:hover {
 	text-decoration: none;
 }
 
+.header-actions {
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	gap: 14px;
+}
+
+.lang-switch {
+	display: inline-flex;
+	align-items: center;
+	border: 1px solid var(--line);
+	background: color-mix(in srgb, var(--paper) 78%, white);
+	font-family: var(--font-mono);
+	font-size: 0.68rem;
+}
+
+.lang-switch a {
+	min-width: 38px;
+	padding: 7px 8px;
+	color: var(--muted);
+	text-align: center;
+	text-decoration: none;
+}
+
+.lang-switch a + a {
+	border-left: 1px solid var(--line);
+}
+
+.lang-switch a[aria-current="true"] {
+	background: var(--ink);
+	color: var(--paper);
+}
+
 .hero {
 	display: grid;
 	grid-template-columns: minmax(0, 1.18fr) minmax(320px, 0.82fr);
@@ -685,6 +718,13 @@ a:hover {
 
 	.nav {
 		justify-content: start;
+	}
+
+	.header-actions {
+		display: grid;
+		justify-content: start;
+		justify-items: start;
+		gap: 12px;
 	}
 
 	.site-footer {

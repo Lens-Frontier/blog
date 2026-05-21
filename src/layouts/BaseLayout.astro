@@ -1,19 +1,31 @@
 ---
 import '../styles/global.css';
-import { path, site } from '../lib/site';
+import { languageFrom, languages, localizedPath, path, siteFor, ui } from '../lib/site';
+import type { Language } from '../lib/site';
 
 interface Props {
 	title?: string;
 	description?: string;
+	lang?: Language;
+	alternatePath?: string;
 }
 
-const { title = site.title, description = site.description } = Astro.props;
+const lang = languageFrom(Astro.props.lang);
+const labels = ui[lang];
+const site = siteFor(lang);
+const { title = site.title, description = site.description, alternatePath = '/' } = Astro.props;
 const pageTitle = title === site.title ? title : `${title} - ${site.title}`;
 const canonical = new URL(Astro.url.pathname, Astro.site ?? 'https://example.com');
+const navItems = [
+	{ href: localizedPath(lang, '/papers/'), label: labels.nav.papers },
+	{ href: localizedPath(lang, '/benchmarks/'), label: labels.nav.benchmarks },
+	{ href: localizedPath(lang, '/opinions/'), label: labels.nav.opinions },
+	{ href: localizedPath(lang, '/tags/'), label: labels.nav.tags },
+];
 ---
 
 <!doctype html>
-<html lang="zh-CN">
+<html lang={site.htmlLang}>
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width" />
@@ -21,6 +33,9 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? 'https://example.com
 		<title>{pageTitle}</title>
 		<meta name="description" content={description} />
 		<link rel="canonical" href={canonical} />
+		{languages.map((item) => (
+			<link rel="alternate" hreflang={siteFor(item).htmlLang} href={localizedPath(item, alternatePath)} />
+		))}
 		<link rel="icon" type="image/svg+xml" href={path('/favicon.svg')} />
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -32,19 +47,28 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? 'https://example.com
 	<body>
 		<div class="shell">
 			<header class="site-header">
-				<a class="brand" href={path('/')}>
+				<a class="brand" href={localizedPath(lang, '/')}>
 					<span class="brand-mark">LF</span>
 					<span>
 						<strong>Lens Frontier</strong>
-						<small>papers benchmarks opinions</small>
+						<small>{labels.brandTagline}</small>
 					</span>
 				</a>
-				<nav class="nav" aria-label="Primary navigation">
-					<a href={path('/papers/')}>Papers</a>
-					<a href={path('/benchmarks/')}>Benchmarks</a>
-					<a href={path('/opinions/')}>Opinions</a>
-					<a href={path('/tags/')}>Tags</a>
-				</nav>
+				<div class="header-actions">
+					<nav class="nav" aria-label="Primary navigation">
+						{navItems.map((item) => <a href={item.href}>{item.label}</a>)}
+					</nav>
+					<nav class="lang-switch" aria-label="Language switcher">
+						{languages.map((item) => (
+							<a
+								href={localizedPath(item, alternatePath)}
+								aria-current={item === lang ? 'true' : undefined}
+							>
+								{labels.languageNames[item]}
+							</a>
+						))}
+					</nav>
+				</div>
 			</header>
 			<main>
 				<slot />
@@ -52,12 +76,12 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? 'https://example.com
 			<footer class="site-footer">
 				<div>
 					<span>Lens Frontier</span>
-					<span>Reading notes and modest benchmark arguments.</span>
+					<span>{labels.footer.line}</span>
 				</div>
 				<nav class="footer-links" aria-label="Secondary navigation">
-					<a href={path('/timeline/')}>Timeline</a>
-					<a href={path('/about/')}>About</a>
-					<a href={path('/rss.xml')}>RSS</a>
+					<a href={localizedPath(lang, '/timeline/')}>{labels.footer.timeline}</a>
+					<a href={localizedPath(lang, '/about/')}>{labels.footer.about}</a>
+					<a href={localizedPath(lang, '/rss.xml')}>{labels.footer.rss}</a>
 				</nav>
 			</footer>
 		</div>
