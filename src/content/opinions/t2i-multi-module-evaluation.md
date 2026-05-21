@@ -8,7 +8,7 @@ authors:
   - name: "杨晓文"
     github: "ShawnJoeng"
 stance: "现有 T2I benchmark 无法覆盖文本渲染、世界知识、多视图等现代能力，需要多模块协同的自动化评估框架"
-tags: ["evaluation", "text-to-image", "LLM-as-a-Judge", "benchmark"]
+tags: ["evaluation", "text-to-image", "llm-as-a-judge", "benchmark"]
 ---
 
 ERNIE-Image发布至今已经有一段时间了，一直收到非常多正向反馈，**非常感谢大家对模型的喜爱与支持**。

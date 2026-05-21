@@ -8,7 +8,7 @@ authors:
   - name: "Xiaowen Yang"
     github: "ShawnJoeng"
 stance: "Existing T2I benchmarks cannot cover text rendering, world knowledge, or multi-view capabilities — a multi-module collaborative automated evaluation framework is needed"
-tags: ["evaluation", "text-to-image", "LLM-as-a-Judge", "benchmark"]
+tags: ["evaluation", "text-to-image", "llm-as-a-judge", "benchmark"]
 ---
 
 It's been a while since ERNIE-Image launched, and we've received overwhelmingly positive feedback. **Thank you so much for your love and support for the model.**
