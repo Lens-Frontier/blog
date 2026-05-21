@@ -7,20 +7,42 @@ const root = process.cwd();
 const dist = join(root, 'dist');
 const siteUrl = process.env.SITE_URL;
 const siteBase = normalizeBase(process.env.SITE_BASE ?? '/');
+const gaMeasurementId = process.env.PUBLIC_GA_MEASUREMENT_ID;
+const pageviewEndpoint = process.env.PUBLIC_PAGEVIEW_ENDPOINT;
 const requiredFiles = [
 	'index.html',
+	'zh/index.html',
+	'en/index.html',
 	'about/index.html',
+	'zh/about/index.html',
+	'en/about/index.html',
 	'papers/index.html',
+	'zh/papers/index.html',
+	'en/papers/index.html',
 	'benchmarks/index.html',
+	'zh/benchmarks/index.html',
+	'en/benchmarks/index.html',
 	'opinions/index.html',
+	'zh/opinions/index.html',
+	'en/opinions/index.html',
 	'timeline/index.html',
+	'zh/timeline/index.html',
+	'en/timeline/index.html',
 	'tags/index.html',
+	'zh/tags/index.html',
+	'en/tags/index.html',
 	'rss.xml',
+	'zh/rss.xml',
+	'en/rss.xml',
 	'sitemap-index.xml',
 ];
 
 const skippedProtocols = /^(?:https?:|mailto:|tel:|data:|blob:|javascript:)/i;
 const unsafeInternalPath = /(?:^|\/)(?:src|node_modules)\//;
+const localizedHtmlLang = new Map([
+	['zh', 'zh-CN'],
+	['en', 'en'],
+]);
 const errors = [];
 
 function normalizeBase(base) {
@@ -93,9 +115,11 @@ const htmlFiles = files.filter((file) => file.endsWith('.html'));
 
 for (const file of htmlFiles) {
 	const rel = relative(root, file);
+	const distRel = relative(dist, file).split('\\').join('/');
 	const html = await readFile(file, 'utf8');
 	const $ = cheerio.load(html);
 	const ids = pageIds($);
+	const firstSegment = distRel.split('/')[0];
 
 	if (!$('title').text().trim()) {
 		errors.push(`Missing page title: ${rel}`);
@@ -109,6 +133,29 @@ for (const file of htmlFiles) {
 		if (!canonical?.startsWith(new URL(siteBase, siteUrl).toString())) {
 			errors.push(`Canonical URL does not match SITE_URL/SITE_BASE: ${rel}`);
 		}
+	}
+	if (localizedHtmlLang.has(firstSegment)) {
+		const expectedLang = localizedHtmlLang.get(firstSegment);
+		if ($('html').attr('lang') !== expectedLang) {
+			errors.push(`Localized page has wrong html lang (${expectedLang} expected): ${rel}`);
+		}
+		if ($('link[rel="alternate"][hreflang]').length < 2) {
+			errors.push(`Localized page should expose zh/en alternate links: ${rel}`);
+		}
+	}
+	if (html.includes('googletagmanager.com/gtm.js') || html.includes('googletagmanager.com/ns.html')) {
+		errors.push(`Legacy Google Tag Manager should not be emitted: ${rel}`);
+	}
+	if (gaMeasurementId) {
+		const hasGaScript = html.includes('googletagmanager.com/gtag/js') && html.includes(gaMeasurementId);
+		if (!hasGaScript || !html.includes("gtag('config'")) {
+			errors.push(`Missing Google Analytics measurement ${gaMeasurementId}: ${rel}`);
+		}
+	} else if (html.includes('googletagmanager.com/gtag/js') || html.includes("gtag('config'")) {
+		errors.push(`Google Analytics should not be emitted without PUBLIC_GA_MEASUREMENT_ID: ${rel}`);
+	}
+	if (!pageviewEndpoint && (html.includes('lens-frontier:pageview') || html.includes('data-article-views'))) {
+		errors.push(`Pageview tracking should not be emitted without PUBLIC_PAGEVIEW_ENDPOINT: ${rel}`);
 	}
 
 	for (const element of $('a[href], link[href], script[src], img[src]').toArray()) {

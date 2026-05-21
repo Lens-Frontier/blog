@@ -23,10 +23,11 @@ Use this skill inside the `Lens-Frontier/blog` repository when helping someone c
    - `src/content/opinions/<slug>.md` for benchmark-facing opinions.
 6. Use lowercase kebab-case slugs. Prefer `post/<slug>` for the branch name.
 7. Copy the relevant template structure manually into the new Markdown file and complete frontmatter.
-8. Keep `authors` as site authors, not paper authors. For recurring authors, prefer `id` from `src/data/authors.ts`. If the author is not in the registry, either add them there or include at least `name` or `github` inline. Do not add `avatar` by default because the site automatically uses `https://github.com/<github>.png?size=96` when `github` exists. Add `avatar` only when a custom image is needed.
-9. Put post images under `src/assets/posts/<collection>/<slug>/`. Put author avatars under `public/assets/authors/`.
-10. Run `pnpm check` before proposing or opening a PR. It includes Markdown lint, content rules, asset hard-limit checks, image recommendation warnings, Astro type checks, production build, and built-page link checks.
-11. If the user asks to open the PR and credentials are available, push the branch to the fork and use `gh pr create --repo Lens-Frontier/blog`.
+8. Set `lang: "zh"` or `lang: "en"` in frontmatter. Single-language publication is allowed; do not invent a translation just to fill both routes.
+9. Keep `authors` as site authors, not paper authors. For recurring authors, prefer `id` from `src/data/authors.ts`. If the author is not in the registry, either add them there or include at least `name` or `github` inline. Do not add `avatar` by default because the site automatically uses `https://github.com/<github>.png?size=96` when `github` exists. Add `avatar` only when a custom image is needed.
+10. Put post images under `src/assets/posts/<collection>/<slug>/`. Put author avatars under `public/assets/authors/`.
+11. Run `pnpm check` before proposing or opening a PR. It includes syntax checks, Markdown lint, content rules, sensitive-content checks, asset hard-limit checks, image recommendation warnings, production build, and built-page link/i18n checks.
+12. If the user asks to open the PR and credentials are available, push the branch to the fork and use `gh pr create --repo Lens-Frontier/blog`.
 
 ## Required Article Standards
 
@@ -35,6 +36,7 @@ Use this skill inside the `Lens-Frontier/blog` repository when helping someone c
 - Explain evidence and limits. Views can be shallow; claims should still be traceable.
 - Avoid overclaiming from a single paper, benchmark, leaderboard, or anecdote. Narrow the conclusion when evidence is narrow.
 - Keep the writing readable and restrained: clear structure, useful figures, no title bait, no material dumping.
+- Do not commit secrets, tokens, private keys, unpublished materials, or private meeting/customer information.
 - For paper posts, distinguish paper authors from site authors.
 - For benchmark posts, include task, metric, version or status, risks, and known misreadings when available.
 - For opinion posts, separate facts, inferences, uncertainty, and personal judgment.
@@ -60,7 +62,12 @@ Use this skill inside the `Lens-Frontier/blog` repository when helping someone c
 
 ## PR Behavior
 
-Every PR runs CI with `pnpm check`. After CI succeeds, the PR Preview workflow publishes a commit-scoped preview at:
+Every PR runs CI with two required jobs:
+
+- `syntax`: workflow lint plus Astro / TypeScript / Worker syntax checks.
+- `check`: content, assets, image recommendations, production build, and dist checks.
+
+After CI succeeds, the PR Preview workflow publishes a commit-scoped preview at:
 
 ```txt
 https://lens-frontier.github.io/blog/pr-preview/pr-<PR number>/<commit short hash>/

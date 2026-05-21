@@ -1,6 +1,6 @@
 ---
 import '../styles/global.css';
-import GoogleTagManager from '../components/GoogleTagManager.astro';
+import GoogleAnalytics from '../components/GoogleAnalytics.astro';
 import { languageFrom, languages, localizedPath, path, repositoryUrl, siteFor, ui } from '../lib/site';
 import type { Language } from '../lib/site';
 
@@ -31,7 +31,7 @@ const navItems = [
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width" />
 		<meta name="generator" content={Astro.generator} />
-		<GoogleTagManager placement="head" />
+		<GoogleAnalytics />
 		<title>{pageTitle}</title>
 		<meta name="description" content={description} />
 		<link rel="canonical" href={canonical} />
@@ -47,7 +47,6 @@ const navItems = [
 		/>
 	</head>
 	<body>
-		<GoogleTagManager placement="body" />
 		<div class="shell">
 			<header class="site-header">
 				<a class="brand" href={localizedPath(lang, '/')}>

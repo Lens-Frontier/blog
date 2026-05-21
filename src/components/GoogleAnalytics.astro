@@ -1,0 +1,28 @@
+---
+const measurementId = import.meta.env.PUBLIC_GA_MEASUREMENT_ID;
+const enabled = Boolean(measurementId) && import.meta.env.PUBLIC_GA_ENABLED !== 'false';
+const scriptUrl = `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(measurementId ?? '')}`;
+---
+
+{
+	enabled ? (
+		<>
+			<script is:inline async src={scriptUrl}></script>
+			<script is:inline define:vars={{ measurementId }}>
+				(() => {
+					const doNotTrack = navigator.doNotTrack === '1' || window.doNotTrack === '1';
+					window.dataLayer = window.dataLayer || [];
+					window.gtag =
+						window.gtag ||
+						function gtag() {
+							window.dataLayer.push(arguments);
+						};
+					window.gtag('js', new Date());
+					if (!doNotTrack) {
+						window.gtag('config', measurementId);
+					}
+				})();
+			</script>
+		</>
+	) : null
+}
