@@ -64,18 +64,6 @@ const contentPatterns = [
 		name: 'Slack token',
 		regex: /\bxox(?:[abprs]|c)-[A-Za-z0-9-]{20,}\b/g,
 	},
-	{
-		name: 'Baidu intranet link',
-		regex: /https?:\/\/[^\s)\]>"']*baidu-int\.com[^\s)\]>"']*/gi,
-	},
-	{
-		name: 'Baidu intranet hostname',
-		regex: /\b(?:[\w-]+\.)*baidu-int\.com\b/gi,
-	},
-	{
-		name: 'private IP URL',
-		regex: /https?:\/\/(?:10(?:\.\d{1,3}){3}|192\.168(?:\.\d{1,3}){2}|172\.(?:1[6-9]|2\d|3[01])(?:\.\d{1,3}){2})(?::\d+)?[^\s)\]>"']*/g,
-	},
 ];
 
 function extname(file) {

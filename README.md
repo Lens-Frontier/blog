@@ -75,7 +75,7 @@ pnpm dev              # 本地开发
 pnpm check            # Markdown + 内容规范 + 敏感信息 + 资产 + 图片建议 + 语法 + analytics smoke + 构建产物检查
 pnpm check:markdown   # Markdown 格式检查
 pnpm check:content    # 文章结构、tag、图片引用检查
-pnpm check:sensitive  # 常见 token、私钥、内网链接和敏感文件检查
+pnpm check:sensitive  # 常见 token、私钥和敏感文件检查
 pnpm check:syntax     # Astro/TypeScript 模板 + Worker 语法检查
 pnpm check:quality    # 内容、敏感信息、资产、图片建议、analytics smoke、构建和 dist 检查
 pnpm check:analytics  # 临时文章验证 GA4 和阅读量脚本注入
