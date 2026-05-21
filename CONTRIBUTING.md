@@ -40,6 +40,14 @@ https://lens-frontier.github.io/blog/pr-preview/pr-<PR 编号>/<commit short has
 
 PR 更新时会生成新的 commit 快照链接，并更新同一条 bot comment。
 
+更新已有 PR 或继续使用旧分支前，请先确认 PR 仍然处于 open 状态，并且 PR head 仍指向当前分支。可以用：
+
+```sh
+gh pr view <PR 编号> --json state,headRefName,baseRefName,headRefOid
+```
+
+如果 PR 已经 merged 或 closed，不要继续向原分支追加提交；从最新 `main` 新建分支并提交新的 PR。已关闭 PR 的预览会被回收，继续推原分支也不会更新那个 PR 的 CI、预览和 review 状态。
+
 ## 预览与回收
 
 - 每次 PR 更新都会重新跑 CI。

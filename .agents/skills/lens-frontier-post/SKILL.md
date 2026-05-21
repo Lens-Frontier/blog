@@ -10,21 +10,22 @@ Use this skill inside the `Lens-Frontier/blog` repository when helping someone c
 ## Workflow
 
 1. Inspect `git status --short` first. Do not overwrite unrelated user changes.
-2. Read the relevant local docs before editing:
+2. Before pushing to an existing branch or updating an existing PR, check the PR state with `gh pr view <number> --json state,headRefName,baseRefName,headRefOid`. If the PR is `MERGED` or `CLOSED`, do not keep pushing to that old branch as if the PR were still active. Create a fresh branch from the latest `origin/main`, carry the intended changes there, and open a new PR.
+3. Read the relevant local docs before editing:
    - `README.md`
    - `CONTRIBUTING.md`
    - `src/content.config.ts`
    - the matching file in `templates/`
-3. Choose the collection:
+4. Choose the collection:
    - `src/content/papers/<slug>.md` for reading-share notes about papers.
    - `src/content/benchmarks/<slug>.md` for benchmark observations.
    - `src/content/opinions/<slug>.md` for benchmark-facing opinions.
-4. Use lowercase kebab-case slugs. Prefer `post/<slug>` for the branch name.
-5. Copy the relevant template structure manually into the new Markdown file and complete frontmatter.
-6. Keep `authors` as site authors, not paper authors. For recurring authors, prefer `id` from `src/data/authors.ts`. If the author is not in the registry, either add them there or include at least `name` or `github` inline. Do not add `avatar` by default because the site automatically uses `https://github.com/<github>.png?size=96` when `github` exists. Add `avatar` only when a custom image is needed.
-7. Put post images under `src/assets/posts/<collection>/<slug>/`. Put author avatars under `public/assets/authors/`.
-8. Run `pnpm check` before proposing or opening a PR. It includes Markdown lint, content rules, asset hard-limit checks, image recommendation warnings, Astro type checks, production build, and built-page link checks.
-9. If the user asks to open the PR and credentials are available, push the branch and use `gh pr create`.
+5. Use lowercase kebab-case slugs. Prefer `post/<slug>` for the branch name.
+6. Copy the relevant template structure manually into the new Markdown file and complete frontmatter.
+7. Keep `authors` as site authors, not paper authors. For recurring authors, prefer `id` from `src/data/authors.ts`. If the author is not in the registry, either add them there or include at least `name` or `github` inline. Do not add `avatar` by default because the site automatically uses `https://github.com/<github>.png?size=96` when `github` exists. Add `avatar` only when a custom image is needed.
+8. Put post images under `src/assets/posts/<collection>/<slug>/`. Put author avatars under `public/assets/authors/`.
+9. Run `pnpm check` before proposing or opening a PR. It includes Markdown lint, content rules, asset hard-limit checks, image recommendation warnings, Astro type checks, production build, and built-page link checks.
+10. If the user asks to open the PR and credentials are available, push the branch and use `gh pr create`.
 
 ## Required Article Standards
 
