@@ -13,7 +13,7 @@
 						window.gtag('config', measurementId);
 					}
 				})();
-			})();</script><title>如何构建面向文生图模型的多模块协同评估框架 - Lens Frontier</title><meta name="description" content="以 LLM-as-a-Judge 为核心，通过 OCR/VQA/CLIP/IQA/HP 五模块协同校准，突破单一指标 benchmark 局限，全面捕捉现代文生图模型的真实能力边界。"><link rel="canonical" href="https://lens-frontier.github.io/blog/zh/opinions/t2i-multi-module-evaluation/"><link rel="alternate" hreflang="zh-CN" href="/blog/zh/opinions/t2i-multi-module-evaluation/"><link rel="alternate" hreflang="en" href="/blog/en/opinions/t2i-multi-module-evaluation-en/"><link rel="icon" type="image/svg+xml" href="/blog/favicon.svg"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:wght@500;600;700&family=Noto+Serif+SC:wght@500;700&display=swap" rel="stylesheet"><link rel="stylesheet" href="/blog/_astro/BaseLayout.pk8VniDo.css"></head> <body> <div class="shell"> <header class="site-header"> <a class="brand" href="/blog/zh/"> <span class="brand-mark">LF</span> <span> <strong>Lens Frontier</strong> <small>papers benchmarks opinions</small> </span> </a> <div class="header-actions"> <nav class="nav" aria-label="Primary navigation"> <a href="/blog/zh/papers/">Papers</a><a href="/blog/zh/benchmarks/">Benchmarks</a><a href="/blog/zh/opinions/">Opinions</a><a href="/blog/zh/tags/">Tags</a> </nav> <nav class="lang-switch" aria-label="Language switcher"> <a href="/blog/zh/opinions/t2i-multi-module-evaluation/" aria-current="true"> 中文 </a><a href="/blog/en/opinions/t2i-multi-module-evaluation-en/"> EN </a> </nav> </div> </header> <main>  <article class="article"> <header class="article-header"> <p class="eyebrow">opinion</p> <h1>如何构建面向文生图模型的多模块协同评估框架</h1> <p class="dek">以 LLM-as-a-Judge 为核心，通过 OCR/VQA/CLIP/IQA/HP 五模块协同校准，突破单一指标 benchmark 局限，全面捕捉现代文生图模型的真实能力边界。</p> <div class="article-byline"> <ul class="authors" aria-label="Authors"><li><img src="https://github.com/ShawnJoeng.png?size=96" alt="杨晓文 avatar" loading="lazy"><span><a class="author-name" href="https://github.com/ShawnJoeng" target="_blank" rel="noreferrer"><strong>杨晓文</strong></a><a href="https://github.com/ShawnJoeng" target="_blank" rel="noreferrer">@ShawnJoeng</a></span></li></ul> <span class="article-views" data-article-views data-loading-label="读取中" aria-label="阅读: 读取中"><span>阅读</span><strong data-view-count>--</strong></span>
+			})();</script><title>如何构建面向文生图模型的多模块协同评估框架 - Lens Frontier</title><meta name="description" content="以 LLM-as-a-Judge 为核心，通过 OCR/VQA/CLIP/IQA/HP 五模块协同校准，突破单一指标 benchmark 局限，全面捕捉现代文生图模型的真实能力边界。"><link rel="canonical" href="https://lens-frontier.github.io/blog/zh/opinions/t2i-multi-module-evaluation/"><link rel="alternate" hreflang="zh-CN" href="/blog/zh/opinions/t2i-multi-module-evaluation/"><link rel="alternate" hreflang="en" href="/blog/en/opinions/t2i-multi-module-evaluation-en/"><link rel="icon" type="image/svg+xml" href="/blog/favicon.svg"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:wght@500;600;700&family=Noto+Serif+SC:wght@500;700&display=swap" rel="stylesheet"><link rel="stylesheet" href="/blog/_astro/BaseLayout.C9ElSBAY.css"></head> <body> <div class="shell"> <header class="site-header"> <a class="brand" href="/blog/zh/"> <span class="brand-mark">LF</span> <span> <strong>Lens Frontier</strong> <small>papers benchmarks opinions</small> </span> </a> <div class="header-actions"> <nav class="nav" aria-label="Primary navigation"> <a href="/blog/zh/papers/">Papers</a><a href="/blog/zh/benchmarks/">Benchmarks</a><a href="/blog/zh/opinions/">Opinions</a><a href="/blog/zh/tags/">Tags</a> </nav> <nav class="lang-switch" aria-label="Language switcher"> <a href="/blog/zh/opinions/t2i-multi-module-evaluation/" aria-current="true"> 中文 </a><a href="/blog/en/opinions/t2i-multi-module-evaluation-en/"> EN </a> </nav> </div> </header> <main>  <article class="article"> <header class="article-header"> <p class="eyebrow">opinion</p> <h1>如何构建面向文生图模型的多模块协同评估框架</h1> <p class="dek">以 LLM-as-a-Judge 为核心，通过 OCR/VQA/CLIP/IQA/HP 五模块协同校准，突破单一指标 benchmark 局限，全面捕捉现代文生图模型的真实能力边界。</p> <div class="article-byline"> <ul class="authors" aria-label="Authors"><li><img src="https://github.com/ShawnJoeng.png?size=96" alt="杨晓文 avatar" loading="lazy"><span><a class="author-name" href="https://github.com/ShawnJoeng" target="_blank" rel="noreferrer"><strong>杨晓文</strong></a><a href="https://github.com/ShawnJoeng" target="_blank" rel="noreferrer">@ShawnJoeng</a></span></li></ul> <span class="article-views" data-article-views data-loading-label="读取中" aria-label="阅读: 读取中"><span>阅读</span><strong data-view-count>--</strong></span>
 		<script>(function(){const articleId = "opinions/t2i-multi-module-evaluation";
 const countEndpoint = "https://lens-frontier-pageviews.lens-frontier.workers.dev/views";
 const lang = "zh";
@@ -372,7 +372,7 @@ const siteId = "lens-frontier";
 <hr>
 <p>杨晓文，</p>
 <p>ERNIE-Image模型策略产品经理，评测与数据组，百度。</p>
-<p>写于2026.5.21，北京。</p>  </div> <div class="image-lightbox" data-image-lightbox data-open-label="查看大图" role="dialog" aria-modal="true" aria-label="图片预览" hidden> <button class="image-lightbox__close" type="button" data-lightbox-close aria-label="关闭" title="关闭"> <span aria-hidden="true">×</span> </button> <div class="image-lightbox__stage" data-lightbox-stage> <img data-lightbox-image alt=""> </div> <p class="image-lightbox__caption" data-lightbox-caption hidden></p> </div> <script>
+<p>写于2026.5.21，北京。</p>  </div> <div class="image-lightbox" data-image-lightbox data-open-label="查看大图" role="dialog" aria-modal="true" aria-label="图片预览" hidden> <button class="image-lightbox__close" type="button" data-lightbox-close aria-label="关闭" title="关闭"> <span aria-hidden="true">×</span> </button> <div class="image-lightbox__stage" data-lightbox-stage> <div class="image-lightbox__frame" data-lightbox-frame> <img data-lightbox-image alt=""> </div> </div> <div class="image-lightbox__controls" data-lightbox-controls> <button type="button" data-lightbox-zoom-out aria-label="缩小" title="缩小"> <span aria-hidden="true">−</span> </button> <span data-lightbox-zoom-value>100%</span> <button type="button" data-lightbox-zoom-in aria-label="放大" title="放大"> <span aria-hidden="true">+</span> </button> </div> <p class="image-lightbox__caption" data-lightbox-caption hidden></p> </div> <script>
 	(() => {
 		const article = document.querySelector('.article-body');
 		const lightbox = document.querySelector('[data-image-lightbox]');
@@ -380,62 +380,94 @@ const siteId = "lens-frontier";
 		const caption = lightbox?.querySelector('[data-lightbox-caption]');
 		const closeButton = lightbox?.querySelector('[data-lightbox-close]');
 		const stage = lightbox?.querySelector('[data-lightbox-stage]');
-		if (!article || !lightbox || !preview || !caption || !closeButton || !stage) return;
+		const frame = lightbox?.querySelector('[data-lightbox-frame]');
+		const zoomInButton = lightbox?.querySelector('[data-lightbox-zoom-in]');
+		const zoomOutButton = lightbox?.querySelector('[data-lightbox-zoom-out]');
+		const zoomValue = lightbox?.querySelector('[data-lightbox-zoom-value]');
+		if (
+			!article ||
+			!lightbox ||
+			!preview ||
+			!caption ||
+			!closeButton ||
+			!stage ||
+			!frame ||
+			!zoomInButton ||
+			!zoomOutButton ||
+			!zoomValue
+		)
+			return;
 
 		let activeTrigger = null;
 		let basePreviewWidth = 0;
+		let basePreviewHeight = 0;
 		let previewScale = 1;
+		let gestureStartScale = 1;
 		const openLabel = lightbox.dataset.openLabel || 'View larger image';
 		const minScale = 1;
-		const maxScale = 4;
+		const maxScale = 2;
+		const scaleStep = 0.25;
 
 		const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
 
-		const resetPreviewZoom = () => {
-			previewScale = 1;
-			basePreviewWidth = 0;
-			preview.style.removeProperty('--lightbox-image-width');
-			delete lightbox.dataset.zoomed;
-			stage.scrollLeft = 0;
-			stage.scrollTop = 0;
-		};
-
-		const rememberBaseWidth = () => {
+		const rememberBaseSize = () => {
 			const rect = preview.getBoundingClientRect();
-			if (!rect.width) return;
+			if (!preview.naturalWidth || rect.width < 24 || rect.height < 24) return;
 			basePreviewWidth = rect.width / previewScale;
+			basePreviewHeight = rect.height / previewScale;
 		};
 
-		const setPreviewScale = (nextScale, event) => {
-			if (lightbox.hidden) return;
+		const updateZoomControls = () => {
+			zoomValue.textContent = `${Math.round(previewScale * 100)}%`;
+			zoomOutButton.disabled = !basePreviewWidth || previewScale <= minScale;
+			zoomInButton.disabled = !basePreviewWidth || previewScale >= maxScale;
 
-			const previousRect = preview.getBoundingClientRect();
-			if (!previousRect.width || !previousRect.height) return;
-			if (!basePreviewWidth) rememberBaseWidth();
-			if (!basePreviewWidth) return;
-
-			const scale = clamp(nextScale, minScale, maxScale);
-			if (Math.abs(scale - previewScale) < 0.01) return;
-
-			const focusX = event ? clamp((event.clientX - previousRect.left) / previousRect.width, 0, 1) : 0.5;
-			const focusY = event ? clamp((event.clientY - previousRect.top) / previousRect.height, 0, 1) : 0.5;
-			const viewportX = event ? event.clientX : window.innerWidth / 2;
-			const viewportY = event ? event.clientY : window.innerHeight / 2;
-
-			previewScale = scale <= 1.01 ? 1 : scale;
-			if (previewScale === 1) {
-				preview.style.removeProperty('--lightbox-image-width');
+			if (previewScale <= minScale || !basePreviewWidth) {
+				frame.style.removeProperty('--lightbox-frame-width');
+				frame.style.removeProperty('--lightbox-frame-height');
+				preview.style.removeProperty('--lightbox-image-scale');
 				delete lightbox.dataset.zoomed;
-			} else {
-				preview.style.setProperty('--lightbox-image-width', `${Math.round(basePreviewWidth * previewScale)}px`);
-				lightbox.dataset.zoomed = 'true';
+				return;
 			}
 
+			frame.style.setProperty('--lightbox-frame-width', `${Math.round(basePreviewWidth * previewScale)}px`);
+			frame.style.setProperty('--lightbox-frame-height', `${Math.round(basePreviewHeight * previewScale)}px`);
+			preview.style.setProperty('--lightbox-image-scale', String(previewScale));
+			lightbox.dataset.zoomed = 'true';
+		};
+
+		const setPreviewScale = (nextScale) => {
+			if (lightbox.hidden) return;
+			if (!basePreviewWidth) rememberBaseSize();
+			if (!basePreviewWidth) return;
+
+			const scale = clamp(Math.round(nextScale * 100) / 100, minScale, maxScale);
+			if (Math.abs(scale - previewScale) < 0.01) return;
+			const scrollXRatio =
+				stage.scrollWidth > stage.clientWidth ? (stage.scrollLeft + stage.clientWidth / 2) / stage.scrollWidth : 0.5;
+			const scrollYRatio =
+				stage.scrollHeight > stage.clientHeight ? (stage.scrollTop + stage.clientHeight / 2) / stage.scrollHeight : 0.5;
+
+			previewScale = scale;
+			updateZoomControls();
 			window.requestAnimationFrame(() => {
-				const nextRect = preview.getBoundingClientRect();
-				stage.scrollLeft += nextRect.left + focusX * nextRect.width - viewportX;
-				stage.scrollTop += nextRect.top + focusY * nextRect.height - viewportY;
+				if (previewScale <= minScale) {
+					stage.scrollLeft = 0;
+					stage.scrollTop = 0;
+					return;
+				}
+				stage.scrollLeft = scrollXRatio * stage.scrollWidth - stage.clientWidth / 2;
+				stage.scrollTop = scrollYRatio * stage.scrollHeight - stage.clientHeight / 2;
 			});
+		};
+
+		const resetPreviewZoom = () => {
+			basePreviewWidth = 0;
+			basePreviewHeight = 0;
+			previewScale = 1;
+			stage.scrollLeft = 0;
+			stage.scrollTop = 0;
+			updateZoomControls();
 		};
 
 		const closeLightbox = () => {
@@ -462,8 +494,14 @@ const siteId = "lens-frontier";
 			caption.hidden = !captionText;
 			lightbox.hidden = false;
 			document.documentElement.classList.add('has-image-lightbox');
-			if (preview.complete) window.requestAnimationFrame(rememberBaseWidth);
-			else preview.addEventListener('load', () => window.requestAnimationFrame(rememberBaseWidth), { once: true });
+			const primePreviewSize = () => {
+				window.requestAnimationFrame(() => {
+					rememberBaseSize();
+					updateZoomControls();
+				});
+			};
+			if (preview.complete && preview.naturalWidth) primePreviewSize();
+			else preview.addEventListener('load', primePreviewSize, { once: true });
 			closeButton.focus({ preventScroll: true });
 		};
 
@@ -485,15 +523,27 @@ const siteId = "lens-frontier";
 		}
 
 		closeButton.addEventListener('click', closeLightbox);
+		zoomInButton.addEventListener('click', () => setPreviewScale(previewScale + scaleStep));
+		zoomOutButton.addEventListener('click', () => setPreviewScale(previewScale - scaleStep));
 		stage.addEventListener(
 			'wheel',
 			(event) => {
 				if (lightbox.hidden || !(event.ctrlKey || event.metaKey)) return;
 				event.preventDefault();
-				setPreviewScale(previewScale * Math.exp(-event.deltaY * 0.006), event);
+				setPreviewScale(previewScale * Math.exp(-event.deltaY * 0.006));
 			},
 			{ passive: false },
 		);
+		stage.addEventListener('gesturestart', (event) => {
+			if (lightbox.hidden) return;
+			event.preventDefault();
+			gestureStartScale = previewScale;
+		});
+		stage.addEventListener('gesturechange', (event) => {
+			if (lightbox.hidden) return;
+			event.preventDefault();
+			setPreviewScale(gestureStartScale * event.scale);
+		});
 		lightbox.addEventListener('click', (event) => {
 			if (event.target === lightbox || event.target === stage) closeLightbox();
 		});
@@ -501,11 +551,11 @@ const siteId = "lens-frontier";
 			if (event.key === 'Escape') closeLightbox();
 			if (!lightbox.hidden && (event.key === '+' || event.key === '=')) {
 				event.preventDefault();
-				setPreviewScale(previewScale * 1.2);
+				setPreviewScale(previewScale + scaleStep);
 			}
 			if (!lightbox.hidden && (event.key === '-' || event.key === '_')) {
 				event.preventDefault();
-				setPreviewScale(previewScale / 1.2);
+				setPreviewScale(previewScale - scaleStep);
 			}
 			if (!lightbox.hidden && event.key === '0') {
 				event.preventDefault();
@@ -513,7 +563,13 @@ const siteId = "lens-frontier";
 			}
 			if (event.key === 'Tab' && !lightbox.hidden) {
 				event.preventDefault();
-				closeButton.focus({ preventScroll: true });
+				const focusable = [closeButton, zoomOutButton, zoomInButton].filter((item) => !item.disabled);
+				const currentIndex = focusable.indexOf(document.activeElement);
+				const nextIndex =
+					event.shiftKey ?
+						(currentIndex <= 0 ? focusable.length - 1 : currentIndex - 1)
+					:	(currentIndex + 1) % focusable.length;
+				focusable[nextIndex]?.focus({ preventScroll: true });
 			}
 		});
 	})();
@@ -531,10 +587,12 @@ const siteId = "lens-frontier";
 				const dayMs = 24 * 60 * 60 * 1000;
 				const now = Date.now();
 
+				let canRememberView = false;
+
 				try {
 					const previous = Number(window.localStorage.getItem(dedupeKey));
 					if (previous && now - previous < dayMs) return;
-					window.localStorage.setItem(dedupeKey, String(now));
+					canRememberView = true;
 				} catch {
 					// Storage can be unavailable in some privacy modes. The backend still deduplicates.
 				}
@@ -545,18 +603,17 @@ const siteId = "lens-frontier";
 					path: window.location.pathname,
 				});
 
-				if (navigator.sendBeacon) {
-					const body = new Blob([payload], { type: 'application/json' });
-					navigator.sendBeacon(endpoint, body);
-					return;
-				}
-
 				fetch(endpoint, {
 					method: 'POST',
 					body: payload,
 					headers: { 'Content-Type': 'application/json' },
 					keepalive: true,
 					credentials: 'omit',
-				}).catch(() => {});
+				})
+					.then((response) => {
+						if (!response.ok || !canRememberView) return;
+						window.localStorage.setItem(dedupeKey, String(now));
+					})
+					.catch(() => {});
 			})();
 		})();</script> </article>  </main> <footer class="site-footer"> <div> <span>Lens Frontier</span> <span>Reading notes and modest benchmark arguments.</span> </div> <nav class="footer-links" aria-label="Secondary navigation"> <a href="/blog/zh/timeline/">Timeline</a> <a href="/blog/zh/about/">About</a> <a href="/blog/zh/rss.xml">RSS</a> <a href="https://github.com/Lens-Frontier/blog" target="_blank" rel="noreferrer">GitHub</a> </nav> </footer> </div> </body></html>
