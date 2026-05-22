@@ -116,6 +116,12 @@ We propose a **five-dimension evaluation taxonomy**, where each dimension corres
 
 The system follows a **"Parse → Evaluate → Calibrate → Fuse"** four-stage paradigm:
 
+<style>
+.article-body img[alt="Evaluation system pipeline"] {
+  max-width: min(100%, 520px);
+}
+</style>
+
 ![Evaluation system pipeline](../../assets/posts/opinions/t2i-multi-module-evaluation-en/pipeline-en.webp)
 
 Key design principle: Modules don't score in isolation and simply average — instead, **Stage 3's cross-module calibration** enables collaboration. **A critical failure in one dimension propagates to other modules**, **preventing the "fail one subject but pass overall" paradox**.

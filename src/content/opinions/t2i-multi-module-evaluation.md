@@ -116,6 +116,12 @@ L1（对象类型）            L2（类别）            L3（子类别）
 
 系统遵循**解析→评估→校准→融合**四阶段范式：
 
+<style>
+.article-body img[alt="评估系统整体流程"] {
+  max-width: min(100%, 520px);
+}
+</style>
+
 ![评估系统整体流程](../../assets/posts/opinions/t2i-multi-module-evaluation/pipeline-zh.webp)
 
 关键设计思想：各模块不是孤立打分后简单加权，而是通过**阶段3的跨模块校准**实现协同——**某一核心维度的严重失败会传播到其他模块**，**防止"单项挂科但总分及格"的不合理现象**。
