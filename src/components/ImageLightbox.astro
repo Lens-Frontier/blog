@@ -30,7 +30,9 @@ const labels =
 	aria-label={labels.dialog}
 	hidden
 >
-	<button class="image-lightbox__close" type="button" data-lightbox-close>{labels.close}</button>
+	<button class="image-lightbox__close" type="button" data-lightbox-close aria-label={labels.close} title={labels.close}>
+		<span aria-hidden="true">×</span>
+	</button>
 	<div class="image-lightbox__stage" data-lightbox-stage>
 		<img data-lightbox-image alt="" />
 	</div>
@@ -48,12 +50,67 @@ const labels =
 		if (!article || !lightbox || !preview || !caption || !closeButton || !stage) return;
 
 		let activeTrigger = null;
+		let basePreviewWidth = 0;
+		let previewScale = 1;
 		const openLabel = lightbox.dataset.openLabel || 'View larger image';
+		const minScale = 1;
+		const maxScale = 4;
+
+		const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
+
+		const resetPreviewZoom = () => {
+			previewScale = 1;
+			basePreviewWidth = 0;
+			preview.style.removeProperty('--lightbox-image-width');
+			delete lightbox.dataset.zoomed;
+			stage.scrollLeft = 0;
+			stage.scrollTop = 0;
+		};
+
+		const rememberBaseWidth = () => {
+			const rect = preview.getBoundingClientRect();
+			if (!rect.width) return;
+			basePreviewWidth = rect.width / previewScale;
+		};
+
+		const setPreviewScale = (nextScale, event) => {
+			if (lightbox.hidden) return;
+
+			const previousRect = preview.getBoundingClientRect();
+			if (!previousRect.width || !previousRect.height) return;
+			if (!basePreviewWidth) rememberBaseWidth();
+			if (!basePreviewWidth) return;
+
+			const scale = clamp(nextScale, minScale, maxScale);
+			if (Math.abs(scale - previewScale) < 0.01) return;
+
+			const focusX = event ? clamp((event.clientX - previousRect.left) / previousRect.width, 0, 1) : 0.5;
+			const focusY = event ? clamp((event.clientY - previousRect.top) / previousRect.height, 0, 1) : 0.5;
+			const viewportX = event ? event.clientX : window.innerWidth / 2;
+			const viewportY = event ? event.clientY : window.innerHeight / 2;
+
+			previewScale = scale <= 1.01 ? 1 : scale;
+			if (previewScale === 1) {
+				preview.style.removeProperty('--lightbox-image-width');
+				delete lightbox.dataset.zoomed;
+			} else {
+				preview.style.setProperty('--lightbox-image-width', `${Math.round(basePreviewWidth * previewScale)}px`);
+				lightbox.dataset.zoomed = 'true';
+			}
+
+			window.requestAnimationFrame(() => {
+				const nextRect = preview.getBoundingClientRect();
+				stage.scrollLeft += nextRect.left + focusX * nextRect.width - viewportX;
+				stage.scrollTop += nextRect.top + focusY * nextRect.height - viewportY;
+			});
+		};
 
 		const closeLightbox = () => {
 			if (lightbox.hidden) return;
 			lightbox.hidden = true;
 			preview.removeAttribute('src');
+			delete lightbox.dataset.imageShape;
+			resetPreviewZoom();
 			document.documentElement.classList.remove('has-image-lightbox');
 			activeTrigger?.focus({ preventScroll: true });
 			activeTrigger = null;
@@ -61,13 +118,19 @@ const labels =
 
 		const openLightbox = (image) => {
 			activeTrigger = image;
+			resetPreviewZoom();
 			preview.src = image.currentSrc || image.src;
 			preview.alt = image.alt || '';
+			const naturalWidth = image.naturalWidth || 0;
+			const naturalHeight = image.naturalHeight || 0;
+			lightbox.dataset.imageShape = naturalHeight > naturalWidth * 1.25 ? 'tall' : 'fit';
 			const captionText = image.alt?.trim() || image.title?.trim() || '';
 			caption.textContent = captionText;
 			caption.hidden = !captionText;
 			lightbox.hidden = false;
 			document.documentElement.classList.add('has-image-lightbox');
+			if (preview.complete) window.requestAnimationFrame(rememberBaseWidth);
+			else preview.addEventListener('load', () => window.requestAnimationFrame(rememberBaseWidth), { once: true });
 			closeButton.focus({ preventScroll: true });
 		};
 
@@ -89,11 +152,32 @@ const labels =
 		}
 
 		closeButton.addEventListener('click', closeLightbox);
+		stage.addEventListener(
+			'wheel',
+			(event) => {
+				if (lightbox.hidden || !(event.ctrlKey || event.metaKey)) return;
+				event.preventDefault();
+				setPreviewScale(previewScale * Math.exp(-event.deltaY * 0.006), event);
+			},
+			{ passive: false },
+		);
 		lightbox.addEventListener('click', (event) => {
 			if (event.target === lightbox || event.target === stage) closeLightbox();
 		});
 		document.addEventListener('keydown', (event) => {
 			if (event.key === 'Escape') closeLightbox();
+			if (!lightbox.hidden && (event.key === '+' || event.key === '=')) {
+				event.preventDefault();
+				setPreviewScale(previewScale * 1.2);
+			}
+			if (!lightbox.hidden && (event.key === '-' || event.key === '_')) {
+				event.preventDefault();
+				setPreviewScale(previewScale / 1.2);
+			}
+			if (!lightbox.hidden && event.key === '0') {
+				event.preventDefault();
+				setPreviewScale(1);
+			}
 			if (event.key === 'Tab' && !lightbox.hidden) {
 				event.preventDefault();
 				closeButton.focus({ preventScroll: true });

@@ -25,7 +25,7 @@ Use this skill inside the `Lens-Frontier/blog` repository when helping someone c
 7. Copy the relevant template structure manually into the new Markdown file and complete frontmatter.
 8. Set `lang: "zh"` or `lang: "en"` in frontmatter. Single-language publication is allowed; do not invent a translation just to fill both routes. If a translated counterpart exists later, give both posts the same `translationKey` so the language switch can stay on the matching article.
 9. Keep `authors` as site authors, not paper authors. For recurring authors, prefer `id` from `src/data/authors.ts`. If the author is not in the registry, either add them there or include at least `name` or `github` inline. Do not add `avatar` by default because the site automatically uses `https://github.com/<github>.png?size=96` when `github` exists. Add `avatar` only when a custom image is needed.
-10. Put post images under `src/assets/posts/<collection>/<slug>/`. Put author avatars under `public/assets/authors/`.
+10. Put post images under `src/assets/posts/<collection>/<slug>/` only; do not duplicate them under `public/assets/posts/`. Put author avatars under `public/assets/authors/`.
 11. Run `pnpm check` before proposing or opening a PR. It includes syntax checks, Markdown lint, content rules, sensitive-content checks, asset hard-limit checks, image recommendation warnings, production build, built-page link/i18n checks, and non-blocking warnings for likely unrendered Markdown markers. When it fails, read the final `Failed checks` summary first.
 12. If the user asks to open the PR and credentials are available, push the branch to the fork and use `gh pr create --repo Lens-Frontier/blog`. Use a clear title prefix: `post: <article title>` for articles, `docs:`, `site:`, or `chore:` for non-article changes.
 
@@ -55,6 +55,7 @@ Use this skill inside the `Lens-Frontier/blog` repository when helping someone c
 - Total post asset folder hard max: `10 MB`.
 - Author avatar max: `512 KB`.
 - Prefer WebP or AVIF for post images; WebP for avatars.
+- Reference post images with relative Markdown paths. Do not use `/assets/posts/...` absolute paths, which point at `public/` and can lead to duplicate assets.
 - Keep screenshots at or below `1600 px` wide when possible.
 - Run `pnpm images:check` to surface image recommendations. Recommendation warnings do not block CI; hard limits from `check:assets` do. Run `pnpm images:optimize` before PR when images are large or wider than `1600 px`.
 - Every Markdown image needs meaningful alt text.
