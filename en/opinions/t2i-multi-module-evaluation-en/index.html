@@ -13,7 +13,34 @@
 						window.gtag('config', measurementId);
 					}
 				})();
-			})();</script><title>Building a Multi-Module Collaborative Evaluation Framework for T2I - Lens Frontier</title><meta name="description" content="An LLM-as-a-Judge evaluation system with OCR/VQA/CLIP/IQA/HP modules and cross-module calibration, breaking through single-metric benchmark limitations to capture the true capability boundaries of modern T2I models."><link rel="canonical" href="https://lens-frontier.github.io/blog/en/opinions/t2i-multi-module-evaluation-en/"><link rel="alternate" hreflang="zh-CN" href="/blog/zh/opinions/t2i-multi-module-evaluation/"><link rel="alternate" hreflang="en" href="/blog/en/opinions/t2i-multi-module-evaluation-en/"><link rel="icon" type="image/svg+xml" href="/blog/favicon.svg"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:wght@500;600;700&family=Noto+Serif+SC:wght@500;700&display=swap" rel="stylesheet"><link rel="stylesheet" href="/blog/_astro/BaseLayout.pk8VniDo.css"></head> <body> <div class="shell"> <header class="site-header"> <a class="brand" href="/blog/en/"> <span class="brand-mark">LF</span> <span> <strong>Lens Frontier</strong> <small>papers benchmarks opinions</small> </span> </a> <div class="header-actions"> <nav class="nav" aria-label="Primary navigation"> <a href="/blog/en/papers/">Papers</a><a href="/blog/en/benchmarks/">Benchmarks</a><a href="/blog/en/opinions/">Opinions</a><a href="/blog/en/tags/">Tags</a> </nav> <nav class="lang-switch" aria-label="Language switcher"> <a href="/blog/zh/opinions/t2i-multi-module-evaluation/"> 中文 </a><a href="/blog/en/opinions/t2i-multi-module-evaluation-en/" aria-current="true"> EN </a> </nav> </div> </header> <main>  <article class="article"> <header class="article-header"> <p class="eyebrow">opinion</p> <h1>Building a Multi-Module Collaborative Evaluation Framework for T2I</h1> <p class="dek">An LLM-as-a-Judge evaluation system with OCR/VQA/CLIP/IQA/HP modules and cross-module calibration, breaking through single-metric benchmark limitations to capture the true capability boundaries of modern T2I models.</p> <div class="article-byline"> <ul class="authors" aria-label="Authors"><li><img src="https://github.com/ShawnJoeng.png?size=96" alt="Xiaowen Yang avatar" loading="lazy"><span><a class="author-name" href="https://github.com/ShawnJoeng" target="_blank" rel="noreferrer"><strong>Xiaowen Yang</strong></a><a href="https://github.com/ShawnJoeng" target="_blank" rel="noreferrer">@ShawnJoeng</a></span></li></ul>  </div> <dl class="spec-table"><div><dt>Date</dt><dd>05/21/2026</dd></div><div><dt>Stance</dt><dd>Existing T2I benchmarks cannot cover text rendering, world knowledge, or multi-view capabilities — a multi-module collaborative automated evaluation framework is needed</dd></div></dl> <div class="article-actions">   </div> <div class="tag-list"> <a href="/blog/en/tags/evaluation/">evaluation</a><a href="/blog/en/tags/text-to-image/">text-to-image</a><a href="/blog/en/tags/llm-as-a-judge/">llm-as-a-judge</a><a href="/blog/en/tags/benchmark/">benchmark</a> </div> </header> <div class="article-body">  <p>It’s been a while since ERNIE-Image launched, and we’ve received overwhelmingly positive feedback. <strong>Thank you so much for your love and support for the model.</strong></p>
+			})();</script><title>Building a Multi-Module Collaborative Evaluation Framework for T2I - Lens Frontier</title><meta name="description" content="An LLM-as-a-Judge evaluation system with OCR/VQA/CLIP/IQA/HP modules and cross-module calibration, breaking through single-metric benchmark limitations to capture the true capability boundaries of modern T2I models."><link rel="canonical" href="https://lens-frontier.github.io/blog/en/opinions/t2i-multi-module-evaluation-en/"><link rel="alternate" hreflang="zh-CN" href="/blog/zh/opinions/t2i-multi-module-evaluation/"><link rel="alternate" hreflang="en" href="/blog/en/opinions/t2i-multi-module-evaluation-en/"><link rel="icon" type="image/svg+xml" href="/blog/favicon.svg"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:wght@500;600;700&family=Noto+Serif+SC:wght@500;700&display=swap" rel="stylesheet"><link rel="stylesheet" href="/blog/_astro/BaseLayout.pk8VniDo.css"></head> <body> <div class="shell"> <header class="site-header"> <a class="brand" href="/blog/en/"> <span class="brand-mark">LF</span> <span> <strong>Lens Frontier</strong> <small>papers benchmarks opinions</small> </span> </a> <div class="header-actions"> <nav class="nav" aria-label="Primary navigation"> <a href="/blog/en/papers/">Papers</a><a href="/blog/en/benchmarks/">Benchmarks</a><a href="/blog/en/opinions/">Opinions</a><a href="/blog/en/tags/">Tags</a> </nav> <nav class="lang-switch" aria-label="Language switcher"> <a href="/blog/zh/opinions/t2i-multi-module-evaluation/"> 中文 </a><a href="/blog/en/opinions/t2i-multi-module-evaluation-en/" aria-current="true"> EN </a> </nav> </div> </header> <main>  <article class="article"> <header class="article-header"> <p class="eyebrow">opinion</p> <h1>Building a Multi-Module Collaborative Evaluation Framework for T2I</h1> <p class="dek">An LLM-as-a-Judge evaluation system with OCR/VQA/CLIP/IQA/HP modules and cross-module calibration, breaking through single-metric benchmark limitations to capture the true capability boundaries of modern T2I models.</p> <div class="article-byline"> <ul class="authors" aria-label="Authors"><li><img src="https://github.com/ShawnJoeng.png?size=96" alt="Xiaowen Yang avatar" loading="lazy"><span><a class="author-name" href="https://github.com/ShawnJoeng" target="_blank" rel="noreferrer"><strong>Xiaowen Yang</strong></a><a href="https://github.com/ShawnJoeng" target="_blank" rel="noreferrer">@ShawnJoeng</a></span></li></ul> <span class="article-views" data-article-views data-loading-label="Loading" aria-label="Views: Loading"><span>Views</span><strong data-view-count>--</strong></span>
+		<script>(function(){const articleId = "opinions/t2i-multi-module-evaluation-en";
+const countEndpoint = "https://lens-frontier-pageviews.lens-frontier.workers.dev/views";
+const lang = "en";
+const siteId = "lens-frontier";
+
+			(() => {
+				const target = document.querySelector('[data-article-views]');
+				const value = target?.querySelector('[data-view-count]');
+				if (!target || !value) return;
+
+				const formatter = new Intl.NumberFormat(lang === 'zh' ? 'zh-CN' : 'en-US');
+				const url = new URL(countEndpoint, window.location.origin);
+				url.searchParams.set('siteId', siteId);
+				url.searchParams.set('articleId', articleId);
+
+				fetch(url.toString(), { credentials: 'omit', cache: 'no-store' })
+					.then((response) => (response.ok ? response.json() : Promise.reject()))
+					.then((data) => {
+						const count = Number(data.viewCount || 0);
+						value.textContent = formatter.format(count);
+						target.setAttribute('aria-label', `${target.firstElementChild?.textContent || 'Views'}: ${count}`);
+					})
+					.catch(() => {
+						target.remove();
+					});
+			})();
+		})();</script> </div> <dl class="spec-table"><div><dt>Date</dt><dd>05/21/2026</dd></div><div><dt>Stance</dt><dd>Existing T2I benchmarks cannot cover text rendering, world knowledge, or multi-view capabilities — a multi-module collaborative automated evaluation framework is needed</dd></div></dl> <div class="article-actions">   </div> <div class="tag-list"> <a href="/blog/en/tags/evaluation/">evaluation</a><a href="/blog/en/tags/text-to-image/">text-to-image</a><a href="/blog/en/tags/llm-as-a-judge/">llm-as-a-judge</a><a href="/blog/en/tags/benchmark/">benchmark</a> </div> </header> <div class="article-body">  <p>It’s been a while since ERNIE-Image launched, and we’ve received overwhelmingly positive feedback. <strong>Thank you so much for your love and support for the model.</strong></p>
 <p>Today I want to talk about how I designed a fully automated evaluation system with LLM-as-a-Judge at its core — one that <strong>breaks through the limitations of single-metric benchmarks</strong> and <strong>captures the true capability boundaries of modern T2I models</strong>. By identifying model weaknesses through evaluation, we’ve been able to steer ERNIE-Image’s iterations in the right direction, making it lean and powerful.</p>
 <h2 id="1-why-build-our-own-evaluation-set">1. Why Build Our Own Evaluation Set</h2>
 <p>Since the release of Gemini 3 Pro, the image generation field has undergone a generational leap. Advanced models can now handle <strong>precise text rendering</strong>, <strong>world-knowledge-based reasoning generation</strong>, and <strong>complex instruction following</strong> — yet mainstream benchmarks like GenEval, T2I-CompBench, and DrawBench were never designed to evaluate these capabilities.</p>
@@ -491,4 +518,46 @@
 			}
 		});
 	})();
-</script>  </article>  </main> <footer class="site-footer"> <div> <span>Lens Frontier</span> <span>Reading notes and modest benchmark arguments.</span> </div> <nav class="footer-links" aria-label="Secondary navigation"> <a href="/blog/en/timeline/">Timeline</a> <a href="/blog/en/about/">About</a> <a href="/blog/en/rss.xml">RSS</a> <a href="https://github.com/Lens-Frontier/blog" target="_blank" rel="noreferrer">GitHub</a> </nav> </footer> </div> </body></html>
+</script> <script>(function(){const articleId = "opinions/t2i-multi-module-evaluation-en";
+const endpoint = "https://lens-frontier-pageviews.lens-frontier.workers.dev/pageview";
+const siteId = "lens-frontier";
+
+			(() => {
+				if (!endpoint) return;
+
+				const doNotTrack = navigator.doNotTrack === '1' || window.doNotTrack === '1';
+				if (doNotTrack) return;
+
+				const dedupeKey = `lens-frontier:pageview:${articleId}`;
+				const dayMs = 24 * 60 * 60 * 1000;
+				const now = Date.now();
+
+				try {
+					const previous = Number(window.localStorage.getItem(dedupeKey));
+					if (previous && now - previous < dayMs) return;
+					window.localStorage.setItem(dedupeKey, String(now));
+				} catch {
+					// Storage can be unavailable in some privacy modes. The backend still deduplicates.
+				}
+
+				const payload = JSON.stringify({
+					siteId,
+					articleId,
+					path: window.location.pathname,
+				});
+
+				if (navigator.sendBeacon) {
+					const body = new Blob([payload], { type: 'application/json' });
+					navigator.sendBeacon(endpoint, body);
+					return;
+				}
+
+				fetch(endpoint, {
+					method: 'POST',
+					body: payload,
+					headers: { 'Content-Type': 'application/json' },
+					keepalive: true,
+					credentials: 'omit',
+				}).catch(() => {});
+			})();
+		})();</script> </article>  </main> <footer class="site-footer"> <div> <span>Lens Frontier</span> <span>Reading notes and modest benchmark arguments.</span> </div> <nav class="footer-links" aria-label="Secondary navigation"> <a href="/blog/en/timeline/">Timeline</a> <a href="/blog/en/about/">About</a> <a href="/blog/en/rss.xml">RSS</a> <a href="https://github.com/Lens-Frontier/blog" target="_blank" rel="noreferrer">GitHub</a> </nav> </footer> </div> </body></html>
