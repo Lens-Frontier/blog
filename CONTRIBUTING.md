@@ -94,7 +94,7 @@ src/assets/posts/papers/swe-bench-verified/
 - `lang: "zh"`：文章生成在 `/zh/<collection>/<slug>/`
 - `lang: "en"`：文章生成在 `/en/<collection>/<slug>/`
 - 不强制同步翻译。中文文章可以只发中文，英文文章也可以只发英文。
-- 如果之后补翻译，建议两篇文章使用相同的 `translationKey`，便于后续做更精细的互链。
+- 如果之后补翻译，建议两篇文章使用相同的 `translationKey`。站点的中英切换会优先跳到同一篇文章的译文；如果目标语言没有译文，则回到目标语言的对应栏目页。
 
 论文阅读分享示例：
 
@@ -270,6 +270,7 @@ pnpm check:syntax
 - Markdown 图片 alt text 检查
 - Astro 生产构建
 - 构建产物页面标题、描述、站内链接、i18n、GA/pageview 开关和 RSS 检查
+- 构建后文章正文中疑似未渲染 Markdown 标记的 warning，并写入 GitHub Actions summary；不作为硬性阻断
 
 同一组内可独立执行的检查会尽量跑完，并在日志末尾汇总失败项。构建失败时，依赖构建产物的 dist 检查会跳过，避免读取旧产物。
 
