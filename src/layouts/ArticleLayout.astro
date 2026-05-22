@@ -2,6 +2,7 @@
 import BaseLayout from './BaseLayout.astro';
 import ArticleViews from '../components/ArticleViews.astro';
 import Authors from '../components/Authors.astro';
+import ImageLightbox from '../components/ImageLightbox.astro';
 import PageviewTracker from '../components/PageviewTracker.astro';
 import SpecTable from '../components/SpecTable.astro';
 import { translatedEntry, type CollectionName } from '../lib/content';
@@ -78,6 +79,7 @@ const spec: SpecItem[] =
 		<div class="article-body">
 			<slot />
 		</div>
+		<ImageLightbox lang={lang} />
 		<PageviewTracker articleId={articleId} />
 	</article>
 </BaseLayout>
