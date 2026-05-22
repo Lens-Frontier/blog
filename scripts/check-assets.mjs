@@ -1,6 +1,6 @@
 import { readFile, readdir, stat } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
-import { extname, join } from 'node:path';
+import { extname, join, relative } from 'node:path';
 
 const root = process.cwd();
 const collections = ['papers', 'benchmarks', 'opinions'];
@@ -69,6 +69,10 @@ for (const file of await walk(join(root, 'public', 'assets', 'authors'))) {
 	if (size > maxAuthorAvatarBytes) {
 		errors.push(`Author avatar is too large: ${file} (${displayBytes(size)} > 0.50 MB)`);
 	}
+}
+
+for (const file of await walk(join(root, 'public', 'assets', 'posts'))) {
+	errors.push(`Post image should live under src/assets/posts, not public/assets/posts: ${relative(root, file)}`);
 }
 
 for (const collection of collections) {
