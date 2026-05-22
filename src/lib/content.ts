@@ -10,6 +10,13 @@ export async function publishedCollection(collection: CollectionName, lang: Lang
 		.sort(byDateDesc);
 }
 
+export async function translatedEntry(collection: CollectionName, translationKey: string | undefined, lang: Language) {
+	if (!translationKey) return undefined;
+	return (await getCollection(collection)).find(
+		(entry) => !entry.data.draft && entry.data.lang === lang && entry.data.translationKey === translationKey,
+	);
+}
+
 export async function publishedEntries(lang: Language) {
 	const grouped = await Promise.all(
 		collectionNames.map(async (collection) => ({

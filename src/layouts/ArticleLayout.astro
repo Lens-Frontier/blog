@@ -4,7 +4,9 @@ import ArticleViews from '../components/ArticleViews.astro';
 import Authors from '../components/Authors.astro';
 import PageviewTracker from '../components/PageviewTracker.astro';
 import SpecTable from '../components/SpecTable.astro';
-import { formatDate, languageFrom, tagPath, ui } from '../lib/site';
+import { translatedEntry, type CollectionName } from '../lib/content';
+import { formatDate, languageFrom, languages, tagPath, ui } from '../lib/site';
+import type { Language } from '../lib/site';
 
 interface Props {
 	entry: any;
@@ -15,8 +17,17 @@ const { entry, type } = Astro.props;
 const data = entry.data;
 const lang = languageFrom(data.lang);
 const labels = ui[lang];
-const collection = type === 'paper' ? 'papers' : type === 'benchmark' ? 'benchmarks' : 'opinions';
+const collection: CollectionName = type === 'paper' ? 'papers' : type === 'benchmark' ? 'benchmarks' : 'opinions';
 const articleId = `${collection}/${entry.id}`;
+const alternatePath = Object.fromEntries(
+	await Promise.all(
+		languages.map(async (targetLang) => {
+			if (targetLang === lang) return [targetLang, `/${collection}/${entry.id}/`];
+			const translated = await translatedEntry(collection, data.translationKey, targetLang);
+			return [targetLang, translated ? `/${collection}/${translated.id}/` : `/${collection}/`];
+		}),
+	),
+) as Partial<Record<Language, string>>;
 type SpecItem = [string, string | string[] | undefined];
 const spec: SpecItem[] =
 	type === 'paper'
@@ -43,7 +54,7 @@ const spec: SpecItem[] =
 				];
 ---
 
-<BaseLayout title={data.title} description={data.summary} lang={lang} alternatePath={`/${collection}/`}>
+<BaseLayout title={data.title} description={data.summary} lang={lang} alternatePath={alternatePath}>
 	<article class="article">
 		<header class="article-header">
 			<p class="eyebrow">{type}</p>

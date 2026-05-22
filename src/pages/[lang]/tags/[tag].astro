@@ -25,6 +25,7 @@ export async function getStaticPaths() {
 const lang = languageFrom(Astro.props.lang);
 const { tag } = Astro.props;
 const labels = ui[lang].pages.tags;
+const alternatePath = `/tags/${encodeURIComponent(tag)}/`;
 const entriesByCollection = await Promise.all(
 	collectionNames.map(async (collection) => ({
 		collection,
@@ -42,7 +43,7 @@ const entries = entriesByCollection
 	lang={lang}
 	title={`Tag: ${tag}`}
 	description={labels.tagDescription(tag)}
-	alternatePath="/tags/"
+	alternatePath={alternatePath}
 >
 	<header class="page-title">
 		<div>

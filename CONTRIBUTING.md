@@ -94,7 +94,7 @@ src/assets/posts/papers/swe-bench-verified/
 - `lang: "zh"`：文章生成在 `/zh/<collection>/<slug>/`
 - `lang: "en"`：文章生成在 `/en/<collection>/<slug>/`
 - 不强制同步翻译。中文文章可以只发中文，英文文章也可以只发英文。
-- 如果之后补翻译，建议两篇文章使用相同的 `translationKey`，便于后续做更精细的互链。
+- 如果之后补翻译，建议两篇文章使用相同的 `translationKey`。站点的中英切换会优先跳到同一篇文章的译文；如果目标语言没有译文，则回到目标语言的对应栏目页。
 
 论文阅读分享示例：
 
