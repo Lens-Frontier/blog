@@ -264,6 +264,8 @@ pnpm check:syntax
 - Astro 生产构建
 - 构建产物页面标题、描述、站内链接、i18n、GA/pageview 开关和 RSS 检查
 
+同一组内可独立执行的检查会尽量跑完，并在日志末尾汇总失败项。构建失败时，依赖构建产物的 dist 检查会跳过，避免读取旧产物。
+
 GitHub Actions 还会额外运行 workflow lint，用来检查 `.github/workflows/` 里的语法和表达式问题。
 
 外部链接是否可打开、图片来源是否合规、事实引用是否可靠，目前仍由作者和 reviewer 在 PR 中人工确认。

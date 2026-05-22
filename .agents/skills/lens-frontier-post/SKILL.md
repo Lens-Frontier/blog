@@ -26,7 +26,7 @@ Use this skill inside the `Lens-Frontier/blog` repository when helping someone c
 8. Set `lang: "zh"` or `lang: "en"` in frontmatter. Single-language publication is allowed; do not invent a translation just to fill both routes.
 9. Keep `authors` as site authors, not paper authors. For recurring authors, prefer `id` from `src/data/authors.ts`. If the author is not in the registry, either add them there or include at least `name` or `github` inline. Do not add `avatar` by default because the site automatically uses `https://github.com/<github>.png?size=96` when `github` exists. Add `avatar` only when a custom image is needed.
 10. Put post images under `src/assets/posts/<collection>/<slug>/`. Put author avatars under `public/assets/authors/`.
-11. Run `pnpm check` before proposing or opening a PR. It includes syntax checks, Markdown lint, content rules, sensitive-content checks, asset hard-limit checks, image recommendation warnings, production build, and built-page link/i18n checks.
+11. Run `pnpm check` before proposing or opening a PR. It includes syntax checks, Markdown lint, content rules, sensitive-content checks, asset hard-limit checks, image recommendation warnings, production build, and built-page link/i18n checks. When it fails, read the final `Failed checks` summary first.
 12. If the user asks to open the PR and credentials are available, push the branch to the fork and use `gh pr create --repo Lens-Frontier/blog`.
 
 ## Required Article Standards
