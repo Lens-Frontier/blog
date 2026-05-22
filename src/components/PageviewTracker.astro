@@ -21,10 +21,12 @@ const siteId = import.meta.env.PUBLIC_PAGEVIEW_SITE_ID ?? 'lens-frontier';
 				const dayMs = 24 * 60 * 60 * 1000;
 				const now = Date.now();
 
+				let canRememberView = false;
+
 				try {
 					const previous = Number(window.localStorage.getItem(dedupeKey));
 					if (previous && now - previous < dayMs) return;
-					window.localStorage.setItem(dedupeKey, String(now));
+					canRememberView = true;
 				} catch {
 					// Storage can be unavailable in some privacy modes. The backend still deduplicates.
 				}
@@ -35,19 +37,18 @@ const siteId = import.meta.env.PUBLIC_PAGEVIEW_SITE_ID ?? 'lens-frontier';
 					path: window.location.pathname,
 				});
 
-				if (navigator.sendBeacon) {
-					const body = new Blob([payload], { type: 'application/json' });
-					navigator.sendBeacon(endpoint, body);
-					return;
-				}
-
 				fetch(endpoint, {
 					method: 'POST',
 					body: payload,
 					headers: { 'Content-Type': 'application/json' },
 					keepalive: true,
 					credentials: 'omit',
-				}).catch(() => {});
+				})
+					.then((response) => {
+						if (!response.ok || !canRememberView) return;
+						window.localStorage.setItem(dedupeKey, String(now));
+					})
+					.catch(() => {});
 			})();
 		</script>
 	) : null

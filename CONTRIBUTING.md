@@ -38,7 +38,7 @@ PR 标题建议使用能直接说明变更范围的格式：
 - 站点或样式：`site: <修改内容>`
 - CI 或工具：`chore: <修改内容>`
 
-每个 PR 都会自动触发 GitHub Actions CI。CI 分成 `syntax` 和 `check` 两个 job：`syntax` 负责 workflow / Astro / TypeScript / Worker 语法，`check` 负责 Markdown、内容规范、资产硬限制、analytics smoke、生产构建和构建产物检查。两个 job 都通过后，PR 才适合进入 review/merge。图片推荐大小、宽度和格式会在 CI 日志里提示；它们用于提醒优化，不作为硬性阻断。
+每个 PR 都会自动触发 GitHub Actions CI。CI 分成 `syntax` 和 `check` 两个 job：`syntax` 负责 workflow / Astro / TypeScript / Worker 语法，`check` 负责 Markdown、内容规范、中文引号配对、资产硬限制、analytics smoke、生产构建和构建产物检查。中文引号开闭错误会阻塞 CI；图片推荐大小、宽度和格式会在 CI 日志里提示，它们用于提醒优化，不作为硬性阻断。两个 job 都通过后，PR 才适合进入 review/merge。
 
 CI 成功后，机器人会在 PR comment 中写入预览链接。预览页和正式站点使用同一套 Astro 构建，只是 URL base 不同，会展示 PR 当前 commit 的完整站点，包括首页、文章页、Timeline、Tags、About 和 RSS。预览地址格式为：
 
@@ -270,6 +270,7 @@ pnpm check:syntax
 - Analytics smoke build：临时文章验证 GA4、阅读量脚本和关键 Markdown 元素会在文章页正确渲染，随后正式构建不会保留临时文章
 - 文章文件名 kebab-case 检查
 - Markdown 图片 alt text 检查
+- 中文正文引号开闭配对检查，发现错向或未闭合会阻塞 CI
 - Astro 生产构建
 - 构建产物页面标题、描述、站内链接、i18n、GA/pageview 开关和 RSS 检查
 - 构建后文章正文中疑似未渲染 Markdown 标记的 warning，并写入 GitHub Actions summary；不作为硬性阻断

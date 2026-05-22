@@ -13,7 +13,7 @@ pnpm dev
 
 默认通过 Pull Request 投稿。完整规范见 [CONTRIBUTING.md](./CONTRIBUTING.md)，文章模板在 [templates](./templates)。
 
-PR 会自动运行 CI，分成 `syntax` 和 `check` 两个 job：`syntax` 覆盖 workflow / Astro / TypeScript / Worker 语法，`check` 覆盖 Markdown、内容规范、资产硬限制、图片建议提示、analytics smoke、生产构建和构建产物检查。构建产物检查会对疑似未渲染的 Markdown 标记输出 warning，并写入 GitHub Actions summary，但不阻塞 CI。CI 成功后，机器人会在 PR comment 里输出带 commit hash 的预览链接。
+PR 会自动运行 CI，分成 `syntax` 和 `check` 两个 job：`syntax` 覆盖 workflow / Astro / TypeScript / Worker 语法，`check` 覆盖 Markdown、内容规范、中文引号配对、资产硬限制、图片建议提示、analytics smoke、生产构建和构建产物检查。中文引号配对属于硬性阻断；构建产物检查会对疑似未渲染的 Markdown 标记输出 warning，并写入 GitHub Actions summary，但不阻塞 CI。CI 成功后，机器人会在 PR comment 里输出带 commit hash 的预览链接。
 
 如果使用 Codex 或 Claude Code 辅助投稿，可以让它读取仓库内的 `.agents/skills/lens-frontier-post` skill，按统一流程创建文章、检查内容和资产、运行 CI 前校验并准备 PR。
 
@@ -74,7 +74,7 @@ PUBLIC_GA_MEASUREMENT_ID=G-ZK42116ZXB
 pnpm dev              # 本地开发
 pnpm check            # Markdown + 内容规范 + 敏感信息 + 资产 + 图片建议 + 语法 + analytics smoke + 构建产物检查
 pnpm check:markdown   # Markdown 格式检查
-pnpm check:content    # 文章结构、tag、图片引用检查
+pnpm check:content    # 文章结构、tag、图片引用、中文引号配对检查；失败会阻塞 CI
 pnpm check:sensitive  # 常见 token、私钥和敏感文件检查
 pnpm check:syntax     # Astro/TypeScript 模板 + Worker 语法检查
 pnpm check:quality    # 内容、敏感信息、资产、图片建议、analytics smoke、构建和 dist 检查
