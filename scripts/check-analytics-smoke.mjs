@@ -28,6 +28,28 @@ tags: ["evaluation"]
 ## Smoke
 
 This temporary article is created by CI and removed before the final production build.
+
+| Metric | What It Means | Caveat |
+| --- | --- | --- |
+| Win rate | Pairwise preference | Sensitive to prompt mix |
+| Pass rate | Task completion | Can hide partial failures |
+
+> A short quote used to verify blockquote rendering.
+
+- Evidence
+- Limit
+
+1. Build
+2. Inspect
+
+\`inline code\`
+
+\`\`\`txt
+model: example
+score: 0.73
+\`\`\`
+
+---
 `;
 
 function run(command, args, env = {}) {
@@ -44,7 +66,7 @@ function run(command, args, env = {}) {
 
 function assertIncludes(html, needle, label) {
 	if (!html.includes(needle)) {
-		throw new Error(`Analytics smoke page is missing ${label}: ${needle}`);
+		throw new Error(`Smoke article is missing ${label}: ${needle}`);
 	}
 }
 
@@ -69,6 +91,11 @@ try {
 	assertIncludes(html, 'https://example.test/pageview', 'pageview event endpoint');
 	assertIncludes(html, 'opinions/analytics-smoke', 'article id');
 	assertIncludes(html, 'lens-frontier:pageview:', 'client-side pageview dedupe key');
+	assertIncludes(html, '<table>', 'Markdown table rendering');
+	assertIncludes(html, '<thead>', 'Markdown table header rendering');
+	assertIncludes(html, '<blockquote>', 'Markdown blockquote rendering');
+	assertIncludes(html, '<pre', 'Markdown fenced code rendering');
+	assertIncludes(html, '<hr', 'Markdown thematic break rendering');
 
 	run('pnpm', ['check:dist'], analyticsEnv);
 } finally {

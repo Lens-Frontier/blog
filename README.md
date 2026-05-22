@@ -78,7 +78,7 @@ pnpm check:content    # 文章结构、tag、图片引用检查
 pnpm check:sensitive  # 常见 token、私钥和敏感文件检查
 pnpm check:syntax     # Astro/TypeScript 模板 + Worker 语法检查
 pnpm check:quality    # 内容、敏感信息、资产、图片建议、analytics smoke、构建和 dist 检查
-pnpm check:analytics  # 临时文章验证 GA4 和阅读量脚本注入
+pnpm check:analytics  # 临时文章验证 GA4、阅读量脚本和关键 Markdown 渲染
 pnpm check:types      # Astro 类型和模板检查
 pnpm check:worker     # 阅读量 Worker 语法检查
 pnpm check:dist       # 构建后页面元信息和站内链接检查
@@ -87,3 +87,5 @@ pnpm images:optimize  # 压缩文章图片并生成 WebP
 pnpm build            # 生产构建
 pnpm preview          # 预览 dist
 ```
+
+`pnpm check`、`pnpm check:syntax` 和 `pnpm check:quality` 会尽量跑完同组内可独立执行的检查，并在最后汇总失败项；构建失败时，依赖构建产物的 dist 检查会跳过，避免读取旧产物。
