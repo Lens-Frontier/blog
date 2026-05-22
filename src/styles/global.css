@@ -802,10 +802,12 @@ html:lang(en) .article-body {
 .article-body img {
 	display: block;
 	max-width: 100%;
+	max-height: 980px;
 	height: auto;
 	margin: 2em auto;
 	border: 1px solid var(--line);
 	background: var(--paper-deep);
+	object-fit: contain;
 }
 
 .article-body img[data-lightbox-trigger] {
