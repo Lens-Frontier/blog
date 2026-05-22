@@ -8,7 +8,8 @@ const collections = ['papers', 'benchmarks', 'opinions'];
 const tagPattern = /^[a-z0-9]+(?:[-.][a-z0-9]+)*$/;
 const languagePattern = /^(zh|en)$/;
 const translationKeyPattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
-const imagePattern = /!\[[^\]\n]+\]\(([^)\n]+)\)/g;
+const markdownImagePattern = /!\[[^\]\n]+\]\(([^)\n]+)\)/g;
+const htmlImagePattern = /<img\b[^>]*\bsrc\s*=\s*(?:"([^"]+)"|'([^']+)'|([^\s>]+))/gi;
 const remotePattern = /^(?:https?:|mailto:|#)/i;
 const seenTranslationKeys = new Map();
 
@@ -34,8 +35,16 @@ function parseFrontmatter(text, file) {
 	};
 }
 
-function markdownImageTargets(text) {
-	return [...text.matchAll(imagePattern)].map((match) => match[1].trim().replace(/^<|>$/g, '').split(/\s+/)[0]);
+function cleanImageTarget(value) {
+	return value.trim().replace(/^<|>$/g, '').split(/\s+/)[0].split(/[?#]/)[0];
+}
+
+function articleImageTargets(text) {
+	const targets = [...text.matchAll(markdownImagePattern)].map((match) => cleanImageTarget(match[1]));
+	for (const match of text.matchAll(htmlImagePattern)) {
+		targets.push(cleanImageTarget(match[1] ?? match[2] ?? match[3] ?? ''));
+	}
+	return targets.filter(Boolean);
 }
 
 const errors = [];
@@ -101,7 +110,7 @@ for (const collection of collections) {
 		}
 
 		const expectedAssetDir = resolve(root, 'src', 'assets', 'posts', collection, slug);
-		for (const target of markdownImageTargets(text)) {
+		for (const target of articleImageTargets(text)) {
 			if (remotePattern.test(target)) continue;
 			if (target.startsWith('/')) {
 				errors.push(`Article image should use a relative path, not an absolute path: ${target} in ${relFile}`);
