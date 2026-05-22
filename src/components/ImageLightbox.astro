@@ -38,7 +38,9 @@ const labels =
 		<span aria-hidden="true">×</span>
 	</button>
 	<div class="image-lightbox__stage" data-lightbox-stage>
-		<img data-lightbox-image alt="" />
+		<div class="image-lightbox__frame" data-lightbox-frame>
+			<img data-lightbox-image alt="" />
+		</div>
 	</div>
 	<div class="image-lightbox__controls" data-lightbox-controls>
 		<button type="button" data-lightbox-zoom-out aria-label={labels.zoomOut} title={labels.zoomOut}>
@@ -60,13 +62,27 @@ const labels =
 		const caption = lightbox?.querySelector('[data-lightbox-caption]');
 		const closeButton = lightbox?.querySelector('[data-lightbox-close]');
 		const stage = lightbox?.querySelector('[data-lightbox-stage]');
+		const frame = lightbox?.querySelector('[data-lightbox-frame]');
 		const zoomInButton = lightbox?.querySelector('[data-lightbox-zoom-in]');
 		const zoomOutButton = lightbox?.querySelector('[data-lightbox-zoom-out]');
 		const zoomValue = lightbox?.querySelector('[data-lightbox-zoom-value]');
-		if (!article || !lightbox || !preview || !caption || !closeButton || !stage || !zoomInButton || !zoomOutButton || !zoomValue)
+		if (
+			!article ||
+			!lightbox ||
+			!preview ||
+			!caption ||
+			!closeButton ||
+			!stage ||
+			!frame ||
+			!zoomInButton ||
+			!zoomOutButton ||
+			!zoomValue
+		)
 			return;
 
 		let activeTrigger = null;
+		let basePreviewWidth = 0;
+		let basePreviewHeight = 0;
 		let previewScale = 1;
 		let gestureStartScale = 1;
 		const openLabel = lightbox.dataset.openLabel || 'View larger image';
@@ -76,24 +92,63 @@ const labels =
 
 		const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
 
+		const rememberBaseSize = () => {
+			const rect = preview.getBoundingClientRect();
+			if (!preview.naturalWidth || rect.width < 24 || rect.height < 24) return;
+			basePreviewWidth = rect.width / previewScale;
+			basePreviewHeight = rect.height / previewScale;
+		};
+
 		const updateZoomControls = () => {
-			preview.style.setProperty('--lightbox-image-scale', String(previewScale));
 			zoomValue.textContent = `${Math.round(previewScale * 100)}%`;
-			zoomOutButton.disabled = previewScale <= minScale;
-			zoomInButton.disabled = previewScale >= maxScale;
+			zoomOutButton.disabled = !basePreviewWidth || previewScale <= minScale;
+			zoomInButton.disabled = !basePreviewWidth || previewScale >= maxScale;
+
+			if (previewScale <= minScale || !basePreviewWidth) {
+				frame.style.removeProperty('--lightbox-frame-width');
+				frame.style.removeProperty('--lightbox-frame-height');
+				preview.style.removeProperty('--lightbox-image-scale');
+				delete lightbox.dataset.zoomed;
+				return;
+			}
+
+			frame.style.setProperty('--lightbox-frame-width', `${Math.round(basePreviewWidth * previewScale)}px`);
+			frame.style.setProperty('--lightbox-frame-height', `${Math.round(basePreviewHeight * previewScale)}px`);
+			preview.style.setProperty('--lightbox-image-scale', String(previewScale));
+			lightbox.dataset.zoomed = 'true';
 		};
 
 		const setPreviewScale = (nextScale) => {
 			if (lightbox.hidden) return;
+			if (!basePreviewWidth) rememberBaseSize();
+			if (!basePreviewWidth) return;
+
 			const scale = clamp(Math.round(nextScale * 100) / 100, minScale, maxScale);
 			if (Math.abs(scale - previewScale) < 0.01) return;
+			const scrollXRatio =
+				stage.scrollWidth > stage.clientWidth ? (stage.scrollLeft + stage.clientWidth / 2) / stage.scrollWidth : 0.5;
+			const scrollYRatio =
+				stage.scrollHeight > stage.clientHeight ? (stage.scrollTop + stage.clientHeight / 2) / stage.scrollHeight : 0.5;
 
 			previewScale = scale;
 			updateZoomControls();
+			window.requestAnimationFrame(() => {
+				if (previewScale <= minScale) {
+					stage.scrollLeft = 0;
+					stage.scrollTop = 0;
+					return;
+				}
+				stage.scrollLeft = scrollXRatio * stage.scrollWidth - stage.clientWidth / 2;
+				stage.scrollTop = scrollYRatio * stage.scrollHeight - stage.clientHeight / 2;
+			});
 		};
 
 		const resetPreviewZoom = () => {
+			basePreviewWidth = 0;
+			basePreviewHeight = 0;
 			previewScale = 1;
+			stage.scrollLeft = 0;
+			stage.scrollTop = 0;
 			updateZoomControls();
 		};
 
@@ -121,6 +176,14 @@ const labels =
 			caption.hidden = !captionText;
 			lightbox.hidden = false;
 			document.documentElement.classList.add('has-image-lightbox');
+			const primePreviewSize = () => {
+				window.requestAnimationFrame(() => {
+					rememberBaseSize();
+					updateZoomControls();
+				});
+			};
+			if (preview.complete && preview.naturalWidth) primePreviewSize();
+			else preview.addEventListener('load', primePreviewSize, { once: true });
 			closeButton.focus({ preventScroll: true });
 		};
 

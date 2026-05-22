@@ -853,7 +853,7 @@ html.has-image-lightbox body {
 	inset: 0;
 	display: flex;
 	flex-direction: column;
-	padding: clamp(16px, 3vw, 34px);
+	padding: clamp(16px, 3vw, 34px) clamp(16px, 3vw, 34px) clamp(64px, 7vw, 82px);
 	background: color-mix(in srgb, var(--ink) 84%, transparent);
 	backdrop-filter: blur(8px);
 }
@@ -864,26 +864,28 @@ html.has-image-lightbox body {
 	right: clamp(14px, 2.4vw, 24px);
 	z-index: 1;
 	display: grid;
-	width: 38px;
-	height: 38px;
+	width: 36px;
+	height: 36px;
 	place-items: center;
-	border: 1px solid color-mix(in srgb, var(--paper) 40%, transparent);
-	border-radius: 999px;
-	background: color-mix(in srgb, var(--paper) 88%, transparent);
-	color: var(--ink);
+	border: 0;
+	border-radius: 50%;
+	background: transparent;
+	color: color-mix(in srgb, var(--paper) 88%, transparent);
 	padding: 0;
 	font-family: var(--font-mono);
-	font-size: 1.35rem;
+	font-size: 1.18rem;
 	line-height: 1;
+	text-shadow: 0 1px 10px rgba(0, 0, 0, 0.48);
 	cursor: pointer;
+	transition:
+		color 160ms ease;
 }
 
 .image-lightbox__close:hover {
-	background: white;
+	color: white;
 }
 
 .image-lightbox__close:focus-visible {
-	background: white;
 	outline: 2px solid color-mix(in srgb, var(--paper) 72%, transparent);
 	outline-offset: 3px;
 }
@@ -894,8 +896,32 @@ html.has-image-lightbox body {
 	min-height: 0;
 	place-items: center;
 	cursor: default;
-	overflow: hidden;
+	overflow: auto;
+	overscroll-behavior: contain;
 	padding: clamp(36px, 6vw, 64px) 0 clamp(14px, 3vw, 24px);
+	scrollbar-color: color-mix(in srgb, var(--paper) 32%, transparent) transparent;
+	scrollbar-width: thin;
+}
+
+.image-lightbox__stage::-webkit-scrollbar {
+	width: 8px;
+	height: 8px;
+}
+
+.image-lightbox__stage::-webkit-scrollbar-thumb {
+	border-radius: 999px;
+	background: color-mix(in srgb, var(--paper) 28%, transparent);
+}
+
+.image-lightbox__frame {
+	display: grid;
+	width: fit-content;
+	height: fit-content;
+	margin: 0 auto;
+	place-items: center;
+	transition:
+		width 160ms ease,
+		height 160ms ease;
 }
 
 .image-lightbox__stage img {
@@ -908,7 +934,18 @@ html.has-image-lightbox body {
 	cursor: default;
 	transform: scale(var(--lightbox-image-scale, 1));
 	transform-origin: center;
-	transition: transform 160ms ease;
+	transition:
+		transform 160ms ease,
+		max-height 160ms ease;
+}
+
+.image-lightbox[data-zoomed='true'] .image-lightbox__stage {
+	display: block;
+}
+
+.image-lightbox[data-zoomed='true'] .image-lightbox__frame {
+	width: var(--lightbox-frame-width);
+	height: var(--lightbox-frame-height);
 }
 
 .image-lightbox[data-image-shape='tall'] .image-lightbox__stage {
@@ -921,51 +958,48 @@ html.has-image-lightbox body {
 }
 
 .image-lightbox__controls {
+	position: fixed;
+	left: 50%;
+	bottom: clamp(14px, 2.4vw, 24px);
+	z-index: 1;
 	display: inline-flex;
 	align-items: center;
-	align-self: center;
-	gap: 8px;
-	min-height: 40px;
-	padding: 4px;
-	border: 1px solid color-mix(in srgb, var(--paper) 26%, transparent);
-	border-radius: 999px;
-	background: color-mix(in srgb, var(--ink) 54%, transparent);
-	box-shadow: 0 12px 34px rgba(0, 0, 0, 0.2);
+	gap: 14px;
+	transform: translateX(-50%);
 	color: var(--paper);
 	font-family: var(--font-mono);
-	font-size: 0.78rem;
+	font-size: 0.76rem;
 	line-height: 1;
+	text-shadow: 0 1px 10px rgba(0, 0, 0, 0.48);
 }
 
 .image-lightbox__controls button {
 	display: grid;
-	width: 32px;
-	height: 32px;
+	width: 34px;
+	height: 34px;
 	place-items: center;
-	border: 1px solid color-mix(in srgb, var(--paper) 34%, transparent);
+	border: 0;
 	border-radius: 50%;
-	background: color-mix(in srgb, var(--paper) 90%, transparent);
-	color: var(--ink);
+	background: transparent;
+	color: var(--paper);
 	padding: 0;
 	font-family: var(--font-mono);
-	font-size: 1.12rem;
+	font-size: 1.18rem;
+	font-weight: 500;
 	line-height: 1;
 	cursor: pointer;
 	transition:
-		background 160ms ease,
-		border-color 160ms ease,
 		color 160ms ease,
 		opacity 160ms ease;
 }
 
 .image-lightbox__controls button:hover {
-	background: white;
-	border-color: color-mix(in srgb, var(--paper) 76%, transparent);
+	color: white;
 }
 
 .image-lightbox__controls button:disabled {
 	cursor: default;
-	opacity: 0.42;
+	opacity: 0.36;
 }
 
 .image-lightbox__controls button:focus-visible {
@@ -974,7 +1008,8 @@ html.has-image-lightbox body {
 }
 
 .image-lightbox__controls span {
-	min-width: 42px;
+	min-width: 44px;
+	color: color-mix(in srgb, var(--paper) 82%, transparent);
 	text-align: center;
 }
 
