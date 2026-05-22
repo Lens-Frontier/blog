@@ -2,6 +2,7 @@
 title: "Paper Title"
 lang: "zh"
 date: 2026-05-19
+# updated: 2026-05-23
 summary: "一句话说明这篇论文分享的重点。"
 authors:
   - name: "Your Name"

@@ -20,6 +20,7 @@ const shared = z.object({
 	lang: z.enum(['zh', 'en']).default('zh'),
 	translationKey: z.string().optional(),
 	date: z.coerce.date(),
+	updated: z.coerce.date().optional(),
 	summary: z.string(),
 	authors: z.array(author).min(1),
 	tags: z.array(z.string()).min(1),

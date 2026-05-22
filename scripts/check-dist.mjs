@@ -10,6 +10,8 @@ const siteBase = normalizeBase(process.env.SITE_BASE ?? '/');
 const gaMeasurementId = process.env.PUBLIC_GA_MEASUREMENT_ID;
 const pageviewEndpoint = process.env.PUBLIC_PAGEVIEW_ENDPOINT;
 const requiredFiles = [
+	'404.html',
+	'assets/site/og.png',
 	'index.html',
 	'zh/index.html',
 	'en/index.html',
@@ -218,6 +220,18 @@ for (const file of htmlFiles) {
 	}
 	if (!$('meta[name="description"]').attr('content')?.trim()) {
 		errors.push(`Missing meta description: ${rel}`);
+	}
+	if (!$('meta[property="og:title"]').attr('content')?.trim()) {
+		errors.push(`Missing Open Graph title: ${rel}`);
+	}
+	if (!$('meta[property="og:description"]').attr('content')?.trim()) {
+		errors.push(`Missing Open Graph description: ${rel}`);
+	}
+	if (!$('meta[property="og:image"]').attr('content')?.trim()) {
+		errors.push(`Missing Open Graph image: ${rel}`);
+	}
+	if (!$('meta[name="twitter:card"]').attr('content')?.trim()) {
+		errors.push(`Missing Twitter card metadata: ${rel}`);
 	}
 
 	if (siteUrl) {

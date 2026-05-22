@@ -49,6 +49,12 @@ function articleImageTargets(text) {
 	return targets.filter(Boolean);
 }
 
+function dateTime(value) {
+	const date = value instanceof Date ? value : new Date(value);
+	const time = date.getTime();
+	return Number.isFinite(time) ? time : null;
+}
+
 function chineseQuoteErrors(text, startLine, file) {
 	const quoteErrors = [];
 	let inFence = false;
@@ -149,6 +155,15 @@ for (const collection of collections) {
 			const length = data.summary.trim().length;
 			if (length < 12 || length > 220) {
 				errors.push(`Summary should be 12-220 chars (${length} chars): ${relFile}`);
+			}
+		}
+		if (Object.hasOwn(data, 'updated')) {
+			const publishedAt = dateTime(data.date);
+			const updatedAt = dateTime(data.updated);
+			if (updatedAt === null) {
+				errors.push(`updated must be a valid date: ${relFile}`);
+			} else if (publishedAt !== null && updatedAt < publishedAt) {
+				errors.push(`updated should not be earlier than date: ${relFile}`);
 			}
 		}
 		if (Array.isArray(data.tags)) {

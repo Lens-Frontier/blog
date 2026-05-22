@@ -1,0 +1,36 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { localizedPath } from '../lib/site';
+
+const quickLinks = [
+	{ href: localizedPath('zh', '/'), label: 'Latest Writing' },
+	{ href: localizedPath('zh', '/papers/'), label: 'Papers' },
+	{ href: localizedPath('zh', '/benchmarks/'), label: 'Benchmarks' },
+	{ href: localizedPath('zh', '/tags/'), label: 'Tags' },
+];
+---
+
+<BaseLayout
+	lang="zh"
+	title="404"
+	description="这个页面没有找到。回到 Lens Frontier 的论文分享、benchmark 观察和观点文章。"
+	alternatePath="/"
+>
+	<section class="not-found" aria-labelledby="not-found-title">
+		<div class="not-found__code" aria-hidden="true">
+			<span>4</span>
+			<span>0</span>
+			<span>4</span>
+		</div>
+		<div class="not-found__body">
+			<p class="eyebrow">missing measurement</p>
+			<h1 id="not-found-title">这个坐标没有记录。</h1>
+			<p>
+				可能是链接移动了，也可能是这篇笔记还没有写出来。先回到最近的阅读分享、benchmark 观察和标签索引。
+			</p>
+			<nav class="not-found__links" aria-label="404 shortcuts">
+				{quickLinks.map((item) => <a href={item.href}>{item.label}</a>)}
+			</nav>
+		</div>
+	</section>
+</BaseLayout>

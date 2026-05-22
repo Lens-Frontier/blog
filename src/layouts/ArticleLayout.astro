@@ -34,6 +34,7 @@ const spec: SpecItem[] =
 	type === 'paper'
 		? [
 				[labels.article.spec.date, formatDate(data.date, lang)],
+				[labels.article.spec.updated, data.updated ? formatDate(data.updated, lang) : undefined],
 				[labels.article.spec.paperAuthors, data.paperAuthors],
 				[labels.article.spec.venue, data.venue],
 				[labels.article.spec.benchmarks, data.benchmarks],
@@ -43,6 +44,7 @@ const spec: SpecItem[] =
 		: type === 'benchmark'
 			? [
 					[labels.article.spec.date, formatDate(data.date, lang)],
+					[labels.article.spec.updated, data.updated ? formatDate(data.updated, lang) : undefined],
 					[labels.article.spec.area, data.area],
 					[labels.article.spec.metric, data.metric],
 					[labels.article.spec.version, data.version],
@@ -51,12 +53,19 @@ const spec: SpecItem[] =
 				]
 			: [
 					[labels.article.spec.date, formatDate(data.date, lang)],
+					[labels.article.spec.updated, data.updated ? formatDate(data.updated, lang) : undefined],
 					[labels.article.spec.stance, data.stance],
 				];
 ---
 
-<BaseLayout title={data.title} description={data.summary} lang={lang} alternatePath={alternatePath}>
-	<article class="article">
+<BaseLayout title={data.title} description={data.summary} lang={lang} alternatePath={alternatePath} type="article">
+	<article
+		class="article"
+		data-analytics-page="article"
+		data-analytics-article-id={articleId}
+		data-analytics-collection={collection}
+		data-analytics-lang={lang}
+	>
 		<header class="article-header">
 			<p class="eyebrow">{type}</p>
 			<h1>{data.title}</h1>

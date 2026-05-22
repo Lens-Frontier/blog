@@ -17,20 +17,6 @@ const siteId = import.meta.env.PUBLIC_PAGEVIEW_SITE_ID ?? 'lens-frontier';
 				const doNotTrack = navigator.doNotTrack === '1' || window.doNotTrack === '1';
 				if (doNotTrack) return;
 
-				const dedupeKey = `lens-frontier:pageview:${articleId}`;
-				const dayMs = 24 * 60 * 60 * 1000;
-				const now = Date.now();
-
-				let canRememberView = false;
-
-				try {
-					const previous = Number(window.localStorage.getItem(dedupeKey));
-					if (previous && now - previous < dayMs) return;
-					canRememberView = true;
-				} catch {
-					// Storage can be unavailable in some privacy modes. The backend still deduplicates.
-				}
-
 				const payload = JSON.stringify({
 					siteId,
 					articleId,
@@ -45,8 +31,16 @@ const siteId = import.meta.env.PUBLIC_PAGEVIEW_SITE_ID ?? 'lens-frontier';
 					credentials: 'omit',
 				})
 					.then((response) => {
-						if (!response.ok || !canRememberView) return;
-						window.localStorage.setItem(dedupeKey, String(now));
+						if (!response.ok) return null;
+						return response.json().catch(() => null);
+					})
+					.then((data) => {
+						if (!data) return;
+						window.__lensFrontierRecordedPageviews ??= new Map();
+						window.__lensFrontierRecordedPageviews.set(articleId, Number(data.viewCount || 0));
+						window.dispatchEvent(
+							new CustomEvent('lens-frontier:pageview-recorded', { detail: { articleId, viewCount: data.viewCount } }),
+						);
 					})
 					.catch(() => {});
 			})();
