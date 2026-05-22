@@ -25,7 +25,7 @@ src/content/benchmarks   # benchmark 观察
 src/content/opinions     # 围绕 benchmark 的观点文章
 ```
 
-每篇文章使用 Markdown frontmatter 管理元数据。字段 schema 在 `src/content.config.ts`。站点支持 `/zh/` 和 `/en/` 两套语言路由，文章通过 `lang: "zh"` 或 `lang: "en"` 决定展示在哪个语言下；允许单语发布，不要求同步翻译。
+每篇文章使用 Markdown frontmatter 管理元数据。字段 schema 在 `src/content.config.ts`。站点支持 `/zh/` 和 `/en/` 两套语言路由，文章通过 `lang: "zh"` 或 `lang: "en"` 决定展示在哪个语言下；允许单语发布，不要求同步翻译。后续补译文时，两篇文章可以使用同一个 `translationKey`，中英切换会优先留在同一篇文章。
 
 常写作者可以登记在 `src/data/authors.ts`，文章里用 `authors: [{ id: "author-id" }]` 复用作者资料；一次性投稿也可以继续在文章 frontmatter 里直接写 `name` / `github`。
 

@@ -4,17 +4,20 @@ import GoogleAnalytics from '../components/GoogleAnalytics.astro';
 import { languageFrom, languages, localizedPath, path, repositoryUrl, siteFor, ui } from '../lib/site';
 import type { Language } from '../lib/site';
 
+type AlternatePath = string | Partial<Record<Language, string>>;
+
 interface Props {
 	title?: string;
 	description?: string;
 	lang?: Language;
-	alternatePath?: string;
+	alternatePath?: AlternatePath;
 }
 
 const lang = languageFrom(Astro.props.lang);
 const labels = ui[lang];
 const site = siteFor(lang);
-const { title = site.title, description = site.description, alternatePath = '/' } = Astro.props;
+const { title = site.title, description = site.description } = Astro.props;
+const alternatePath = Astro.props.alternatePath ?? '/';
 const pageTitle = title === site.title ? title : `${title} - ${site.title}`;
 const canonical = new URL(Astro.url.pathname, Astro.site ?? 'https://example.com');
 const navItems = [
@@ -23,6 +26,11 @@ const navItems = [
 	{ href: localizedPath(lang, '/opinions/'), label: labels.nav.opinions },
 	{ href: localizedPath(lang, '/tags/'), label: labels.nav.tags },
 ];
+
+function alternatePathFor(targetLang: Language) {
+	if (typeof alternatePath === 'string') return alternatePath;
+	return alternatePath[targetLang] ?? alternatePath[lang] ?? '/';
+}
 ---
 
 <!doctype html>
@@ -36,7 +44,7 @@ const navItems = [
 		<meta name="description" content={description} />
 		<link rel="canonical" href={canonical} />
 		{languages.map((item) => (
-			<link rel="alternate" hreflang={siteFor(item).htmlLang} href={localizedPath(item, alternatePath)} />
+			<link rel="alternate" hreflang={siteFor(item).htmlLang} href={localizedPath(item, alternatePathFor(item))} />
 		))}
 		<link rel="icon" type="image/svg+xml" href={path('/favicon.svg')} />
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -63,7 +71,7 @@ const navItems = [
 					<nav class="lang-switch" aria-label="Language switcher">
 						{languages.map((item) => (
 							<a
-								href={localizedPath(item, alternatePath)}
+								href={localizedPath(item, alternatePathFor(item))}
 								aria-current={item === lang ? 'true' : undefined}
 							>
 								{labels.languageNames[item]}
