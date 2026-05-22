@@ -1,4 +1,4 @@
-import { existsSync } from 'node:fs';
+import { appendFileSync, existsSync } from 'node:fs';
 import { readFile, readdir } from 'node:fs/promises';
 import { extname, join, relative } from 'node:path';
 import * as cheerio from 'cheerio';
@@ -127,6 +127,10 @@ function annotationValue(value) {
 	return value.replace(/%/g, '%25').replace(/\r/g, '%0D').replace(/\n/g, '%0A').replace(/:/g, '%3A').replace(/,/g, '%2C');
 }
 
+function summaryValue(value) {
+	return value.replace(/`/g, '\\`');
+}
+
 function excerpt(text, index, length) {
 	const start = Math.max(0, index - 54);
 	const end = Math.min(text.length, index + length + 54);
@@ -179,6 +183,16 @@ function emitWarnings(items) {
 		if (process.env.GITHUB_ACTIONS === 'true') {
 			console.warn(`::warning file=${annotationValue(item.rel)},title=Possible unrendered Markdown::${annotationValue(item.message)}`);
 		}
+	}
+
+	if (process.env.GITHUB_STEP_SUMMARY) {
+		const rows = items
+			.map((item) => `- \`${summaryValue(item.rel)}\`: \`${summaryValue(item.message)}\``)
+			.join('\n');
+		appendFileSync(
+			process.env.GITHUB_STEP_SUMMARY,
+			`\n## Rendered Markdown Warnings\n\nNon-blocking warnings for article text that may contain Markdown syntax which did not render as intended.\n\n${rows}\n`,
+		);
 	}
 }
 
