@@ -32,6 +32,8 @@ function parseFrontmatter(text, file) {
 	return {
 		data: YAML.parse(text.slice(4, end)) ?? {},
 		body: text.slice(end + 4).trim(),
+		bodyRaw: text.slice(end + 4),
+		bodyStartLine: text.slice(0, end + 4).split('\n').length,
 	};
 }
 
@@ -45,6 +47,53 @@ function articleImageTargets(text) {
 		targets.push(cleanImageTarget(match[1] ?? match[2] ?? match[3] ?? ''));
 	}
 	return targets.filter(Boolean);
+}
+
+function chineseQuoteErrors(text, startLine, file) {
+	const quoteErrors = [];
+	let inFence = false;
+	let openQuoteLine = 0;
+
+	for (const [index, line] of text.split('\n').entries()) {
+		const lineNumber = startLine + index;
+		if (/^ {0,3}(?:```|~~~)/.test(line)) {
+			inFence = !inFence;
+			continue;
+		}
+		if (inFence) continue;
+
+		let reportedLine = false;
+		const reportLine = (message) => {
+			if (reportedLine) return;
+			quoteErrors.push(message);
+			reportedLine = true;
+		};
+
+		for (const char of line) {
+			if (char === '“') {
+				if (openQuoteLine) {
+					reportLine(
+						`Chinese quote opened before closing previous quote: ${file}:${lineNumber}. Use paired “...” quotes.`,
+					);
+				}
+				openQuoteLine = lineNumber;
+			} else if (char === '”') {
+				if (!openQuoteLine) {
+					reportLine(
+						`Chinese quote closes before it opens: ${file}:${lineNumber}. Use “ for opening and ” for closing.`,
+					);
+				} else {
+					openQuoteLine = 0;
+				}
+			}
+		}
+	}
+
+	if (openQuoteLine) {
+		quoteErrors.push(`Chinese quote opened but never closed: ${file}:${openQuoteLine}. Use paired “...” quotes.`);
+	}
+
+	return quoteErrors;
 }
 
 const errors = [];
@@ -65,7 +114,7 @@ for (const collection of collections) {
 			continue;
 		}
 
-		const { data, body } = parsed;
+		const { data, body, bodyRaw, bodyStartLine } = parsed;
 		if (!Object.hasOwn(data, 'lang')) {
 			errors.push(`Article must declare lang: "zh" or "en": ${relFile}`);
 		} else if (typeof data.lang !== 'string' || !languagePattern.test(data.lang)) {
@@ -92,6 +141,7 @@ for (const collection of collections) {
 		if (!/^##\s+\S/m.test(body)) {
 			errors.push(`Article should include at least one level-2 section heading: ${relFile}`);
 		}
+		errors.push(...chineseQuoteErrors(bodyRaw, bodyStartLine, relFile));
 		if (typeof data.title === 'string' && data.title.trim().length > 80) {
 			errors.push(`Title is too long (${data.title.trim().length} chars > 80): ${relFile}`);
 		}

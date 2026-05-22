@@ -270,6 +270,7 @@ pnpm check:syntax
 - Analytics smoke build：临时文章验证 GA4、阅读量脚本和关键 Markdown 元素会在文章页正确渲染，随后正式构建不会保留临时文章
 - 文章文件名 kebab-case 检查
 - Markdown 图片 alt text 检查
+- 中文正文引号开闭配对检查
 - Astro 生产构建
 - 构建产物页面标题、描述、站内链接、i18n、GA/pageview 开关和 RSS 检查
 - 构建后文章正文中疑似未渲染 Markdown 标记的 warning，并写入 GitHub Actions summary；不作为硬性阻断
