@@ -270,6 +270,7 @@ pnpm check:syntax
 - Markdown 图片 alt text 检查
 - Astro 生产构建
 - 构建产物页面标题、描述、站内链接、i18n、GA/pageview 开关和 RSS 检查
+- 构建后文章正文中疑似未渲染 Markdown 标记的 warning，不作为硬性阻断
 
 同一组内可独立执行的检查会尽量跑完，并在日志末尾汇总失败项。构建失败时，依赖构建产物的 dist 检查会跳过，避免读取旧产物。
 

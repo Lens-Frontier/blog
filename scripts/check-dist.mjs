@@ -44,6 +44,25 @@ const localizedHtmlLang = new Map([
 	['en', 'en'],
 ]);
 const errors = [];
+const warnings = [];
+const renderedMarkdownPatterns = [
+	{
+		name: 'strong emphasis marker',
+		regex: /\*\*[^*\n]{1,160}\*\*/g,
+	},
+	{
+		name: 'underscore emphasis marker',
+		regex: /__[^_\n]{1,160}__/g,
+	},
+	{
+		name: 'Markdown image syntax',
+		regex: /!\[[^\]\n]{1,120}\]\([^\s)\n][^)\n]{0,240}\)/g,
+	},
+	{
+		name: 'Markdown link syntax',
+		regex: /(?<!!)\[[^\]\n]{1,120}\]\([^\s)\n][^)\n]{0,240}\)/g,
+	},
+];
 
 function normalizeBase(base) {
 	if (!base || base === '/') return '/';
@@ -104,6 +123,65 @@ function pageIds($) {
 	return ids;
 }
 
+function annotationValue(value) {
+	return value.replace(/%/g, '%25').replace(/\r/g, '%0D').replace(/\n/g, '%0A').replace(/:/g, '%3A').replace(/,/g, '%2C');
+}
+
+function excerpt(text, index, length) {
+	const start = Math.max(0, index - 54);
+	const end = Math.min(text.length, index + length + 54);
+	return text.slice(start, end).replace(/\s+/g, ' ').trim();
+}
+
+function renderedMarkdownWarnings($, rel) {
+	const found = [];
+
+	for (const element of $('.article-body').toArray()) {
+		const article = $(element).clone();
+		article.find('pre, code, kbd, samp, script, style, svg').remove();
+		const text = article.text();
+
+		for (const pattern of renderedMarkdownPatterns) {
+			for (const match of text.matchAll(pattern.regex)) {
+				found.push({
+					rel,
+					message: `${pattern.name} may not have rendered: "${excerpt(text, match.index ?? 0, match[0].length)}"`,
+				});
+				if (found.length >= 5) break;
+			}
+			if (found.length >= 5) break;
+		}
+
+		const lines = text.split(/\n/);
+		for (let index = 0; index < lines.length - 1 && found.length < 5; index += 1) {
+			const current = lines[index];
+			const next = lines[index + 1];
+			const hasTableRow = current.includes('|') && current.split('|').length >= 3;
+			const hasSeparator = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/.test(next);
+			if (hasTableRow && hasSeparator) {
+				found.push({
+					rel,
+					message: `Markdown table may not have rendered near: "${excerpt(`${current} ${next}`, 0, current.length + next.length)}"`,
+				});
+			}
+		}
+	}
+
+	return found;
+}
+
+function emitWarnings(items) {
+	if (!items.length) return;
+
+	console.warn('\nRendered Markdown warnings (non-blocking):');
+	for (const item of items) {
+		console.warn(`- ${item.rel}: ${item.message}`);
+		if (process.env.GITHUB_ACTIONS === 'true') {
+			console.warn(`::warning file=${annotationValue(item.rel)},title=Possible unrendered Markdown::${annotationValue(item.message)}`);
+		}
+	}
+}
+
 for (const file of requiredFiles) {
 	if (!existsSync(join(dist, file))) {
 		errors.push(`Required build output is missing: dist/${file}`);
@@ -157,6 +235,7 @@ for (const file of htmlFiles) {
 	if (!pageviewEndpoint && (html.includes('lens-frontier:pageview') || html.includes('data-article-views'))) {
 		errors.push(`Pageview tracking should not be emitted without PUBLIC_PAGEVIEW_ENDPOINT: ${rel}`);
 	}
+	warnings.push(...renderedMarkdownWarnings($, rel));
 
 	for (const element of $('a[href], link[href], script[src], img[src]').toArray()) {
 		const attr = element.tagName === 'script' || element.tagName === 'img' ? 'src' : 'href';
@@ -196,9 +275,11 @@ if (existsSync(rss)) {
 	}
 }
 
+emitWarnings(warnings);
+
 if (errors.length) {
 	console.error(errors.map((error) => `- ${error}`).join('\n'));
 	process.exit(1);
 }
 
-console.log('Dist checks passed.');
+console.log(warnings.length ? `Dist checks passed with ${warnings.length} non-blocking rendered Markdown warning(s).` : 'Dist checks passed.');
