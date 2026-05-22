@@ -1,0 +1,103 @@
+---
+import { languageFrom } from '../lib/site';
+import type { Language } from '../lib/site';
+
+interface Props {
+	lang?: Language;
+}
+
+const lang = languageFrom(Astro.props.lang);
+const labels =
+	lang === 'zh'
+		? {
+				dialog: '图片预览',
+				open: '查看大图',
+				close: '关闭',
+			}
+		: {
+				dialog: 'Image preview',
+				open: 'View larger image',
+				close: 'Close',
+			};
+---
+
+<div
+	class="image-lightbox"
+	data-image-lightbox
+	data-open-label={labels.open}
+	role="dialog"
+	aria-modal="true"
+	aria-label={labels.dialog}
+	hidden
+>
+	<button class="image-lightbox__close" type="button" data-lightbox-close>{labels.close}</button>
+	<div class="image-lightbox__stage" data-lightbox-stage>
+		<img data-lightbox-image alt="" />
+	</div>
+	<p class="image-lightbox__caption" data-lightbox-caption hidden></p>
+</div>
+
+<script is:inline>
+	(() => {
+		const article = document.querySelector('.article-body');
+		const lightbox = document.querySelector('[data-image-lightbox]');
+		const preview = lightbox?.querySelector('[data-lightbox-image]');
+		const caption = lightbox?.querySelector('[data-lightbox-caption]');
+		const closeButton = lightbox?.querySelector('[data-lightbox-close]');
+		const stage = lightbox?.querySelector('[data-lightbox-stage]');
+		if (!article || !lightbox || !preview || !caption || !closeButton || !stage) return;
+
+		let activeTrigger = null;
+		const openLabel = lightbox.dataset.openLabel || 'View larger image';
+
+		const closeLightbox = () => {
+			if (lightbox.hidden) return;
+			lightbox.hidden = true;
+			preview.removeAttribute('src');
+			document.documentElement.classList.remove('has-image-lightbox');
+			activeTrigger?.focus({ preventScroll: true });
+			activeTrigger = null;
+		};
+
+		const openLightbox = (image) => {
+			activeTrigger = image;
+			preview.src = image.currentSrc || image.src;
+			preview.alt = image.alt || '';
+			const captionText = image.alt?.trim() || image.title?.trim() || '';
+			caption.textContent = captionText;
+			caption.hidden = !captionText;
+			lightbox.hidden = false;
+			document.documentElement.classList.add('has-image-lightbox');
+			closeButton.focus({ preventScroll: true });
+		};
+
+		for (const image of article.querySelectorAll('img')) {
+			if (image.closest('a')) continue;
+
+			const labelText = image.alt?.trim() || image.title?.trim();
+			image.dataset.lightboxTrigger = '';
+			image.setAttribute('role', 'button');
+			image.setAttribute('aria-label', labelText ? `${openLabel}: ${labelText}` : openLabel);
+			if (!image.hasAttribute('tabindex')) image.tabIndex = 0;
+
+			image.addEventListener('click', () => openLightbox(image));
+			image.addEventListener('keydown', (event) => {
+				if (event.key !== 'Enter' && event.key !== ' ') return;
+				event.preventDefault();
+				openLightbox(image);
+			});
+		}
+
+		closeButton.addEventListener('click', closeLightbox);
+		lightbox.addEventListener('click', (event) => {
+			if (event.target === lightbox || event.target === stage) closeLightbox();
+		});
+		document.addEventListener('keydown', (event) => {
+			if (event.key === 'Escape') closeLightbox();
+			if (event.key === 'Tab' && !lightbox.hidden) {
+				event.preventDefault();
+				closeButton.focus({ preventScroll: true });
+			}
+		});
+	})();
+</script>

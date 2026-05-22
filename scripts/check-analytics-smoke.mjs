@@ -40,6 +40,8 @@ This temporary article is created by CI and removed before the final production 
 
 > A short quote used to verify blockquote rendering.
 
+![Smoke figure](data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20width=%22320%22%20height=%22180%22%3E%3Crect%20width=%22320%22%20height=%22180%22%20fill=%22%23ede8dc%22/%3E%3C/svg%3E)
+
 - Evidence
 - Limit
 
@@ -125,6 +127,8 @@ try {
 	assertIncludes(html, '<hr', 'Markdown thematic break rendering');
 	assertIncludes(html, '/en/opinions/analytics-smoke-en/', 'translated English language switch path');
 	assertIncludes(translationHtml, '/zh/opinions/analytics-smoke/', 'translated Chinese language switch path');
+	assertIncludes(html, 'data-image-lightbox', 'article image lightbox markup');
+	assertIncludes(html, 'lightboxTrigger', 'article image lightbox script');
 
 	run('pnpm', ['check:dist'], analyticsEnv);
 } finally {
