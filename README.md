@@ -80,11 +80,9 @@ PUBLIC_GA_MEASUREMENT_ID=G-ZK42116ZXB
 
 事件参数只包含语言、页面类型、文章 collection/id、滚动百分比、链接类型、站内 path 或外链域名等低风险字段，不上传正文、完整外链 URL 或用户标识。
 
-## 隐私、分享与阅读量口径
+## 隐私与阅读量口径
 
 公开展示的阅读量是轻量 pageview 指标，不是严肃审计数据；刷新会增加计数，因此可能被异常流量影响。后台按天去重的匿名访客事件更适合做趋势判断。需要更强防刷时，优先在 Cloudflare Worker 前启用 WAF / rate limiting，而不是在页面端做复杂逻辑。
-
-站点会输出 Open Graph / Twitter Card 元信息和默认分享图，方便文章在 GitHub、聊天工具和社交平台里展示标题、摘要和站点身份。分享图位于 `public/assets/site/og.png`，源文件是 `public/assets/site/og.svg`。
 
 站点统计只用于理解内容阅读和站点入口表现。当前不会上传文章正文、完整外链 URL、读者账号标识或自定义个人资料字段。
 

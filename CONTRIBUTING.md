@@ -64,9 +64,7 @@ gh pr view <PR 编号> --json state,headRefName,baseRefName,headRefOid
 - 旧 commit 的预览快照会保留在同一个 PR 目录下，方便需要时回看。
 - PR 关闭后，`PR Preview Cleanup` workflow 会删除整个 `pr-preview/pr-<PR 编号>` 目录，并更新 bot comment 说明预览已回收。
 
-## 分享、统计和隐私
-
-站点会输出 Open Graph / Twitter Card 元信息和默认分享图，方便文章在 GitHub、聊天工具和社交平台中展示标题、摘要和站点身份。默认分享图位于 `public/assets/site/og.png`。
+## 统计和隐私
 
 站点统计包含 GA4 默认 pageview、少量 `lf_` 自定义事件，以及 first-party 文章阅读量。公开展示的阅读量按 pageview 计数，刷新会增加一次；后台会另存按天去重的匿名访客事件，用于趋势分析。
 

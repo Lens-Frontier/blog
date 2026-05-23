@@ -11,7 +11,6 @@ interface Props {
 const { to, title = 'Redirecting', description = site.description } = Astro.props;
 const href = path(to);
 const canonical = new URL(href, Astro.site ?? 'https://example.com');
-const socialImage = new URL(path('/assets/site/og.png'), Astro.site ?? 'https://example.com');
 ---
 
 <!doctype html>
@@ -21,14 +20,6 @@ const socialImage = new URL(path('/assets/site/og.png'), Astro.site ?? 'https://
 		<meta name="viewport" content="width=device-width" />
 		<title>{title} - Lens Frontier</title>
 		<meta name="description" content={description} />
-		<meta property="og:site_name" content="Lens Frontier" />
-		<meta property="og:type" content="website" />
-		<meta property="og:title" content={`${title} - Lens Frontier`} />
-		<meta property="og:description" content={description} />
-		<meta property="og:url" content={canonical} />
-		<meta property="og:image" content={socialImage} />
-		<meta name="twitter:card" content="summary_large_image" />
-		<meta name="twitter:image" content={socialImage} />
 		<GoogleAnalytics />
 		<meta http-equiv="refresh" content={`0; url=${href}`} />
 		<link rel="canonical" href={canonical} />
