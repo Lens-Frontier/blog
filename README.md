@@ -44,7 +44,11 @@ src/content/opinions     # 围绕 benchmark 的观点文章
 1. 在 `public/CNAME` 写入域名。
 2. 在 GitHub Actions workflow 里把 `SITE_URL` 改成你的域名。
 
-## 阅读量统计
+## 站点统计与隐私口径
+
+公开站点只展示文章阅读量，不在 About 页面专门说明统计方案。这里保留配置和隐私口径，方便维护者理解边界。
+
+### 阅读量统计
 
 文章页支持 first-party 阅读量展示。默认不启用；生产环境配置后，文章标题下方会显示阅读量。展示用阅读量按 pageview 计数，刷新页面会增加一次；Worker 后台仍会单独保存按天去重的匿名访客事件，供后续分析使用，但站点不展示这个去重值。
 
@@ -58,7 +62,7 @@ PUBLIC_PAGEVIEW_SITE_ID=lens-frontier
 
 不要在 PR preview 配置这些变量，避免预览流量进入正式阅读量。`PUBLIC_PAGEVIEW_COUNT_ENDPOINT` 可省略，站点会从 `/pageview` 自动推导 `/views`。
 
-## Google Analytics
+### Google Analytics
 
 站点通过 GA4 的 Google tag 接入站点统计。当前生产部署 workflow 使用：
 
@@ -80,7 +84,7 @@ PUBLIC_GA_MEASUREMENT_ID=G-ZK42116ZXB
 
 事件参数只包含语言、页面类型、文章 collection/id、滚动百分比、链接类型、站内 path 或外链域名等低风险字段，不上传正文、完整外链 URL 或用户标识。
 
-## 隐私与阅读量口径
+### 隐私与阅读量口径
 
 公开展示的阅读量是轻量 pageview 指标，不是严肃审计数据；刷新会增加计数，因此可能被异常流量影响。后台按天去重的匿名访客事件更适合做趋势判断。需要更强防刷时，优先在 Cloudflare Worker 前启用 WAF / rate limiting，而不是在页面端做复杂逻辑。
 

@@ -33,7 +33,7 @@ Use this skill inside the `Lens-Frontier/blog` repository when helping someone c
 
 - Prefer quality over cadence. The blog should build long-term influence through stable content quality, careful judgment, and taste.
 - The article should not be a copied abstract. It needs a question, observation, judgment, doubt, or replay of discussion.
-- Explain evidence and limits. Views can be shallow; claims should still be traceable.
+- Explain evidence and limits. Views can be modest; claims should still be traceable.
 - Avoid overclaiming from a single paper, benchmark, leaderboard, or anecdote. Narrow the conclusion when evidence is narrow.
 - Keep the writing readable and restrained: clear structure, useful figures, no title bait, no material dumping.
 - Do not commit secrets, tokens, private keys, unpublished materials, or third-party confidential information.
