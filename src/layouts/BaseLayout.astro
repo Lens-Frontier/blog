@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import AnalyticsEvents from '../components/AnalyticsEvents.astro';
 import GoogleAnalytics from '../components/GoogleAnalytics.astro';
 import { languageFrom, languages, localizedPath, path, repositoryUrl, siteFor, ui } from '../lib/site';
 import type { Language } from '../lib/site';
@@ -96,5 +97,6 @@ function alternatePathFor(targetLang: Language) {
 				</nav>
 			</footer>
 		</div>
+		<AnalyticsEvents lang={lang} />
 	</body>
 </html>

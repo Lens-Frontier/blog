@@ -46,7 +46,7 @@ src/content/opinions     # 围绕 benchmark 的观点文章
 
 ## 阅读量统计
 
-文章页支持 first-party 稳定阅读量展示。默认不启用；生产环境配置后，文章标题下方会显示阅读量。
+文章页支持 first-party 阅读量展示。默认不启用；生产环境配置后，文章标题下方会显示阅读量。展示用阅读量按 pageview 计数，刷新页面会增加一次；Worker 后台仍会单独保存按天去重的匿名访客事件，供后续分析使用，但站点不展示这个去重值。
 
 如需开启，先部署 `workers/pageviews` 里的 Cloudflare Worker + D1，再在生产构建中配置：
 
@@ -68,6 +68,30 @@ PUBLIC_GA_MEASUREMENT_ID=G-ZK42116ZXB
 
 没有配置 Measurement ID 时不会加载 Google Analytics。PR preview 不配置这个变量，避免预览流量进入正式统计。站点只保留这一处 Google tag，不再同时接入 Google Tag Manager，避免重复 pageview。
 
+除 GA4 默认 pageview 外，站点还会发送少量自定义事件，用来观察内容是否被读到、从哪里被发现，以及哪些站点入口有用：
+
+- `lf_article_scroll_depth`：文章页滚动到 25 / 50 / 75 / 90 / 100。
+- `lf_article_engaged_read`：文章页可见阅读 45 秒且滚动超过 50。
+- `lf_content_discovery`：首页频道、列表文章等内容发现入口点击。
+- `lf_tag_click`：标签点击。
+- `lf_navigation_click` / `lf_language_switch`：导航、页脚、语言切换点击。
+- `lf_article_resource_click` / `lf_article_body_link_click` / `lf_outbound_click`：文章资源、正文链接和外链点击。
+- `lf_article_image_open` / `lf_article_image_zoom` / `lf_article_image_close`：文章图片预览交互。
+
+事件参数只包含语言、页面类型、文章 collection/id、滚动百分比、链接类型、站内 path 或外链域名等低风险字段，不上传正文、完整外链 URL 或用户标识。
+
+## 隐私与阅读量口径
+
+公开展示的阅读量是轻量 pageview 指标，不是严肃审计数据；刷新会增加计数，因此可能被异常流量影响。后台按天去重的匿名访客事件更适合做趋势判断。需要更强防刷时，优先在 Cloudflare Worker 前启用 WAF / rate limiting，而不是在页面端做复杂逻辑。
+
+站点统计只用于理解内容阅读和站点入口表现。当前不会上传文章正文、完整外链 URL、读者账号标识或自定义个人资料字段。
+
+## 搜索和修订
+
+当前内容量较小时，先依赖 `Tags`、`Timeline` 和分类页导航。等文章超过约 30 篇，建议接入静态搜索方案，例如 Pagefind；它不需要后端服务，也适合 GitHub Pages。
+
+文章允许后续修订。小的错别字和链接修复可以直接改；影响判断、结论或事实口径的实质性更新，建议在 frontmatter 加 `updated: YYYY-MM-DD`，并在正文末尾增加简短修订说明。
+
 ## 命令
 
 ```sh
@@ -80,7 +104,7 @@ pnpm check:syntax     # Astro/TypeScript 模板 + Worker 语法检查
 pnpm check:quality    # 内容、敏感信息、资产、图片建议、analytics smoke、构建和 dist 检查
 pnpm check:analytics  # 临时文章验证 GA4、阅读量脚本和关键 Markdown 渲染
 pnpm check:types      # Astro 类型和模板检查
-pnpm check:worker     # 阅读量 Worker 语法检查
+pnpm check:worker     # 阅读量 Worker 语法和计数行为检查
 pnpm check:dist       # 构建后页面元信息、站内链接和未渲染 Markdown warning
 pnpm images:check     # 图片大小、宽度、格式提示
 pnpm images:optimize  # 压缩文章图片并生成 WebP

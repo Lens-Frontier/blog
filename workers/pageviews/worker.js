@@ -86,19 +86,34 @@ async function handlePageview(request, env) {
 		.bind(eventId, normalized.siteId, normalized.articleId, day, visitorHash, normalized.path, createdAt)
 		.run();
 
-	if (insert.meta.changes > 0) {
-		await env.DB.prepare(
-			`INSERT INTO article_views (site_id, article_id, view_count, first_seen_at, last_seen_at)
-				VALUES (?, ?, 1, ?, ?)
-				ON CONFLICT(site_id, article_id) DO UPDATE SET
-					view_count = view_count + 1,
-					last_seen_at = excluded.last_seen_at`,
-		)
-			.bind(normalized.siteId, normalized.articleId, createdAt, createdAt)
-			.run();
-	}
+	await env.DB.prepare(
+		`INSERT INTO article_views (site_id, article_id, view_count, first_seen_at, last_seen_at)
+			VALUES (?, ?, 1, ?, ?)
+			ON CONFLICT(site_id, article_id) DO UPDATE SET
+				view_count = view_count + 1,
+				last_seen_at = excluded.last_seen_at`,
+	)
+		.bind(normalized.siteId, normalized.articleId, createdAt, createdAt)
+		.run();
 
-	return jsonResponse({ ok: true }, { status: 202 }, env, request);
+	const row = await env.DB.prepare(
+		`SELECT view_count AS viewCount
+			FROM article_views
+			WHERE site_id = ? AND article_id = ?`,
+	)
+		.bind(normalized.siteId, normalized.articleId)
+		.first();
+
+	return jsonResponse(
+		{
+			ok: true,
+			viewCount: row?.viewCount || 1,
+			uniqueDailyVisitorRecorded: insert.meta.changes > 0,
+		},
+		{ status: 202 },
+		env,
+		request,
+	);
 }
 
 async function handleReadCount(request, env) {

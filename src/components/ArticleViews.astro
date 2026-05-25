@@ -48,17 +48,40 @@ function deriveCountEndpoint(endpoint?: string) {
 				const url = new URL(countEndpoint, window.location.origin);
 				url.searchParams.set('siteId', siteId);
 				url.searchParams.set('articleId', articleId);
+				let refreshRequestId = 0;
+				let latestCount = null;
 
-				fetch(url.toString(), { credentials: 'omit', cache: 'no-store' })
-					.then((response) => (response.ok ? response.json() : Promise.reject()))
-					.then((data) => {
-						const count = Number(data.viewCount || 0);
-						value.textContent = formatter.format(count);
-						target.setAttribute('aria-label', `${target.firstElementChild?.textContent || 'Views'}: ${count}`);
-					})
-					.catch(() => {
-						target.remove();
-					});
+				const renderViewCount = (rawCount) => {
+					const count = Number(rawCount || 0);
+					if (latestCount !== null && count < latestCount) return;
+					latestCount = count;
+					value.textContent = formatter.format(count);
+					target.hidden = false;
+					target.setAttribute('aria-label', `${target.firstElementChild?.textContent || 'Views'}: ${count}`);
+				};
+
+				const refreshViewCount = () => {
+					const requestId = ++refreshRequestId;
+					fetch(url.toString(), { credentials: 'omit', cache: 'no-store' })
+						.then((response) => (response.ok ? response.json() : Promise.reject()))
+						.then((data) => {
+							if (requestId !== refreshRequestId) return;
+							renderViewCount(data.viewCount);
+						})
+						.catch(() => {
+							if (requestId === refreshRequestId) target.hidden = true;
+						});
+				};
+
+				window.addEventListener('lens-frontier:pageview-recorded', (event) => {
+					if (event.detail?.articleId !== articleId) return;
+					if (Number.isFinite(Number(event.detail.viewCount))) renderViewCount(event.detail.viewCount);
+					else refreshViewCount();
+				});
+				refreshViewCount();
+				if (window.__lensFrontierRecordedPageviews?.has(articleId)) {
+					renderViewCount(window.__lensFrontierRecordedPageviews.get(articleId));
+				}
 			})();
 		</script>
 	) : null

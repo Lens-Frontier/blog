@@ -10,6 +10,7 @@ const siteBase = normalizeBase(process.env.SITE_BASE ?? '/');
 const gaMeasurementId = process.env.PUBLIC_GA_MEASUREMENT_ID;
 const pageviewEndpoint = process.env.PUBLIC_PAGEVIEW_ENDPOINT;
 const requiredFiles = [
+	'404.html',
 	'index.html',
 	'zh/index.html',
 	'en/index.html',
@@ -219,7 +220,6 @@ for (const file of htmlFiles) {
 	if (!$('meta[name="description"]').attr('content')?.trim()) {
 		errors.push(`Missing meta description: ${rel}`);
 	}
-
 	if (siteUrl) {
 		const canonical = $('link[rel="canonical"]').attr('href');
 		if (!canonical?.startsWith(new URL(siteBase, siteUrl).toString())) {

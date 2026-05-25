@@ -51,7 +51,7 @@ function skip(label, reason) {
 
 function runSyntaxChecks() {
 	runPnpm('Astro and TypeScript check', 'check:types');
-	runPnpm('Pageview Worker syntax check', 'check:worker');
+	runPnpm('Pageview Worker syntax and behavior check', 'check:worker');
 }
 
 function runQualityChecks() {

@@ -64,6 +64,14 @@ gh pr view <PR 编号> --json state,headRefName,baseRefName,headRefOid
 - 旧 commit 的预览快照会保留在同一个 PR 目录下，方便需要时回看。
 - PR 关闭后，`PR Preview Cleanup` workflow 会删除整个 `pr-preview/pr-<PR 编号>` 目录，并更新 bot comment 说明预览已回收。
 
+## 统计和隐私
+
+站点统计包含 GA4 默认 pageview、少量 `lf_` 自定义事件，以及 first-party 文章阅读量。公开展示的阅读量按 pageview 计数，刷新会增加一次；后台会另存按天去重的匿名访客事件，用于趋势分析。
+
+统计事件只包含语言、页面类型、文章 collection/id、滚动百分比、链接类型、站内 path 或外链域名等低风险字段。不要把统计埋点扩展到正文内容、完整外链 URL、读者账号标识或其他个人资料字段。
+
+公开阅读量不是严肃审计数据，可能被异常刷新或机器人流量影响。需要更强防刷时，优先在 Cloudflare Worker 前配置 WAF / rate limiting。
+
 ## 文件命名
 
 文章文件名就是 URL slug。统一使用小写 kebab-case：
@@ -88,6 +96,14 @@ src/assets/posts/papers/swe-bench-verified/
 ## Markdown Frontmatter
 
 所有文章都需要包含 `title`、`date`、`summary`、`authors`、`tags`。`authors` 是本站作者，不是论文原作者；每个作者至少填写 `id`、`name` 或 `github` 之一。
+
+`updated` 是可选字段。小的错别字、排版和链接修复不一定需要写；如果修订影响事实口径、判断边界或结论，请加上：
+
+```yaml
+updated: 2026-05-23
+```
+
+同时建议在正文末尾增加简短的“修订说明”，让读者知道这次更新改变了什么。
 
 `lang` 用来决定文章进入哪个语言路由：
 

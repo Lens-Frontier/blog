@@ -118,6 +118,7 @@ export const ui = {
 				paragraphs: [
 					'这里的写作目标不是产出统一口径，而是把不同人的阅读、观点和论点放到可追溯的语境里：一个结论依赖什么证据，它的边界在哪里，它和真实系统或评测协议之间隔了哪些假设。',
 					'每篇文章尽量保留来源、假设、限制和个人判断。观点可以浅，判断需要可追溯；不同作者也可以在这里保留不同的观察角度，尤其是围绕 benchmark 设计、结果解释和真实任务落差的观察。',
+					'站点统计只用于理解内容是否被读到、读者从哪里进入，以及哪些入口有用。我们不上传正文、完整外链 URL 或读者账号标识。',
 				],
 			},
 		},
@@ -128,6 +129,7 @@ export const ui = {
 			code: 'Code',
 			spec: {
 				date: '日期',
+				updated: '更新',
 				paperAuthors: '论文作者',
 				venue: '发表位置',
 				benchmarks: 'Benchmarks',
@@ -242,6 +244,7 @@ export const ui = {
 				paragraphs: [
 					'The goal is not to create a single official line. It is to put reading notes, arguments, and judgments into a traceable context: what evidence a claim depends on, where its boundary sits, and which assumptions separate it from real systems or evaluation protocols.',
 					'Each article should keep sources, assumptions, limits, and personal judgment visible. Claims can be modest, but the reasoning should be traceable; different authors can keep different angles, especially around benchmark design, result interpretation, and the gap to real tasks.',
+					'Site analytics are used only to understand whether content is being read, where readers enter, and which navigation paths are useful. We do not send article body text, full outbound URLs, or reader account identifiers.',
 				],
 			},
 		},
@@ -252,6 +255,7 @@ export const ui = {
 			code: 'Code',
 			spec: {
 				date: 'Date',
+				updated: 'Updated',
 				paperAuthors: 'Paper Authors',
 				venue: 'Venue',
 				benchmarks: 'Benchmarks',

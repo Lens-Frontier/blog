@@ -36,10 +36,11 @@ Use this skill inside the `Lens-Frontier/blog` repository when helping someone c
 - Explain evidence and limits. Views can be shallow; claims should still be traceable.
 - Avoid overclaiming from a single paper, benchmark, leaderboard, or anecdote. Narrow the conclusion when evidence is narrow.
 - Keep the writing readable and restrained: clear structure, useful figures, no title bait, no material dumping.
-- Do not commit secrets, tokens, private keys, unpublished materials, or private meeting/customer information.
+- Do not commit secrets, tokens, private keys, unpublished materials, or third-party confidential information.
 - For paper posts, distinguish paper authors from site authors.
 - For benchmark posts, include task, metric, version or status, risks, and known misreadings when available.
 - For opinion posts, separate facts, inferences, uncertainty, and personal judgment.
+- For substantive revisions, set `updated: YYYY-MM-DD` and add a short revision note in the article body.
 
 ## Author Registry
 

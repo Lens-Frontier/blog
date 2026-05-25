@@ -2,16 +2,19 @@
 
 Optional first-party article read counting for Lens Frontier.
 
-Article pages send a small pageview event when `PUBLIC_PAGEVIEW_ENDPOINT` is configured during the Astro build. The site displays read counts when the Worker read endpoint is available.
+Article pages send a small pageview event when `PUBLIC_PAGEVIEW_ENDPOINT` is configured during the Astro build. The site displays total pageviews when the Worker read endpoint is available.
 
 ## Behavior
 
 - Counts only article pages.
 - Uses `articleId` such as `papers/swe-bench-verified`.
-- Deduplicates one anonymous visitor per article per day.
+- Increments the displayed pageview count on every accepted pageview event, so browser refreshes count as new reads.
+- Separately stores one anonymous visitor event per article per day for backend analysis.
 - Stores a salted hash, not raw IP addresses.
 - Receives only `siteId`, `articleId`, and page path from the site.
 - Exposes `GET /views?articleId=<collection>/<slug>` for article read-count display.
+
+Displayed pageviews are a lightweight public signal, not an audit-grade metric. If stronger abuse protection is needed, put Cloudflare WAF / rate limiting in front of the Worker. The deduplicated daily visitor events are better for trend analysis than the public counter.
 
 ## Deploy
 

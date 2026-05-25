@@ -93,6 +93,12 @@ function assertIncludes(html, needle, label) {
 	}
 }
 
+function assertNotIncludes(html, needle, label) {
+	if (html.includes(needle)) {
+		throw new Error(`Smoke article should not include ${label}: ${needle}`);
+	}
+}
+
 if (existsSync(smokeFile)) {
 	throw new Error(`Refusing to overwrite existing smoke file: ${smokeFile}`);
 }
@@ -119,7 +125,17 @@ try {
 	assertIncludes(html, 'https://example.test/views', 'pageview count endpoint');
 	assertIncludes(html, 'https://example.test/pageview', 'pageview event endpoint');
 	assertIncludes(html, 'opinions/analytics-smoke', 'article id');
-	assertIncludes(html, 'lens-frontier:pageview:', 'client-side pageview dedupe key');
+	assertNotIncludes(html, 'lens-frontier:pageview:v2:', 'client-side pageview dedupe key');
+	assertIncludes(html, 'lens-frontier:pageview-recorded', 'pageview refresh event');
+	assertIncludes(html, '__lensFrontierRecordedPageviews', 'recorded pageview marker');
+	assertIncludes(html, 'renderViewCount', 'direct read-count update');
+	assertIncludes(html, 'refreshRequestId', 'stale read-count request guard');
+	assertIncludes(html, 'lf_article_scroll_depth', 'article scroll-depth analytics event');
+	assertIncludes(html, 'lf_article_engaged_read', 'article engaged-read analytics event');
+	assertIncludes(html, 'lf_content_discovery', 'content discovery analytics event');
+	assertIncludes(html, 'lf_article_resource_click', 'article resource analytics event');
+	assertIncludes(html, 'lf_article_image_open', 'article image-open analytics event');
+	assertIncludes(html, 'lf_language_switch', 'language switch analytics event');
 	assertIncludes(html, '<table>', 'Markdown table rendering');
 	assertIncludes(html, '<thead>', 'Markdown table header rendering');
 	assertIncludes(html, '<blockquote>', 'Markdown blockquote rendering');
