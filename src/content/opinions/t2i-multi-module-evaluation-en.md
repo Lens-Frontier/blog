@@ -11,9 +11,9 @@ stance: "Existing T2I benchmarks cannot cover text rendering, world knowledge, o
 tags: ["evaluation", "text-to-image", "llm-as-a-judge", "benchmark"]
 ---
 
-Since ERNIE-Image launched, feedback around text rendering, complex instruction following, and real-world usability has continued to accumulate.
+It's been a while since ERNIE-Image launched, and we've received overwhelmingly positive feedback. **Thank you so much for your love and support for the model.**
 
-This article discusses a fully automated evaluation system with LLM-as-a-Judge at its core — one that **breaks through the limitations of single-metric benchmarks** and more systematically **captures the capability boundaries of modern T2I models**. By diagnosing model weaknesses through evaluation, it provides traceable evidence for subsequent iterations.
+Today I want to talk about how I designed a fully automated evaluation system with LLM-as-a-Judge at its core — one that **breaks through the limitations of single-metric benchmarks** and **captures the true capability boundaries of modern T2I models**. By identifying model weaknesses through evaluation, we've been able to steer ERNIE-Image's iterations in the right direction, making it lean and powerful.
 
 ## 1. Why Build Our Own Evaluation Set
 
@@ -209,7 +209,7 @@ After several iterations, here are a few hard-won insights:
 
 T2I models have evolved from "can it draw a cat?" to "can it draw an accurate, aesthetically pleasing, knowledge-correct multilingual infographic?" Evaluation methods must keep pace.
 
-The core value of this framework lies in comprehensive coverage, robust calibration, adaptive scoring, and interpretable diagnostics. It continuously exposes model weaknesses and provides traceable evaluation evidence for subsequent iterations.
+The core value of this framework: comprehensive coverage, robust calibration, adaptive scoring, and interpretable diagnostics. It helps us continuously discover model weaknesses and drives ERNIE-Image to improve version by version.
 
 I hope these ideas are useful to others working on similar problems.
 
