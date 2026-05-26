@@ -21,6 +21,8 @@ const { title = site.title, description = site.description } = Astro.props;
 const alternatePath = Astro.props.alternatePath ?? '/';
 const pageTitle = title === site.title ? title : `${title} - ${site.title}`;
 const canonical = new URL(Astro.url.pathname, Astro.site ?? 'https://example.com');
+const fontStylesheetUrl =
+	'https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:wght@500;600;700&family=Noto+Serif+SC:wght@500;700&display=swap';
 const navItems = [
 	{ href: localizedPath(lang, '/papers/'), label: labels.nav.papers },
 	{ href: localizedPath(lang, '/benchmarks/'), label: labels.nav.benchmarks },
@@ -50,10 +52,21 @@ function alternatePathFor(targetLang: Language) {
 		<link rel="icon" type="image/svg+xml" href={path('/favicon.svg')} />
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-		<link
-			href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:wght@500;600;700&family=Noto+Serif+SC:wght@500;700&display=swap"
-			rel="stylesheet"
-		/>
+		<script is:inline define:vars={{ fontStylesheetUrl }}>
+			(() => {
+				const loadFonts = () => {
+					if (document.querySelector('link[data-lens-frontier-fonts]')) return;
+					const link = document.createElement('link');
+					link.rel = 'stylesheet';
+					link.href = fontStylesheetUrl;
+					link.dataset.lensFrontierFonts = 'true';
+					document.head.append(link);
+				};
+				if ('requestIdleCallback' in window) window.requestIdleCallback(loadFonts, { timeout: 1200 });
+				else window.setTimeout(loadFonts, 0);
+			})();
+		</script>
+		<noscript><link rel="stylesheet" href={fontStylesheetUrl} /></noscript>
 	</head>
 	<body>
 		<div class="shell">
