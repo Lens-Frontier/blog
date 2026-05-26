@@ -323,4 +323,4 @@ main 分支应保持保护：需要至少一位 review、需要所有 conversati
 
 仓库使用 `.github/CODEOWNERS` 自动请求 `@Lens-Frontier/blog-maintainers` review。这个 team 负责文章、站点、CI 和发布流程改动。
 
-第一篇真实文章合入前后，建议额外复查首页空态、Latest Writing 列表密度、频道计数和 tag 展示；空站状态下这些判断只能先做到大体合理。
+如果文章或站点改动会明显影响首页、列表页、频道计数或 tag 展示，请在 PR 说明中提醒 reviewer 重点查看对应页面。

@@ -45,7 +45,7 @@ export const ui = {
 			channels: 'Channels',
 			latest: 'Latest Writing',
 			timeline: 'timeline',
-			emptyTitle: 'No notes yet.',
+			emptyTitle: '暂时还没有内容。',
 			emptyBody: '第一篇论文分享、观点文章或 benchmark 观察会出现在这里。',
 			scopeTitle: 'Editorial Scope',
 			scopeBody:
@@ -73,7 +73,7 @@ export const ui = {
 				description: '论文阅读分享与复盘。',
 				eyebrow: 'paper sharing',
 				body: '把大家平时阅读分享的论文沉淀下来。重点不是复述摘要，而是把问题、证据、限制和个人判断说清楚。',
-				emptyTitle: 'No paper notes yet.',
+				emptyTitle: '还没有论文分享。',
 				emptyBody: '第一篇论文分享会出现在这里。',
 			},
 			benchmarks: {
@@ -81,7 +81,7 @@ export const ui = {
 				description: 'Benchmark 相关评测协议、数据集和榜单语境观察。',
 				eyebrow: 'evaluation context',
 				body: '把 benchmark 当作测量工具来记录：任务、指标、版本、风险、已知误读，以及它和真实问题之间的距离。',
-				emptyTitle: 'No benchmark notes yet.',
+				emptyTitle: '还没有 benchmark 观察。',
 				emptyBody: '第一篇 benchmark 观察会出现在这里。',
 			},
 			opinions: {
@@ -89,7 +89,7 @@ export const ui = {
 				description: '围绕 benchmark 和 evaluation 的浅薄观点、论点和判断。',
 				eyebrow: 'benchmark-facing arguments',
 				body: '围绕 benchmark、evaluation 和真实任务落差的浅薄观点。可以有立场，但需要把事实、推断和不确定性分开。',
-				emptyTitle: 'No opinions yet.',
+				emptyTitle: '还没有观点文章。',
 				emptyBody: '第一篇观点文章会出现在这里。',
 			},
 			timeline: {
@@ -97,7 +97,7 @@ export const ui = {
 				description: '全部论文分享、观点文章和 benchmark 观察的时间线。',
 				eyebrow: 'all writing',
 				body: '按时间汇总平时阅读分享的论文、观点文章和 benchmark 观察，方便顺着一条想法从阅读、质疑到判断往回看。',
-				emptyTitle: 'No writing yet.',
+				emptyTitle: '暂时还没有写作。',
 				emptyBody: '第一篇论文分享、观点文章或 benchmark 观察会出现在这里。',
 			},
 			tags: {
@@ -105,7 +105,7 @@ export const ui = {
 				description: '主题标签索引。',
 				eyebrow: 'index terms',
 				body: '用标签把论文分享、观点文章和 benchmark 观察串起来。',
-				emptyTitle: 'No tags yet.',
+				emptyTitle: '还没有标签。',
 				emptyBody: '发布第一篇内容后，标签索引会自动出现。',
 				tagDescription: (tag: string) => `标签 ${tag} 下的内容。`,
 				relatedCount: (count: number) => `${count} 篇相关内容。`,
@@ -116,9 +116,8 @@ export const ui = {
 				eyebrow: 'about',
 				dek: '用于沉淀大家平时阅读分享的论文，也输出一些围绕 benchmark 的浅薄观点。',
 				paragraphs: [
-					'这里的写作目标不是产出统一口径，而是把不同人的阅读、观点和论点放到可追溯的语境里：一个结论依赖什么证据，它的边界在哪里，它和真实系统或评测协议之间隔了哪些假设。',
-					'每篇文章尽量保留来源、假设、限制和个人判断。观点可以浅，判断需要可追溯；不同作者也可以在这里保留不同的观察角度，尤其是围绕 benchmark 设计、结果解释和真实任务落差的观察。',
-					'站点统计只用于理解内容是否被读到、读者从哪里进入，以及哪些入口有用。我们不上传正文、完整外链 URL 或读者账号标识。',
+					'这里的写作目标不是得出同一个结论，而是把不同人的阅读、观点和论点放到可追溯的语境里：一个判断依赖什么证据，它的边界在哪里，它和真实系统或评测协议之间隔了哪些假设。',
+					'每篇文章尽量保留来源、假设、限制和个人判断。观点可以浅，推理需要可追溯；不同作者也可以在这里保留不同的观察角度，尤其是围绕 benchmark 设计、结果解释和真实任务落差的观察。',
 				],
 			},
 		},
@@ -244,7 +243,6 @@ export const ui = {
 				paragraphs: [
 					'The goal is not to create a single official line. It is to put reading notes, arguments, and judgments into a traceable context: what evidence a claim depends on, where its boundary sits, and which assumptions separate it from real systems or evaluation protocols.',
 					'Each article should keep sources, assumptions, limits, and personal judgment visible. Claims can be modest, but the reasoning should be traceable; different authors can keep different angles, especially around benchmark design, result interpretation, and the gap to real tasks.',
-					'Site analytics are used only to understand whether content is being read, where readers enter, and which navigation paths are useful. We do not send article body text, full outbound URLs, or reader account identifiers.',
 				],
 			},
 		},

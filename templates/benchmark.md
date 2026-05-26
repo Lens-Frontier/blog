@@ -15,16 +15,16 @@ status: "active"
 tags: ["benchmark", "evaluation"]
 ---
 
-## What It Measures
+## 测量对象
 
-## Task Format
+## 任务形式
 
-## Metric
+## 指标
 
-## Known Issues
+## 已知问题
 
-## Good Uses
+## 适合怎么用
 
-## Bad Uses
+## 不适合怎么用
 
-## Related Papers
+## 相关论文
