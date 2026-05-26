@@ -637,10 +637,7 @@ const siteId = "lens-frontier";
 
 	(() => {
 		const doNotTrack = navigator.doNotTrack === '1' || window.doNotTrack === '1';
-		const maxTextLength = 80;
 		const scrollMilestones = [25, 50, 75, 90, 100];
-
-		const cleanText = (text) => text?.replace(/\s+/g, ' ').trim().slice(0, maxTextLength) || undefined;
 
 		const article = document.querySelector('[data-analytics-page="article"]');
 		const articleParams =
@@ -754,7 +751,6 @@ const siteId = "lens-frontier";
 			const classification = classifyLink(link);
 			sendEvent(classification.event, {
 				link_type: classification.type,
-				link_text: cleanText(link.textContent),
 				link_path: linkPath(link.href),
 				link_domain: linkDomain(link.href),
 				page_kind: pageKind(),
