@@ -22,27 +22,61 @@ const siteId = import.meta.env.PUBLIC_PAGEVIEW_SITE_ID ?? 'lens-frontier';
 					articleId,
 					path: window.location.pathname,
 				});
+				let posted = false;
 
-				fetch(endpoint, {
-					method: 'POST',
-					body: payload,
-					headers: { 'Content-Type': 'application/json' },
-					keepalive: true,
-					credentials: 'omit',
-				})
-					.then((response) => {
-						if (!response.ok) return null;
-						return response.json().catch(() => null);
+				const postPageview = (preferBeacon = false) => {
+					if (posted) return;
+					posted = true;
+
+					if (preferBeacon && 'sendBeacon' in navigator) {
+						const blob = new Blob([payload], { type: 'text/plain;charset=UTF-8' });
+						if (navigator.sendBeacon(endpoint, blob)) return;
+					}
+
+					const controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
+					const timeout = controller ? window.setTimeout(() => controller.abort(), 3500) : null;
+
+					fetch(endpoint, {
+						method: 'POST',
+						body: payload,
+						headers: { 'Content-Type': 'application/json' },
+						keepalive: true,
+						credentials: 'omit',
+						signal: controller?.signal,
 					})
-					.then((data) => {
-						if (!data) return;
-						window.__lensFrontierRecordedPageviews ??= new Map();
-						window.__lensFrontierRecordedPageviews.set(articleId, Number(data.viewCount || 0));
-						window.dispatchEvent(
-							new CustomEvent('lens-frontier:pageview-recorded', { detail: { articleId, viewCount: data.viewCount } }),
-						);
-					})
-					.catch(() => {});
+						.then((response) => {
+							if (!response.ok) return null;
+							return response.json().catch(() => null);
+						})
+						.then((data) => {
+							if (!data) return;
+							window.__lensFrontierRecordedPageviews ??= new Map();
+							window.__lensFrontierRecordedPageviews.set(articleId, Number(data.viewCount || 0));
+							window.dispatchEvent(
+								new CustomEvent('lens-frontier:pageview-recorded', { detail: { articleId, viewCount: data.viewCount } }),
+							);
+						})
+						.catch(() => {})
+						.finally(() => {
+							if (timeout) window.clearTimeout(timeout);
+						});
+				};
+
+				const schedulePageview = () => {
+					if ('requestIdleCallback' in window) {
+						window.requestIdleCallback(() => postPageview(), { timeout: 2000 });
+						return;
+					}
+					window.setTimeout(postPageview, 800);
+				};
+				const flushPageview = () => postPageview(true);
+
+				if (document.readyState === 'complete') schedulePageview();
+				else window.addEventListener('load', schedulePageview, { once: true });
+				window.addEventListener('pagehide', flushPageview, { once: true });
+				document.addEventListener('visibilitychange', () => {
+					if (document.visibilityState === 'hidden') flushPageview();
+				});
 			})();
 		</script>
 	) : null

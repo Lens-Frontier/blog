@@ -1,28 +1,43 @@
 ---
 const measurementId = import.meta.env.PUBLIC_GA_MEASUREMENT_ID;
 const enabled = Boolean(measurementId) && import.meta.env.PUBLIC_GA_ENABLED !== 'false';
-const scriptUrl = `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(measurementId ?? '')}`;
 ---
 
 {
 	enabled ? (
-		<>
-			<script is:inline async src={scriptUrl}></script>
-			<script is:inline define:vars={{ measurementId }}>
-				(() => {
-					const doNotTrack = navigator.doNotTrack === '1' || window.doNotTrack === '1';
-					window.dataLayer = window.dataLayer || [];
-					window.gtag =
-						window.gtag ||
-						function gtag() {
-							window.dataLayer.push(arguments);
-						};
-					window.gtag('js', new Date());
-					if (!doNotTrack) {
-						window.gtag('config', measurementId);
+		<script is:inline define:vars={{ measurementId }}>
+			(() => {
+				const doNotTrack = navigator.doNotTrack === '1' || window.doNotTrack === '1';
+				window.dataLayer = window.dataLayer || [];
+				window.gtag =
+					window.gtag ||
+					function gtag() {
+						window.dataLayer.push(arguments);
+					};
+				if (doNotTrack) return;
+				window.gtag('js', new Date());
+				window.gtag('config', measurementId);
+
+				const loadAnalytics = () => {
+					if (document.querySelector('script[data-lens-frontier-ga]')) return;
+					const script = document.createElement('script');
+					script.async = true;
+					script.src = 'https://www.googletagmanager.com/gtag/js?id=' + encodeURIComponent(measurementId);
+					script.dataset.lensFrontierGa = 'true';
+					document.head.append(script);
+				};
+
+				const scheduleAnalytics = () => {
+					if ('requestIdleCallback' in window) {
+						window.requestIdleCallback(loadAnalytics, { timeout: 2500 });
+						return;
 					}
-				})();
-			</script>
-		</>
+					window.setTimeout(loadAnalytics, 1200);
+				};
+
+				if (document.readyState === 'complete') scheduleAnalytics();
+				else window.addEventListener('load', scheduleAnalytics, { once: true });
+			})();
+		</script>
 	) : null
 }
