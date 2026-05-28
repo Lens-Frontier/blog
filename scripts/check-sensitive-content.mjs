@@ -101,7 +101,13 @@ for (const file of files) {
 
 	if (ignoredBinaryExts.has(extname(file))) continue;
 
-	const buffer = await readFile(file);
+	let buffer;
+	try {
+		buffer = await readFile(file);
+	} catch (error) {
+		if (error.code === 'ENOENT') continue;
+		throw error;
+	}
 	if (isBinary(buffer)) continue;
 
 	const text = buffer.toString('utf8');
