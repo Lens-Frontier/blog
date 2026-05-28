@@ -1,19 +1,38 @@
-<!DOCTYPE html><html lang="zh-CN"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><meta name="generator" content="Astro v6.3.3"><script async src="https://www.googletagmanager.com/gtag/js?id=G-ZK42116ZXB"></script><script>(function(){const measurementId = "G-ZK42116ZXB";
+<!DOCTYPE html><html lang="zh-CN"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><meta name="generator" content="Astro v6.3.3"><script>(function(){const measurementId = "G-ZK42116ZXB";
 
-				(() => {
-					const doNotTrack = navigator.doNotTrack === '1' || window.doNotTrack === '1';
-					window.dataLayer = window.dataLayer || [];
-					window.gtag =
-						window.gtag ||
-						function gtag() {
-							window.dataLayer.push(arguments);
-						};
-					window.gtag('js', new Date());
-					if (!doNotTrack) {
-						window.gtag('config', measurementId);
+			(() => {
+				const doNotTrack = navigator.doNotTrack === '1' || window.doNotTrack === '1';
+				window.dataLayer = window.dataLayer || [];
+				window.gtag =
+					window.gtag ||
+					function gtag() {
+						window.dataLayer.push(arguments);
+					};
+				if (doNotTrack) return;
+				window.gtag('js', new Date());
+				window.gtag('config', measurementId);
+
+				const loadAnalytics = () => {
+					if (document.querySelector('script[data-lens-frontier-ga]')) return;
+					const script = document.createElement('script');
+					script.async = true;
+					script.src = 'https://www.googletagmanager.com/gtag/js?id=' + encodeURIComponent(measurementId);
+					script.dataset.lensFrontierGa = 'true';
+					document.head.append(script);
+				};
+
+				const scheduleAnalytics = () => {
+					if ('requestIdleCallback' in window) {
+						window.requestIdleCallback(loadAnalytics, { timeout: 2500 });
+						return;
 					}
-				})();
-			})();</script><title>如何构建面向文生图模型的多模块协同评估框架 - Lens Frontier</title><meta name="description" content="以 LLM-as-a-Judge 为核心，通过 OCR/VQA/CLIP/IQA/HP 五模块协同校准，突破单一指标 benchmark 局限，全面捕捉现代文生图模型的真实能力边界。"><link rel="canonical" href="https://lens-frontier.github.io/blog/zh/opinions/t2i-multi-module-evaluation/"><link rel="alternate" hreflang="zh-CN" href="/blog/zh/opinions/t2i-multi-module-evaluation/"><link rel="alternate" hreflang="en" href="/blog/en/opinions/t2i-multi-module-evaluation-en/"><link rel="icon" type="image/svg+xml" href="/blog/favicon.svg"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:wght@500;600;700&family=Noto+Serif+SC:wght@500;700&display=swap" rel="stylesheet"><link rel="stylesheet" href="/blog/_astro/BaseLayout.CMi6ugzH.css"></head> <body> <div class="shell"> <header class="site-header"> <a class="brand" href="/blog/zh/"> <span class="brand-mark">LF</span> <span> <strong>Lens Frontier</strong> <small>papers benchmarks opinions</small> </span> </a> <div class="header-actions"> <nav class="nav" aria-label="Primary navigation"> <a href="/blog/zh/papers/">Papers</a><a href="/blog/zh/benchmarks/">Benchmarks</a><a href="/blog/zh/opinions/">Opinions</a><a href="/blog/zh/tags/">Tags</a> </nav> <nav class="lang-switch" aria-label="Language switcher"> <a href="/blog/zh/opinions/t2i-multi-module-evaluation/" aria-current="true"> 中文 </a><a href="/blog/en/opinions/t2i-multi-module-evaluation-en/"> EN </a> </nav> </div> </header> <main>  <article class="article" data-analytics-page="article" data-analytics-article-id="opinions/t2i-multi-module-evaluation" data-analytics-collection="opinions" data-analytics-lang="zh"> <header class="article-header"> <p class="eyebrow">opinion</p> <h1>如何构建面向文生图模型的多模块协同评估框架</h1> <p class="dek">以 LLM-as-a-Judge 为核心，通过 OCR/VQA/CLIP/IQA/HP 五模块协同校准，突破单一指标 benchmark 局限，全面捕捉现代文生图模型的真实能力边界。</p> <div class="article-byline"> <ul class="authors" aria-label="Authors"><li><img src="https://github.com/ShawnJoeng.png?size=96" alt="杨晓文 avatar" loading="lazy"><span><a class="author-name" href="https://github.com/ShawnJoeng" target="_blank" rel="noreferrer"><strong>杨晓文</strong></a><a href="https://github.com/ShawnJoeng" target="_blank" rel="noreferrer">@ShawnJoeng</a></span></li></ul> <span class="article-views" data-article-views data-loading-label="读取中" aria-label="阅读: 读取中"><span>阅读</span><strong data-view-count>--</strong></span>
+					window.setTimeout(loadAnalytics, 1200);
+				};
+
+				if (document.readyState === 'complete') scheduleAnalytics();
+				else window.addEventListener('load', scheduleAnalytics, { once: true });
+			})();
+		})();</script><title>如何构建面向文生图模型的多模块协同评估框架 - Lens Frontier</title><meta name="description" content="以 LLM-as-a-Judge 为核心，通过 OCR/VQA/CLIP/IQA/HP 五模块协同校准，突破单一指标 benchmark 局限，全面捕捉现代文生图模型的真实能力边界。"><link rel="canonical" href="https://lens-frontier.github.io/blog/zh/opinions/t2i-multi-module-evaluation/"><link rel="alternate" hreflang="zh-CN" href="/blog/zh/opinions/t2i-multi-module-evaluation/"><link rel="alternate" hreflang="en" href="/blog/en/opinions/t2i-multi-module-evaluation-en/"><link rel="icon" type="image/svg+xml" href="/blog/favicon.svg"><link rel="stylesheet" href="/blog/_astro/BaseLayout.Bpmd06CA.css"></head> <body> <div class="shell"> <header class="site-header"> <a class="brand" href="/blog/zh/"> <span class="brand-mark">LF</span> <span> <strong>Lens Frontier</strong> <small>papers benchmarks opinions</small> </span> </a> <div class="header-actions"> <nav class="nav" aria-label="Primary navigation"> <a href="/blog/zh/papers/">Papers</a><a href="/blog/zh/benchmarks/">Benchmarks</a><a href="/blog/zh/opinions/">Opinions</a><a href="/blog/zh/tags/">Tags</a> </nav> <nav class="lang-switch" aria-label="Language switcher"> <a href="/blog/zh/opinions/t2i-multi-module-evaluation/" aria-current="true"> 中文 </a><a href="/blog/en/opinions/t2i-multi-module-evaluation-en/"> EN </a> </nav> </div> </header> <main>  <article class="article" data-analytics-page="article" data-analytics-article-id="opinions/t2i-multi-module-evaluation" data-analytics-collection="opinions" data-analytics-lang="zh"> <header class="article-header"> <p class="eyebrow">opinion</p> <h1>如何构建面向文生图模型的多模块协同评估框架</h1> <p class="dek">以 LLM-as-a-Judge 为核心，通过 OCR/VQA/CLIP/IQA/HP 五模块协同校准，突破单一指标 benchmark 局限，全面捕捉现代文生图模型的真实能力边界。</p> <div class="article-byline"> <ul class="authors" aria-label="Authors"><li><img src="https://github.com/ShawnJoeng.png?size=96" alt="杨晓文 avatar" loading="lazy"><span><a class="author-name" href="https://github.com/ShawnJoeng" target="_blank" rel="noreferrer"><strong>杨晓文</strong></a><a href="https://github.com/ShawnJoeng" target="_blank" rel="noreferrer">@ShawnJoeng</a></span></li></ul> <span class="article-views" data-article-views data-loading-label="读取中" aria-label="阅读: 读取中"><span>阅读</span><strong data-view-count>--</strong></span>
 		<script>(function(){const articleId = "opinions/t2i-multi-module-evaluation";
 const countEndpoint = "https://lens-frontier-pageviews.lens-frontier.workers.dev/views";
 const lang = "zh";
@@ -30,6 +49,7 @@ const siteId = "lens-frontier";
 				url.searchParams.set('articleId', articleId);
 				let refreshRequestId = 0;
 				let latestCount = null;
+				let fallbackScheduled = false;
 
 				const renderViewCount = (rawCount) => {
 					const count = Number(rawCount || 0);
@@ -42,15 +62,34 @@ const siteId = "lens-frontier";
 
 				const refreshViewCount = () => {
 					const requestId = ++refreshRequestId;
-					fetch(url.toString(), { credentials: 'omit', cache: 'no-store' })
+					const controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
+					const timeout = controller ? window.setTimeout(() => controller.abort(), 2500) : null;
+
+					fetch(url.toString(), { credentials: 'omit', cache: 'no-store', signal: controller?.signal })
 						.then((response) => (response.ok ? response.json() : Promise.reject()))
 						.then((data) => {
 							if (requestId !== refreshRequestId) return;
 							renderViewCount(data.viewCount);
 						})
 						.catch(() => {
-							if (requestId === refreshRequestId) target.hidden = true;
+							if (requestId === refreshRequestId && latestCount === null) target.hidden = true;
+						})
+						.finally(() => {
+							if (timeout) window.clearTimeout(timeout);
 						});
+				};
+
+				const scheduleFallbackRead = () => {
+					if (fallbackScheduled || latestCount !== null) return;
+					fallbackScheduled = true;
+					const read = () => {
+						if (latestCount === null) refreshViewCount();
+					};
+					if ('requestIdleCallback' in window) {
+						window.requestIdleCallback(read, { timeout: 3000 });
+						return;
+					}
+					window.setTimeout(read, 1600);
 				};
 
 				window.addEventListener('lens-frontier:pageview-recorded', (event) => {
@@ -58,9 +97,12 @@ const siteId = "lens-frontier";
 					if (Number.isFinite(Number(event.detail.viewCount))) renderViewCount(event.detail.viewCount);
 					else refreshViewCount();
 				});
-				refreshViewCount();
 				if (window.__lensFrontierRecordedPageviews?.has(articleId)) {
 					renderViewCount(window.__lensFrontierRecordedPageviews.get(articleId));
+				} else if (document.readyState === 'complete') {
+					scheduleFallbackRead();
+				} else {
+					window.addEventListener('load', scheduleFallbackRead, { once: true });
 				}
 			})();
 		})();</script> </div> <dl class="spec-table"><div><dt>日期</dt><dd>2026/05/21</dd></div><div><dt>立场</dt><dd>现有 T2I benchmark 无法覆盖文本渲染、世界知识、多视图等现代能力，需要多模块协同的自动化评估框架</dd></div></dl> <div class="article-actions">   </div> <div class="tag-list"> <a href="/blog/zh/tags/evaluation/">evaluation</a><a href="/blog/zh/tags/text-to-image/">text-to-image</a><a href="/blog/zh/tags/llm-as-a-judge/">llm-as-a-judge</a><a href="/blog/zh/tags/benchmark/">benchmark</a> </div> </header> <div class="article-body">  <p>ERNIE-Image发布至今已经有一段时间了，一直收到非常多正向反馈，<strong>非常感谢大家对模型的喜爱与支持</strong>。</p>
@@ -611,27 +653,61 @@ const siteId = "lens-frontier";
 					articleId,
 					path: window.location.pathname,
 				});
+				let posted = false;
 
-				fetch(endpoint, {
-					method: 'POST',
-					body: payload,
-					headers: { 'Content-Type': 'application/json' },
-					keepalive: true,
-					credentials: 'omit',
-				})
-					.then((response) => {
-						if (!response.ok) return null;
-						return response.json().catch(() => null);
+				const postPageview = (preferBeacon = false) => {
+					if (posted) return;
+					posted = true;
+
+					if (preferBeacon && 'sendBeacon' in navigator) {
+						const blob = new Blob([payload], { type: 'text/plain;charset=UTF-8' });
+						if (navigator.sendBeacon(endpoint, blob)) return;
+					}
+
+					const controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
+					const timeout = controller ? window.setTimeout(() => controller.abort(), 3500) : null;
+
+					fetch(endpoint, {
+						method: 'POST',
+						body: payload,
+						headers: { 'Content-Type': 'application/json' },
+						keepalive: true,
+						credentials: 'omit',
+						signal: controller?.signal,
 					})
-					.then((data) => {
-						if (!data) return;
-						window.__lensFrontierRecordedPageviews ??= new Map();
-						window.__lensFrontierRecordedPageviews.set(articleId, Number(data.viewCount || 0));
-						window.dispatchEvent(
-							new CustomEvent('lens-frontier:pageview-recorded', { detail: { articleId, viewCount: data.viewCount } }),
-						);
-					})
-					.catch(() => {});
+						.then((response) => {
+							if (!response.ok) return null;
+							return response.json().catch(() => null);
+						})
+						.then((data) => {
+							if (!data) return;
+							window.__lensFrontierRecordedPageviews ??= new Map();
+							window.__lensFrontierRecordedPageviews.set(articleId, Number(data.viewCount || 0));
+							window.dispatchEvent(
+								new CustomEvent('lens-frontier:pageview-recorded', { detail: { articleId, viewCount: data.viewCount } }),
+							);
+						})
+						.catch(() => {})
+						.finally(() => {
+							if (timeout) window.clearTimeout(timeout);
+						});
+				};
+
+				const schedulePageview = () => {
+					if ('requestIdleCallback' in window) {
+						window.requestIdleCallback(() => postPageview(), { timeout: 2000 });
+						return;
+					}
+					window.setTimeout(postPageview, 800);
+				};
+				const flushPageview = () => postPageview(true);
+
+				if (document.readyState === 'complete') schedulePageview();
+				else window.addEventListener('load', schedulePageview, { once: true });
+				window.addEventListener('pagehide', flushPageview, { once: true });
+				document.addEventListener('visibilitychange', () => {
+					if (document.visibilityState === 'hidden') flushPageview();
+				});
 			})();
 		})();</script> </article>  </main> <footer class="site-footer"> <div> <span>Lens Frontier</span> <span>Reading notes and modest benchmark arguments.</span> </div> <nav class="footer-links" aria-label="Secondary navigation"> <a href="/blog/zh/timeline/">Timeline</a> <a href="/blog/zh/about/">About</a> <a href="/blog/zh/rss.xml">RSS</a> <a href="https://github.com/Lens-Frontier/blog" target="_blank" rel="noreferrer">GitHub</a> </nav> </footer> </div> <script>(function(){const lang = "zh";
 
@@ -789,6 +865,7 @@ const siteId = "lens-frontier";
 		let activeSeconds = 0;
 		const sentScrollMilestones = new Set();
 		let sentEngagedRead = false;
+		let scrollTickScheduled = false;
 
 		const scrollDepth = () => {
 			const scrollable = document.documentElement.scrollHeight - window.innerHeight;
@@ -821,7 +898,16 @@ const siteId = "lens-frontier";
 			maybeSendReadingEvents();
 		};
 
-		window.addEventListener('scroll', maybeSendReadingEvents, { passive: true });
+		const scheduleScrollRead = () => {
+			if (scrollTickScheduled) return;
+			scrollTickScheduled = true;
+			window.requestAnimationFrame(() => {
+				scrollTickScheduled = false;
+				maybeSendReadingEvents();
+			});
+		};
+
+		window.addEventListener('scroll', scheduleScrollRead, { passive: true });
 		document.addEventListener('visibilitychange', maybeSendReadingEvents);
 		window.setInterval(tick, 1000);
 		maybeSendReadingEvents();

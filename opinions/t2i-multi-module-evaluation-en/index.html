@@ -1,16 +1,35 @@
-<!DOCTYPE html><html lang="zh-CN"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>Building a Multi-Module Collaborative Evaluation Framework for T2I - Lens Frontier</title><meta name="description" content="An LLM-as-a-Judge evaluation system with OCR/VQA/CLIP/IQA/HP modules and cross-module calibration, breaking through single-metric benchmark limitations to capture the true capability boundaries of modern T2I models."><script async src="https://www.googletagmanager.com/gtag/js?id=G-ZK42116ZXB"></script><script>(function(){const measurementId = "G-ZK42116ZXB";
+<!DOCTYPE html><html lang="zh-CN"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>Building a Multi-Module Collaborative Evaluation Framework for T2I - Lens Frontier</title><meta name="description" content="An LLM-as-a-Judge evaluation system with OCR/VQA/CLIP/IQA/HP modules and cross-module calibration, breaking through single-metric benchmark limitations to capture the true capability boundaries of modern T2I models."><script>(function(){const measurementId = "G-ZK42116ZXB";
 
-				(() => {
-					const doNotTrack = navigator.doNotTrack === '1' || window.doNotTrack === '1';
-					window.dataLayer = window.dataLayer || [];
-					window.gtag =
-						window.gtag ||
-						function gtag() {
-							window.dataLayer.push(arguments);
-						};
-					window.gtag('js', new Date());
-					if (!doNotTrack) {
-						window.gtag('config', measurementId);
+			(() => {
+				const doNotTrack = navigator.doNotTrack === '1' || window.doNotTrack === '1';
+				window.dataLayer = window.dataLayer || [];
+				window.gtag =
+					window.gtag ||
+					function gtag() {
+						window.dataLayer.push(arguments);
+					};
+				if (doNotTrack) return;
+				window.gtag('js', new Date());
+				window.gtag('config', measurementId);
+
+				const loadAnalytics = () => {
+					if (document.querySelector('script[data-lens-frontier-ga]')) return;
+					const script = document.createElement('script');
+					script.async = true;
+					script.src = 'https://www.googletagmanager.com/gtag/js?id=' + encodeURIComponent(measurementId);
+					script.dataset.lensFrontierGa = 'true';
+					document.head.append(script);
+				};
+
+				const scheduleAnalytics = () => {
+					if ('requestIdleCallback' in window) {
+						window.requestIdleCallback(loadAnalytics, { timeout: 2500 });
+						return;
 					}
-				})();
-			})();</script><meta http-equiv="refresh" content="0; url=/blog/en/opinions/t2i-multi-module-evaluation-en/"><link rel="canonical" href="https://lens-frontier.github.io/blog/en/opinions/t2i-multi-module-evaluation-en/"></head> <body> <a href="/blog/en/opinions/t2i-multi-module-evaluation-en/">Continue to Lens Frontier</a> </body></html>
+					window.setTimeout(loadAnalytics, 1200);
+				};
+
+				if (document.readyState === 'complete') scheduleAnalytics();
+				else window.addEventListener('load', scheduleAnalytics, { once: true });
+			})();
+		})();</script><meta http-equiv="refresh" content="0; url=/blog/en/opinions/t2i-multi-module-evaluation-en/"><link rel="canonical" href="https://lens-frontier.github.io/blog/en/opinions/t2i-multi-module-evaluation-en/"></head> <body> <a href="/blog/en/opinions/t2i-multi-module-evaluation-en/">Continue to Lens Frontier</a> </body></html>

@@ -1,19 +1,38 @@
-<!DOCTYPE html><html lang="zh-CN"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><meta name="generator" content="Astro v6.3.3"><script async src="https://www.googletagmanager.com/gtag/js?id=G-ZK42116ZXB"></script><script>(function(){const measurementId = "G-ZK42116ZXB";
+<!DOCTYPE html><html lang="zh-CN"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><meta name="generator" content="Astro v6.3.3"><script>(function(){const measurementId = "G-ZK42116ZXB";
 
-				(() => {
-					const doNotTrack = navigator.doNotTrack === '1' || window.doNotTrack === '1';
-					window.dataLayer = window.dataLayer || [];
-					window.gtag =
-						window.gtag ||
-						function gtag() {
-							window.dataLayer.push(arguments);
-						};
-					window.gtag('js', new Date());
-					if (!doNotTrack) {
-						window.gtag('config', measurementId);
+			(() => {
+				const doNotTrack = navigator.doNotTrack === '1' || window.doNotTrack === '1';
+				window.dataLayer = window.dataLayer || [];
+				window.gtag =
+					window.gtag ||
+					function gtag() {
+						window.dataLayer.push(arguments);
+					};
+				if (doNotTrack) return;
+				window.gtag('js', new Date());
+				window.gtag('config', measurementId);
+
+				const loadAnalytics = () => {
+					if (document.querySelector('script[data-lens-frontier-ga]')) return;
+					const script = document.createElement('script');
+					script.async = true;
+					script.src = 'https://www.googletagmanager.com/gtag/js?id=' + encodeURIComponent(measurementId);
+					script.dataset.lensFrontierGa = 'true';
+					document.head.append(script);
+				};
+
+				const scheduleAnalytics = () => {
+					if ('requestIdleCallback' in window) {
+						window.requestIdleCallback(loadAnalytics, { timeout: 2500 });
+						return;
 					}
-				})();
-			})();</script><title>404 - Lens Frontier</title><meta name="description" content="这个页面没有找到。回到 Lens Frontier 的论文分享、benchmark 观察和观点文章。"><link rel="canonical" href="https://lens-frontier.github.io/blog/404/"><link rel="alternate" hreflang="zh-CN" href="/blog/zh/"><link rel="alternate" hreflang="en" href="/blog/en/"><link rel="icon" type="image/svg+xml" href="/blog/favicon.svg"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:wght@500;600;700&family=Noto+Serif+SC:wght@500;700&display=swap" rel="stylesheet"><link rel="stylesheet" href="/blog/_astro/BaseLayout.CMi6ugzH.css"></head> <body> <div class="shell"> <header class="site-header"> <a class="brand" href="/blog/zh/"> <span class="brand-mark">LF</span> <span> <strong>Lens Frontier</strong> <small>papers benchmarks opinions</small> </span> </a> <div class="header-actions"> <nav class="nav" aria-label="Primary navigation"> <a href="/blog/zh/papers/">Papers</a><a href="/blog/zh/benchmarks/">Benchmarks</a><a href="/blog/zh/opinions/">Opinions</a><a href="/blog/zh/tags/">Tags</a> </nav> <nav class="lang-switch" aria-label="Language switcher"> <a href="/blog/zh/" aria-current="true"> 中文 </a><a href="/blog/en/"> EN </a> </nav> </div> </header> <main>  <section class="not-found" aria-labelledby="not-found-title"> <div class="not-found__code" aria-hidden="true"> <span>4</span> <span>0</span> <span>4</span> </div> <div class="not-found__body"> <p class="eyebrow">missing measurement</p> <h1 id="not-found-title">这个坐标没有记录。</h1> <p>
+					window.setTimeout(loadAnalytics, 1200);
+				};
+
+				if (document.readyState === 'complete') scheduleAnalytics();
+				else window.addEventListener('load', scheduleAnalytics, { once: true });
+			})();
+		})();</script><title>404 - Lens Frontier</title><meta name="description" content="这个页面没有找到。回到 Lens Frontier 的论文分享、benchmark 观察和观点文章。"><link rel="canonical" href="https://lens-frontier.github.io/blog/404/"><link rel="alternate" hreflang="zh-CN" href="/blog/zh/"><link rel="alternate" hreflang="en" href="/blog/en/"><link rel="icon" type="image/svg+xml" href="/blog/favicon.svg"><link rel="stylesheet" href="/blog/_astro/BaseLayout.Bpmd06CA.css"></head> <body> <div class="shell"> <header class="site-header"> <a class="brand" href="/blog/zh/"> <span class="brand-mark">LF</span> <span> <strong>Lens Frontier</strong> <small>papers benchmarks opinions</small> </span> </a> <div class="header-actions"> <nav class="nav" aria-label="Primary navigation"> <a href="/blog/zh/papers/">Papers</a><a href="/blog/zh/benchmarks/">Benchmarks</a><a href="/blog/zh/opinions/">Opinions</a><a href="/blog/zh/tags/">Tags</a> </nav> <nav class="lang-switch" aria-label="Language switcher"> <a href="/blog/zh/" aria-current="true"> 中文 </a><a href="/blog/en/"> EN </a> </nav> </div> </header> <main>  <section class="not-found" aria-labelledby="not-found-title"> <div class="not-found__code" aria-hidden="true"> <span>4</span> <span>0</span> <span>4</span> </div> <div class="not-found__body"> <p class="eyebrow">missing measurement</p> <h1 id="not-found-title">这个坐标没有记录。</h1> <p>
 可能是链接移动了，也可能是这篇笔记还没有写出来。先回到最近的阅读分享、benchmark 观察和标签索引。
 </p> <nav class="not-found__links" aria-label="404 shortcuts"> <a href="/blog/zh/">Latest Writing</a><a href="/blog/zh/papers/">Papers</a><a href="/blog/zh/benchmarks/">Benchmarks</a><a href="/blog/zh/tags/">Tags</a> </nav> </div> </section>  </main> <footer class="site-footer"> <div> <span>Lens Frontier</span> <span>Reading notes and modest benchmark arguments.</span> </div> <nav class="footer-links" aria-label="Secondary navigation"> <a href="/blog/zh/timeline/">Timeline</a> <a href="/blog/zh/about/">About</a> <a href="/blog/zh/rss.xml">RSS</a> <a href="https://github.com/Lens-Frontier/blog" target="_blank" rel="noreferrer">GitHub</a> </nav> </footer> </div> <script>(function(){const lang = "zh";
 
@@ -171,6 +190,7 @@
 		let activeSeconds = 0;
 		const sentScrollMilestones = new Set();
 		let sentEngagedRead = false;
+		let scrollTickScheduled = false;
 
 		const scrollDepth = () => {
 			const scrollable = document.documentElement.scrollHeight - window.innerHeight;
@@ -203,7 +223,16 @@
 			maybeSendReadingEvents();
 		};
 
-		window.addEventListener('scroll', maybeSendReadingEvents, { passive: true });
+		const scheduleScrollRead = () => {
+			if (scrollTickScheduled) return;
+			scrollTickScheduled = true;
+			window.requestAnimationFrame(() => {
+				scrollTickScheduled = false;
+				maybeSendReadingEvents();
+			});
+		};
+
+		window.addEventListener('scroll', scheduleScrollRead, { passive: true });
 		document.addEventListener('visibilitychange', maybeSendReadingEvents);
 		window.setInterval(tick, 1000);
 		maybeSendReadingEvents();

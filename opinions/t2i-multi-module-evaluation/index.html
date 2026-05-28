@@ -1,16 +1,35 @@
-<!DOCTYPE html><html lang="zh-CN"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>如何构建面向文生图模型的多模块协同评估框架 - Lens Frontier</title><meta name="description" content="以 LLM-as-a-Judge 为核心，通过 OCR/VQA/CLIP/IQA/HP 五模块协同校准，突破单一指标 benchmark 局限，全面捕捉现代文生图模型的真实能力边界。"><script async src="https://www.googletagmanager.com/gtag/js?id=G-ZK42116ZXB"></script><script>(function(){const measurementId = "G-ZK42116ZXB";
+<!DOCTYPE html><html lang="zh-CN"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>如何构建面向文生图模型的多模块协同评估框架 - Lens Frontier</title><meta name="description" content="以 LLM-as-a-Judge 为核心，通过 OCR/VQA/CLIP/IQA/HP 五模块协同校准，突破单一指标 benchmark 局限，全面捕捉现代文生图模型的真实能力边界。"><script>(function(){const measurementId = "G-ZK42116ZXB";
 
-				(() => {
-					const doNotTrack = navigator.doNotTrack === '1' || window.doNotTrack === '1';
-					window.dataLayer = window.dataLayer || [];
-					window.gtag =
-						window.gtag ||
-						function gtag() {
-							window.dataLayer.push(arguments);
-						};
-					window.gtag('js', new Date());
-					if (!doNotTrack) {
-						window.gtag('config', measurementId);
+			(() => {
+				const doNotTrack = navigator.doNotTrack === '1' || window.doNotTrack === '1';
+				window.dataLayer = window.dataLayer || [];
+				window.gtag =
+					window.gtag ||
+					function gtag() {
+						window.dataLayer.push(arguments);
+					};
+				if (doNotTrack) return;
+				window.gtag('js', new Date());
+				window.gtag('config', measurementId);
+
+				const loadAnalytics = () => {
+					if (document.querySelector('script[data-lens-frontier-ga]')) return;
+					const script = document.createElement('script');
+					script.async = true;
+					script.src = 'https://www.googletagmanager.com/gtag/js?id=' + encodeURIComponent(measurementId);
+					script.dataset.lensFrontierGa = 'true';
+					document.head.append(script);
+				};
+
+				const scheduleAnalytics = () => {
+					if ('requestIdleCallback' in window) {
+						window.requestIdleCallback(loadAnalytics, { timeout: 2500 });
+						return;
 					}
-				})();
-			})();</script><meta http-equiv="refresh" content="0; url=/blog/zh/opinions/t2i-multi-module-evaluation/"><link rel="canonical" href="https://lens-frontier.github.io/blog/zh/opinions/t2i-multi-module-evaluation/"></head> <body> <a href="/blog/zh/opinions/t2i-multi-module-evaluation/">Continue to Lens Frontier</a> </body></html>
+					window.setTimeout(loadAnalytics, 1200);
+				};
+
+				if (document.readyState === 'complete') scheduleAnalytics();
+				else window.addEventListener('load', scheduleAnalytics, { once: true });
+			})();
+		})();</script><meta http-equiv="refresh" content="0; url=/blog/zh/opinions/t2i-multi-module-evaluation/"><link rel="canonical" href="https://lens-frontier.github.io/blog/zh/opinions/t2i-multi-module-evaluation/"></head> <body> <a href="/blog/zh/opinions/t2i-multi-module-evaluation/">Continue to Lens Frontier</a> </body></html>
