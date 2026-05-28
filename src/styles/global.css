@@ -9,11 +9,11 @@
 	--green: #88b04b;
 	--red: #b64d3c;
 	--shadow: 0 24px 70px rgba(23, 22, 18, 0.08);
-	--font-sans: -apple-system, BlinkMacSystemFont, "Avenir Next", "Helvetica Neue", "PingFang SC", "Hiragino Sans GB", sans-serif;
+	--font-sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "Avenir Next", "Helvetica Neue", "PingFang SC", "Hiragino Sans GB", sans-serif;
 	--font-serif-zh: "Songti SC", "Noto Serif CJK SC", "Source Han Serif SC", "STSong", "SimSun", serif;
-	--font-serif-en: "Iowan Old Style", Georgia, "Times New Roman", serif;
+	--font-serif-en: "Iowan Old Style", "Hoefler Text", Cambria, Georgia, "Times New Roman", serif;
 	--font-serif: var(--font-serif-zh);
-	--font-mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+	--font-mono: ui-monospace, "SFMono-Regular", "Cascadia Code", Consolas, "Liberation Mono", monospace;
 }
 
 * {
