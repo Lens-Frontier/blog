@@ -164,6 +164,7 @@ const lang = languageFrom(Astro.props.lang);
 		let activeSeconds = 0;
 		const sentScrollMilestones = new Set();
 		let sentEngagedRead = false;
+		let scrollTickScheduled = false;
 
 		const scrollDepth = () => {
 			const scrollable = document.documentElement.scrollHeight - window.innerHeight;
@@ -196,7 +197,16 @@ const lang = languageFrom(Astro.props.lang);
 			maybeSendReadingEvents();
 		};
 
-		window.addEventListener('scroll', maybeSendReadingEvents, { passive: true });
+		const scheduleScrollRead = () => {
+			if (scrollTickScheduled) return;
+			scrollTickScheduled = true;
+			window.requestAnimationFrame(() => {
+				scrollTickScheduled = false;
+				maybeSendReadingEvents();
+			});
+		};
+
+		window.addEventListener('scroll', scheduleScrollRead, { passive: true });
 		document.addEventListener('visibilitychange', maybeSendReadingEvents);
 		window.setInterval(tick, 1000);
 		maybeSendReadingEvents();

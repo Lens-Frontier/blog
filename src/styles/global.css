@@ -9,11 +9,11 @@
 	--green: #88b04b;
 	--red: #b64d3c;
 	--shadow: 0 24px 70px rgba(23, 22, 18, 0.08);
-	--font-sans: "IBM Plex Sans", "PingFang SC", "Hiragino Sans GB", sans-serif;
-	--font-serif-zh: "Noto Serif SC", "Songti SC", "Noto Serif CJK SC", serif;
-	--font-serif-en: "IBM Plex Serif", Georgia, "Times New Roman", serif;
+	--font-sans: "PingFang SC", "Hiragino Sans GB", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+	--font-serif-zh: "Songti SC", "Noto Serif CJK SC", "Source Han Serif SC", "STSong", "SimSun", serif;
+	--font-serif-en: Georgia, "Times New Roman", serif;
 	--font-serif: var(--font-serif-zh);
-	--font-mono: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+	--font-mono: "SFMono-Regular", Consolas, monospace;
 }
 
 * {
@@ -191,6 +191,13 @@ a:hover {
 
 html:lang(zh-CN) .hero h1 {
 	max-width: 520px;
+}
+
+html:lang(zh-CN) .hero h1,
+html:lang(zh-CN) .article h1,
+html:lang(zh-CN) .page-title h1,
+html:lang(zh-CN) .not-found__body h1 {
+	font-weight: 800;
 }
 
 .hero p {
@@ -771,7 +778,7 @@ html:lang(en) .article-body {
 }
 
 .article-body strong {
-	font-weight: 700;
+	font-weight: 800;
 }
 
 .article-body li + li {

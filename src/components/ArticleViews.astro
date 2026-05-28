@@ -50,6 +50,7 @@ function deriveCountEndpoint(endpoint?: string) {
 				url.searchParams.set('articleId', articleId);
 				let refreshRequestId = 0;
 				let latestCount = null;
+				let fallbackScheduled = false;
 
 				const renderViewCount = (rawCount) => {
 					const count = Number(rawCount || 0);
@@ -62,15 +63,34 @@ function deriveCountEndpoint(endpoint?: string) {
 
 				const refreshViewCount = () => {
 					const requestId = ++refreshRequestId;
-					fetch(url.toString(), { credentials: 'omit', cache: 'no-store' })
+					const controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
+					const timeout = controller ? window.setTimeout(() => controller.abort(), 2500) : null;
+
+					fetch(url.toString(), { credentials: 'omit', cache: 'no-store', signal: controller?.signal })
 						.then((response) => (response.ok ? response.json() : Promise.reject()))
 						.then((data) => {
 							if (requestId !== refreshRequestId) return;
 							renderViewCount(data.viewCount);
 						})
 						.catch(() => {
-							if (requestId === refreshRequestId) target.hidden = true;
+							if (requestId === refreshRequestId && latestCount === null) target.hidden = true;
+						})
+						.finally(() => {
+							if (timeout) window.clearTimeout(timeout);
 						});
+				};
+
+				const scheduleFallbackRead = () => {
+					if (fallbackScheduled || latestCount !== null) return;
+					fallbackScheduled = true;
+					const read = () => {
+						if (latestCount === null) refreshViewCount();
+					};
+					if ('requestIdleCallback' in window) {
+						window.requestIdleCallback(read, { timeout: 3000 });
+						return;
+					}
+					window.setTimeout(read, 1600);
 				};
 
 				window.addEventListener('lens-frontier:pageview-recorded', (event) => {
@@ -78,9 +98,12 @@ function deriveCountEndpoint(endpoint?: string) {
 					if (Number.isFinite(Number(event.detail.viewCount))) renderViewCount(event.detail.viewCount);
 					else refreshViewCount();
 				});
-				refreshViewCount();
 				if (window.__lensFrontierRecordedPageviews?.has(articleId)) {
 					renderViewCount(window.__lensFrontierRecordedPageviews.get(articleId));
+				} else if (document.readyState === 'complete') {
+					scheduleFallbackRead();
+				} else {
+					window.addEventListener('load', scheduleFallbackRead, { once: true });
 				}
 			})();
 		</script>
