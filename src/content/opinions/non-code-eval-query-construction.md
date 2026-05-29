@@ -1,6 +1,7 @@
 ---
 title: "如何构建非代码评估集里的高质量 Query"
 lang: "zh"
+translationKey: "non-code-eval-query-construction"
 date: 2026-05-29
 summary: "以真实任务闭环为核心，通过场景分层、环境补全、难度量表、Rubric 锚定与数据飞轮，构建可验证、可归因、可迭代的非代码文本评估集 Query。"
 authors:
